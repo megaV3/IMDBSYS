@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using ELNET_FinalsProject.Data;
+using ELNET_FinalsProject.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:CoffeeStoreConnection"]);
 });
+
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 
 var app = builder.Build();
 
