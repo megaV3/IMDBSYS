@@ -54,9 +54,10 @@ namespace ELNET_FinalsProject.Controllers
         [HttpPost]
         public IActionResult Login(User login)
         {
-            if(ModelState.IsValid)
+            var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password);
+            if (ModelState.IsValid)
             {
-                if (_context.Users.Any(l => l.Username == login.Username && l.Password == login.Password))
+                if (user != null)
                 {
                     RedirectToAction("Index");
                 }
