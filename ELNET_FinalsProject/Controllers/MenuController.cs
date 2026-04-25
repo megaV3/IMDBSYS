@@ -31,7 +31,7 @@ namespace ELNET_FinalsProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_context.Users.Any(r => r.Username == register.Username)) //checks if the username already exissts in the database
+                if (_context.Users.Any(r => r.Username == register.Username)) //checks if the username already exissts in the database. Returns a boolean.
                 { 
                     return View(register);
                 }
@@ -54,12 +54,13 @@ namespace ELNET_FinalsProject.Controllers
         [HttpPost]
         public IActionResult Login(User login)
         {
-            var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password);
+            var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password); //Returns the actual user if found. Returns null if no match.
+
             if (ModelState.IsValid)
             {
                 if (user != null)
                 {
-                    RedirectToAction("Index");
+                   return RedirectToAction("Index");
                 }
             }
 
