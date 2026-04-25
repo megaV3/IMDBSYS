@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using ELNET_FinalsProject.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<AppDbContext>(opts =>
+{
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:CoffeeStoreConnection"]);
+});
 
 var app = builder.Build();
 
