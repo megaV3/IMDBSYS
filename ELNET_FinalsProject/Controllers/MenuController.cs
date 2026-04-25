@@ -75,5 +75,9 @@ namespace ELNET_FinalsProject.Controllers
                 return View();
         }
 
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
     }
 }
