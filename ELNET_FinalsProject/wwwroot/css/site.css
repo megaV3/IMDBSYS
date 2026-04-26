@@ -24,6 +24,7 @@ body {
     max-width: 100% !important;
 }
 
+<<<<<<< HEAD
 /* top section */
 .top-section {
     background-color: #9CAF6C;
@@ -140,4 +141,26 @@ body {
     padding: 3px 8px;
     border-radius: 20px;
     margin-left: 10px;
+=======
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.floating {
+    animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+>>>>>>> ae59bbfd5ba92a8225edc7672d2fda36d94406aa
 }
