@@ -10,5 +10,6 @@ namespace ELNET_FinalsProject.Data
         }
 
         public DbSet<Menu> Menus { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

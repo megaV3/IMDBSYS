@@ -1,8 +1,46 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- top sec -->
+<div class="top-section">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">PICKOUT COFFEE</div>
+            <ul class="nav-links">   
+                <li><a asp-controller="Account" asp-action="Login">Log In</a></li>  
+                <li><a asp-controller="Account" asp-action="Register">Sign Up</a></li>  
+            </ul>  
+        </div>  
+    </nav>  
+
+    <div class="hero-wrapper">  
+        <div class="hero">  
+            <div class="hero-text">  
+                <h1>PICKOUT COFFEE</h1>  
+                <p>  
+                    it's always premium espresso in every cup while you are on the go.  
+                </p>  
+            </div>  
+            <div class="hero-image">  
+                <img src="~/images/coffee.png" alt="Coffee" />  
+            </div>  
+        </div>  
+    </div>
+</div>
+
+<!-- bottom sec and shi -->
+<div class="bottom-section">
+    <div class="drinks-menu">
+        <h2>OUR ICED TEAS</h2>
+        <div class="drinks-grid">
+            <div class="drink-card">GREEN APPLE ICED TEA</div>
+            <div class="drink-card">
+                MIXED BERRIES ICED TEA 
+                <span class="new-badge">NEW!</span>
+            </div>
+            <div class="drink-card">PEACH ICED TEA</div>
+            <div class="drink-card">LYCHEE ICED TEA</div>
+        </div>
+    </div>
 </div>
