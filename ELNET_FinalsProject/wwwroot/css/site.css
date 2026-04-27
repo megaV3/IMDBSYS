@@ -14,6 +14,7 @@ body {
     margin: 0;
     margin-bottom: 60px;
     font-family: Arial, sans-serif;
+    /*background-color: darkolivegreen;*/
 }
 
 /* transparent backgrounds on layout containers */
@@ -24,7 +25,7 @@ body {
     max-width: 100% !important;
 }
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD*/
 /* top section */
 .top-section {
     background-color: #9CAF6C;
@@ -141,7 +142,8 @@ body {
     padding: 3px 8px;
     border-radius: 20px;
     margin-left: 10px;
-=======
+}
+/*=======*/
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
@@ -162,5 +164,4 @@ body {
     100% {
         transform: translateY(0px);
     }
->>>>>>> ae59bbfd5ba92a8225edc7672d2fda36d94406aa
 }
