@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELNET_FinalsProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260427044710_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260428165733_SyncChanges")]
+    partial class SyncChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
