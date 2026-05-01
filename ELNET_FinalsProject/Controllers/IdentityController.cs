@@ -56,9 +56,9 @@ namespace ELNET_FinalsProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel login)
+        public async Task<IActionResult> Login(LoginViewModel login)
         {
-            var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password); //Returns the actual user if found. Returns null if no match.
+            var user = await _context.Users.FirstOrDefaultAsync(l => l.Username == login.Username && l.Password == login.Password); //Returns the actual user if found. Returns null if no match.
 
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace ELNET_FinalsProject.Controllers
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     // 3. This line "signs them in" by creating the encrypted cookie
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                     /* 
                     If there are no users in the database, or if the model state is invalid, return the login view with the provided login
                     data (which may include validation errors).
