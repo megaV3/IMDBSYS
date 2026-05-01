@@ -12,6 +12,8 @@ namespace ELNET_FinalsProject.Models
         public decimal Price { get; set; }
         public string Description { get; set; } = String.Empty;
         public bool CanBeHot { get; set; }
-        public bool CanBeCold { get; set; } 
+        public bool CanBeCold { get; set; }
+
+        public string? ImagePath { get; set; }
     }
 }
