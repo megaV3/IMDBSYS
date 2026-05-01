@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ELNET_FinalsProject.Data;
 using ELNET_FinalsProject.Models;
-using ELNET_FinalsProject.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
+using System.Security.Claims;
 
 namespace ELNET_FinalsProject.Controllers
 {
-    public class MenuController : Controller
+    public class IdentityController : Controller
     {
         private readonly AppDbContext _context;
 
-        public MenuController(AppDbContext context)
+        public IdentityController(AppDbContext context)
         {
             _context = context;
         }
@@ -67,6 +70,19 @@ namespace ELNET_FinalsProject.Controllers
                     return View(login);
                 }
             }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim("LastLogin", DateTime.Now.ToString())
+            };
+
+            // 2. Create the Identity and Principal
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // 3. This line "signs them in" by creating the encrypted cookie
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             /* 
             If there are no users in the database, or if the model state is invalid, return the login view with the provided login
             data (which may include validation errors).
