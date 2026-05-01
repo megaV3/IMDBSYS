@@ -1,21 +1,57 @@
-﻿
+﻿@model ELNET_FinalsProject.Models.User
+
 @{
     ViewData["Title"] = "Login";
+    Layout = null;
 }
-@model ELNET_FinalsProject.ViewModels.LoginViewModel
 
-<h1>Login</h1>
-
-<form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="Username"></label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — Pickout Coffee</title>
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-left">
+            <h1 class="login-headline">PICKOUT<br>COFFEE</h1>
+            <p class="login-desc">it's always premium espresso in<br>every cup while you are on the go.</p>
+        </div>
+        <div class="login-right">
+            <a asp-action="Index" asp-controller="Home" class="btn-back">
+                &#8592; Back
+            </a>
+            <div class="login-container">
+                <h2 class="login-title">Welcome back</h2>
+                <p class="login-sub">Sign in to your account to continue</p>
+                <form asp-action="Login" method="post">
+                    <div style="margin-bottom: 1rem;">
+                        <label asp-for="Email" class="login-label"></label>
+                        <input asp-for="Email" class="login-input" placeholder="Enter your email" />
+                        <span asp-validation-for="Email" class="login-error"></span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label asp-for="Password" class="login-label"></label>
+                        <input asp-for="Password" type="password" class="login-input" placeholder="Enter your password" />
+                        <span asp-validation-for="Password" class="login-error"></span>
+                    </div>
+                    <div class="login-options" style="margin-bottom: 1rem;">
+                        <div class="login-remember">
+                            <input type="checkbox" name="RememberMe" id="RememberMe" />
+                            <label for="RememberMe">Remember me</label>
+                        </div>
+                        <a asp-action="ForgotPassword" class="forgot-link">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn-login">Sign in</button>
+                </form>
+                <p class="login-register">
+                    Don't have an account yet?
+                    <a asp-action="CreateAccount" asp-controller="identity">Sign up</a>
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</body>
+</html>
