@@ -1,0 +1,10 @@
+﻿@{
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <a asp-controller="Auth" asp-action="Login">Login</a>
+}
+<h1>Welcome to the Pickup Coffee store page!</h1>
+
+<h3>Enjoy your shopping experience, @User.Identity.Name!</h3>
