@@ -26,7 +26,7 @@ namespace ELNET_FinalsProject.Controllers
             return View(userProfile);
         }
 
-        public IActionResult OrderMenu() //This is the page where users can see the menu and place orders
+        public async Task<IActionResult> OrderMenu() //This is the page where users can see the menu and place orders
         {
             // 1. Get the User ID from the Claims (stored in the cookie)
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -41,7 +41,7 @@ namespace ELNET_FinalsProject.Controllers
             return View(menuItems);
         }
 
-        public IActionResult OrderRecords() //This is the page where users can see both their past and current orders with order details
+        public async Task<IActionResult> OrderRecords() //This is the page where users can see both their past and current orders with order details
         {
             // 1. Get the User ID from the Claims (stored in the cookie)
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
