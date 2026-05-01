@@ -54,27 +54,27 @@ namespace ELNET_FinalsProject.Controllers
         [HttpPost]
         public IActionResult Login(User login)
         {
-            if (_context.Users.Any()) //Checks if there are any users in the database. Returns a boolean.
-            {
-                var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password); //Returns the actual user if found. Returns null if no match.
+            var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password); //Returns the actual user if found. Returns null if no match.
 
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                if (user != null)
                 {
-                    if (user != null)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        return View(login);
-                    }
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(login);
                 }
             }
+            /* 
+            If there are no users in the database, or if the model state is invalid, return the login view with the provided login
+            data (which may include validation errors).
+            */
 
-            // If there are no users in the database, or if the model state is invalid, return the login view with the provided login data (which may include validation errors).
             return View(login);
-
         }
+
 
         public IActionResult Menu()
         {
