@@ -63,6 +63,23 @@ namespace ELNET_FinalsProject.Controllers
             {
                 if (user != null)
                 {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim("LastLogin", DateTime.Now.ToString())
+                    };
+
+                    // 2. Create the Identity and Principal
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    // 3. This line "signs them in" by creating the encrypted cookie
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    /* 
+                    If there are no users in the database, or if the model state is invalid, return the login view with the provided login
+                    data (which may include validation errors).
+                    */
+
                     return RedirectToAction("Index");
                 }
                 else
@@ -70,23 +87,6 @@ namespace ELNET_FinalsProject.Controllers
                     return View(login);
                 }
             }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim("LastLogin", DateTime.Now.ToString())
-            };
-
-            // 2. Create the Identity and Principal
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // 3. This line "signs them in" by creating the encrypted cookie
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            /* 
-            If there are no users in the database, or if the model state is invalid, return the login view with the provided login
-            data (which may include validation errors).
-            */
 
             return View(login);
         }
