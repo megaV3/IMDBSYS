@@ -2,10 +2,10 @@
 {
     public class OrderItem
     {
-        public int OrderItemID { get; set; } // ID for each item ordered
-        public int OrderID { get; set; } // Foreign key to Order, indicates which order this item belongs to
+        public int OrderItemId { get; set; } // ID for each item ordered
+        public int OrderId { get; set; } // Foreign key to Order, indicates which order this item belongs to
 
-        public int MenuID { get; set; } // Foreign key to Menu, indicates which menu item was ordered
+        public int MenuId { get; set; } // Foreign key to Menu, indicates which menu item was ordered
 
         //public Menu? Menu { get; set; }
 
