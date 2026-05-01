@@ -1,4 +1,6 @@
-﻿namespace ELNET_FinalsProject.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ELNET_FinalsProject.Models
 {
     public class OrderItem
     {
@@ -10,6 +12,7 @@
         //public Menu? Menu { get; set; }
 
         public int Quantity { get; set; }
+        [Column(TypeName = "decimal(8, 2)")]
         public decimal Price { get; set; } // subject for change, may be calculated as Menu.Price * Quantity, but stored here for historical accuracy in case menu prices change later
 
 
