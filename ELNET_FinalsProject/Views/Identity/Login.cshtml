@@ -1,4 +1,4 @@
-﻿@model ELNET_FinalsProject.Models.User
+﻿@model ELNET_FinalsProject.ViewModels.LoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -26,7 +26,7 @@
             <div class="login-container">
                 <h2 class="login-title">Welcome back</h2>
                 <p class="login-sub">Sign in to your account to continue</p>
-                <form asp-action="Login" method="post">
+                <form asp-action="Login" asp-controller="Identity" method="post">
                     <div style="margin-bottom: 1rem;">
                         <label asp-for="Email" class="login-label"></label>
                         <input asp-for="Email" class="login-input" placeholder="Enter your email" />
