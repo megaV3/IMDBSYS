@@ -5,6 +5,195 @@
 {
     <a asp-controller="Auth" asp-action="Login">Login</a>
 }
-<h1>Welcome to the Pickup Coffee store page!</h1>
+<div class="header">
+    <h2>Welcome to the Pickup Coffee store page!</h2>
+    <h5>Enjoy your shopping experience, @User.Identity.Name!</h5>
+</div>
 
-<h3>Enjoy your shopping experience, @User.Identity.Name!</h3>
+<div class="menu">
+    <div class="menu-header">
+        <h1>OUR MENU</h1>
+    </div>
+    <div class="signatures-header">
+        <h2 class="mt-5">SIGNATURES</h2>
+    </div>
+    <div class="row-fluid">
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/kape kastila.png" alt="kape-kastila" style="height:300px; width:300px; object-fit:cover"/>
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Kape Kastila</h5>
+                    <p class="card-text">Leche condensada with creamy milk <br /> and rich espresso. Also available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 75</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced white mocha latte.png" alt="iced white mocha latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced White Mocha Latte</h5>
+                    <p class="card-text">White chocolate with our creamy milk <br /> blend and rich espresso, also available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 89</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced caramel macchiato.png" alt="iced caramel" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Caramel Macchiato</h5>
+                    <p class="card-text">Rich espresso with creamy milk and <br /> caramel, also available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 89</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/pickup creme latte.png" alt="pickup creme latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Pickup CrÈme Latte</h5>
+                    <p class="card-text">A PICKUP Original Latte made with <br /> rich espresso and caramelized <br /> custard crème, topped with a Crème <br /> Brûlée foam. Proudly our crème de la <br /> crème!</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 95</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="espresso-header">
+        <h2 class="mt-5">ESPRESSO-BASED</h2>
+    </div>
+    <div class="row-fluid">
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/cappuccino.png" alt="cappuccino" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Cappuccino</h5>
+                    <p class="card-text">Rich espresso with hot steamed milk <br />and foam.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 75</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced brown sugar latte.png" alt="iced brown sugar latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Brown Sugar Latte</h5>
+                    <p class="card-text">Rich espresso with creamy milk and <br /> brown molasses syrup, also available <br /> hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 79</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/sea salt biscoff latte.png" alt="sea salt biscoff latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Sea Salt Biscoff Latte</h5>
+                    <p class="card-text">Rich espresso with creamy milk, <br /> Biscoff cookie bits, topped with sea <br /> salt cream mousse.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 115</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced sea salt latte.png" alt="iced sea salt latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Sea Salt Latte</h5>
+                    <p class="card-text">Rich espresso with creamy milk, <br /> topped with sea salt milk foam.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 89</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/vietnamese latte.png" alt="vietnamese latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Vietnamese Latte</h5>
+                    <p class="card-text">A strong blend of rich espresso with <br /> leche condensada.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 79</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced vanilla latte.png" alt="iced vanilla latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Vanilla Latte</h5>
+                    <p class="card-text">A velvety blend of creamy vanilla with <br /> milk and rich espresso, also available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 85</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/americano.png" alt="americano" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Americano</h5>
+                    <p class="card-text">Rich espresso with water. Also <br /> available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 50</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced dark chocolate latte.png" alt="iced dark chocolate latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Dark Chocolate Latte</h5>
+                    <p class="card-text">Dark chocolate with creamy milk and <br /> rich espresso, also available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 85</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/flat white.png" alt="flat white" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Flat White</h5>
+                    <p class="card-text">Rich espresso with hot steamed milk.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 75</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced latte.png" alt="iced latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Latte</h5>
+                    <p class="card-text">Rich espresso with creamy milk. Also <br /> available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 75</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/espresso.png" alt="espresso" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Espresso</h5>
+                    <p class="card-text">A double shot of rich espresso.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 30</p>
+                </div>
+            </div>
+        </div>
+        <div class="span4 mt-5">
+            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
+                <img src="~/images/iced hazelnut latte.png" alt="iced hazelnut latte" style="height:300px; width:300px; object-fit:cover" />
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title" style="text-transform:uppercase;">Iced Hazelnut Latte</h5>
+                    <p class="card-text">Rich espresso with creamy milk and <br /> Nutella. Also available hot.</p>
+                    <p class="card-subtitle" style="font-weight:bold;">PHP 95</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
