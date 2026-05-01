@@ -1,5 +1,6 @@
 ﻿using ELNET_FinalsProject.Data;
 using ELNET_FinalsProject.Models;
+using ELNET_FinalsProject.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +56,7 @@ namespace ELNET_FinalsProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(User login)
+        public IActionResult Login(LoginViewModel login)
         {
             var user = _context.Users.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password); //Returns the actual user if found. Returns null if no match.
 
@@ -80,7 +81,7 @@ namespace ELNET_FinalsProject.Controllers
                     data (which may include validation errors).
                     */
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Store");
                 }
                 else
                 {
