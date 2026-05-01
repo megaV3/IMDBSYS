@@ -16,6 +16,21 @@ namespace ELNET_FinalsProject.Data
                 context.Database.Migrate();
             }
 
+            if (!context.Users.Any())
+            {
+                context.Users.AddRange(
+                    new User
+                    {
+                        FirstName = "John Wayne",
+                        LastName = "Yabao",
+                        Username = "heatedrivalry",
+                        Email = "johnwayneyabao@gmail.com",
+                        Password = "ilovedilao",
+
+                    });
+                context.SaveChanges();
+            }
+
             if (!context.Menus.Any())
             {
                 context.Menus.AddRange(
