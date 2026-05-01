@@ -28,7 +28,17 @@ namespace ELNET_FinalsProject.Controllers
 
         public IActionResult OrderMenu() //This is the page where users can see the menu and place orders
         {
-            return View();
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // 2. Fetch the full user data from the database
+            var userProfile = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
+
+            var menuItems = _context.Menus.ToList(); // Fetch all menu items from the database
+
+            // A ViewModel can be created to pass both userProfile and menuItems to the view if needed, but for simplicity, we will just pass the menu items for now
+            return View(menuItems);
         }
 
         public IActionResult OrderRecords() //This is the page where users can see both their past and current orders with order details
