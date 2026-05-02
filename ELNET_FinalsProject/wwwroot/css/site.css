@@ -168,13 +168,11 @@ body {
 }
 
 .header {
-    border:1px solid black;
     margin-top: 20px;
 }
 
 .menu-header {
     text-align:center;
-    border:1px solid black;
     margin-top:20px;
 }
 
@@ -196,4 +194,51 @@ body {
 
     .espresso-header h2 {
         font-weight: bold;
+    }
+
+
+.header {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.menu-header h1 {
+    text-align: center;
+    color: #6f4e37;
+}
+
+.card {
+    border: none !important;
+    border-radius: 15px;
+    padding: 10px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+.card-title {
+    color: #6f4e37;
+}
+
+.card-subtitle {
+    color: #b08968;
+    font-size: 16px;
+}
+
+.btn-cart {
+    background-color: #6f4e37;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+    .btn-cart:hover {
+        background-color: #4b2e2b;
     }
