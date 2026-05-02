@@ -11,7 +11,7 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Cart" asp-action="Index" class="nav-icon">
+        <a asp-controller="Store" asp-action="OrderMenu" class="nav-icon">
             🛒
         </a>
 
@@ -196,7 +196,9 @@
                 <h5 class="card-title">Kape Kastila</h5>
                 <p class="card-text">Leche condensada with creamy milk and espresso.</p>
                 <p class="card-subtitle">PHP 75</p>
-                <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                    <button class="btn-cart">Add to Cart 🛒</button>
+                </form>
             </div>
         </div>
 
@@ -207,7 +209,9 @@
                 <h5 class="card-title">Iced White Mocha Latte</h5>
                 <p class="card-text">White chocolate with creamy milk and espresso.</p>
                 <p class="card-subtitle">PHP 89</p>
-                <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                    <button class="btn-cart">Add to Cart 🛒</button>
+                </form>
             </div>
         </div>
 
@@ -218,7 +222,9 @@
                 <h5 class="card-title">Iced Caramel Macchiato</h5>
                 <p class="card-text">Rich espresso with milk and caramel.</p>
                 <p class="card-subtitle">PHP 89</p>
-                <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                    <button class="btn-cart">Add to Cart 🛒</button>
+                </form>
             </div>
         </div>
 
@@ -236,7 +242,9 @@
                 <h5 class="card-title">Cappuccino</h5>
                 <p class="card-text">Rich espresso with milk and foam.</p>
                 <p class="card-subtitle">PHP 75</p>
-                <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                    <button class="btn-cart">Add to Cart 🛒</button>
+                </form>
             </div>
         </div>
 
@@ -246,7 +254,9 @@
                 <h5 class="card-title">Iced Brown Sugar Latte</h5>
                 <p class="card-text">Espresso with milk and brown sugar.</p>
                 <p class="card-subtitle">PHP 79</p>
-                <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                    <button class="btn-cart">Add to Cart 🛒</button>
+                </form>
             </div>
         </div>
 
@@ -256,7 +266,9 @@
                 <h5 class="card-title">Sea Salt Biscoff Latte</h5>
                 <p class="card-text">Espresso with milk and biscoff.</p>
                 <p class="card-subtitle">PHP 115</p>
-                <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                    <button class="btn-cart">Add to Cart 🛒</button>
+                </form>
             </div>
         </div>
 
