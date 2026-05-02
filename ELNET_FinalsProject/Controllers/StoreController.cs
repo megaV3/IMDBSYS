@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ELNET_FinalsProject.Data;
 using System.Security.Claims;
+using ELNET_FinalsProject.ViewModels;
 
 namespace ELNET_FinalsProject.Controllers
 {
@@ -22,8 +23,14 @@ namespace ELNET_FinalsProject.Controllers
             var userProfile = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
 
+            StoreViewModel viewModel = new StoreViewModel
+            {
+                UserProfile = userProfile,
+                Menus = await _context.Menus.ToListAsync() // Fetch all menu items from the database
+            };
+
             // 3. Pass the data to the View
-            return View(userProfile);
+            return View(viewModel);
         }
 
         public async Task<IActionResult> OrderMenu() //This is the page where users can see the menu and place orders
