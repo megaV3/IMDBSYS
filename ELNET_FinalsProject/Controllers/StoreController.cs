@@ -33,7 +33,6 @@ namespace ELNET_FinalsProject.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
         public async Task<IActionResult> OrderMenu() //This is the page where users can see the menu and place orders
         {
             // 1. Get the User ID from the Claims (stored in the cookie)
