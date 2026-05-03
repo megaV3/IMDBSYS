@@ -12,7 +12,7 @@ html {
 
 body {
     margin: 0;
-    margin-bottom: 60px;
+    margin-bottom: 0;
     font-family: Arial, sans-serif;
     /*background-color: darkolivegreen;*/
 }
@@ -53,7 +53,7 @@ body {
 .logo {
     color: white;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 30px;
     margin-right: 0;  
 }
 
@@ -65,11 +65,11 @@ body {
     padding-right: 0;  
 }
 
-/* footer */
+/* navbar */
 .nav-links a {
     text-decoration: none;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .hero {
@@ -104,19 +104,99 @@ body {
     border-radius: 20px;
 }
 
-/* Bottom section styles */
-.drinks-menu {
-    max-width: 1200px;
-    margin: 0 auto;
+/* carousel */
+.hero-image {
+    width: 500px;
+    flex-shrink: 0;
+}
+
+.carousel {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* hover effect */
+.hero-image:hover .carousel {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-item img {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-image:hover .carousel-item img {
+    transform: scale(1.08);
+}
+
+.carousel-inner {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* bottom section styles */
+.drink-card {
+    background-color: white;
+    padding: 30px 20px;
+    border-radius: 15px;
+    /*box-shadow: 0 4px 15px rgba(0,0,0,0.1);*/
+    min-width: 300px;
+    max-width: 300px;
     text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.drinks-menu h2 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    color: #edd4d4;
+/* hover effect that turns green and enlarges */
+.drink-card:hover {
+    background-color: #9CAF6C;
+    transform: scale(1.08);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
+/* our sig pngs */
+.drink-image {
+    width: 250px;
+    height: 250px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.drink-card:hover .drink-image {
+    transform: scale(1.05);
+}
+
+/* sig png names */
+.drink-card h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    color: #5C3D2E;
+    transition: color 0.3s ease;
+}
+
+.drink-card:hover h3 {
+    color: white;
+}
+
+/* badge */
+.new-badge {
+    background-color: #FF6B6B;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 20px;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+/* grid layout */
 .drinks-grid {
     display: flex;
     justify-content: center;
@@ -124,25 +204,92 @@ body {
     flex-wrap: wrap;
 }
 
-.drink-card {
-    background-color: white;
-    padding: 30px 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+.drinks-menu h2 {
+    font-size: 40px;
     font-weight: bold;
-    font-size: 18px;
-    color: #5C3D2E;
-    min-width: 180px;
+    margin-bottom: 40px;
+    color: #9CAF6C;
+    text-align: center;
 }
 
-.new-badge {
-    background-color: #9CAF6C;
-    color: white;
-    font-size: 12px;
-    padding: 3px 8px;
-    border-radius: 20px;
-    margin-left: 10px;
+/*motto*/
+.motto {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px 20px;
 }
+
+.motto h3 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #9CAF6C;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.motto p {
+    font-size: 25px;
+    color: #5C3D2E;
+    font-style: italic;
+    margin: 0;
+}
+
+/* our story */
+.story-section {
+    background-color: #e8f0e0;  
+    padding: 80px 20px;
+}
+
+.story-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.story-content {
+    flex: 1;
+}
+
+.story-content h2 {
+    font-size: 45px;
+    color: #5C3D2E;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.story-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #9CAF6C;
+}
+
+.story-content p {
+    font-size: 23px;
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.story-ending {
+    font-size: 18px;
+    color: #9CAF6C;
+    font-style: italic;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #d0e0c0;
+}
+
+.story-ending strong {
+    color: #5C3D2E;
+}
+
 /*=======*/
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
