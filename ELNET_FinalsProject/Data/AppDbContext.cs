@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using ELNET_FinalsProject.Models;
 
 namespace ELNET_FinalsProject.Data

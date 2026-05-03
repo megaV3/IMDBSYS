@@ -1,0 +1,28 @@
+﻿@model List<ELNET_FinalsProject.Models.OrderItem>
+
+<h2>Your Basket</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Menu</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Menu?.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>@item.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Checkout" class="btn btn-success">Checkout</a>

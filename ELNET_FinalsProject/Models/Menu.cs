@@ -4,13 +4,15 @@ namespace ELNET_FinalsProject.Models
 {
     public class Menu
     {
-        public long? MenuID { get; set; }
-        public string Name { get; set; } = String.Empty;
-        public string Category { get; set; } = String.Empty; 
+        public int MenuId { get; set; }
 
-        [Column(TypeName = "decimal(B, 2)")]
+        public string Name { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+
+        [Column(TypeName = "decimal(8,2)")]
         public decimal Price { get; set; }
-        public string Description { get; set; } = String.Empty;
+
+        public string Description { get; set; } = string.Empty;
         public bool CanBeHot { get; set; }
         public bool CanBeCold { get; set; }
 
