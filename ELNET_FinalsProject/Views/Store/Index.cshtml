@@ -11,7 +11,7 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Store" asp-action="OrderMenu" class="nav-icon">
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
             🛒
         </a>
 
@@ -196,8 +196,9 @@
                 <h5 class="card-title">Kape Kastila</h5>
                 <p class="card-text">Leche condensada with creamy milk and espresso.</p>
                 <p class="card-subtitle">PHP 75</p>
-                <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                    <button class="btn-cart">Add to Cart 🛒</button>
+                <form asp-controller="Order" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="menuId" value="1" />
+                    <button type="submit" class="btn-cart">Add to Basket 🛒</button>
                 </form>
             </div>
         </div>
