@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html {
     font-size: 14px;
     position: relative;
@@ -14,8 +20,10 @@ body {
     margin: 0;
     margin-bottom: 0;
     font-family: Arial, sans-serif;
+    overflow-x: hidden;
     /*background-color: darkolivegreen;*/
 }
+
 
 /* transparent backgrounds on layout containers */
 .container, main, .container-fluid {
@@ -25,11 +33,14 @@ body {
     max-width: 100% !important;
 }
 
-/*<<<<<<< HEAD*/
 /* top section */
 .top-section {
     background-color: #9CAF6C;
-    padding-bottom: 20px;
+    padding-bottom: 80px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 /* bottom section */
@@ -53,16 +64,13 @@ body {
 .logo {
     color: white;
     font-weight: bold;
-    font-size: 30px;
-    margin-right: 0;  
+    font-size: 30px; 
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 25px;
-    margin-right: 0;  
-    padding-right: 0;  
+    gap: 25px; 
 }
 
 /* navbar */
@@ -76,38 +84,42 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 60px;
+    padding: 80px 40px;
     max-width: 1200px;
     margin: 0 auto;
+    gap: 60px;
 }
 
 .hero-text {
     color: white;
-    max-width: 500px;
+    /* max-width: 500px; */
+    flex: 1.2;
 }
 
 .hero-text h1 {
-    font-size: 80px;
+    font-size: 5.7rem;
+    line-height: 1.05;
     margin-bottom: 20px;
     font-weight: 900; 
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);  
 }
 
 .hero-text p {
-    font-size: 30px;
+    font-size: 2.1rem;
     font-weight: 500;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2); 
 }
 
-.hero-image img {
+/* .hero-image img {
     width: 500px;
     border-radius: 20px;
-}
+} */
 
 /* carousel */
 .hero-image {
-    width: 500px;
-    flex-shrink: 0;
+    flex: 1;
+    max-width: 500px;
+    width: 100%;
 }
 
 .carousel {
@@ -145,6 +157,7 @@ body {
     padding: 30px 20px;
     border-radius: 15px;
     /*box-shadow: 0 4px 15px rgba(0,0,0,0.1);*/
+    margin: 0 auto;
     min-width: 300px;
     max-width: 300px;
     text-align: center;
@@ -205,7 +218,7 @@ body {
 }
 
 .drinks-menu h2 {
-    font-size: 40px;
+    font-size: 2.8rem;
     font-weight: bold;
     margin-bottom: 40px;
     color: #9CAF6C;
@@ -220,7 +233,7 @@ body {
 }
 
 .motto h3 {
-    font-size: 30px;
+    font-size: 2.1rem;
     font-weight: bold;
     color: #9CAF6C;
     margin-bottom: 8px;
@@ -228,7 +241,7 @@ body {
 }
 
 .motto p {
-    font-size: 25px;
+    font-size: 1.8rem;
     color: #5C3D2E;
     font-style: italic;
     margin: 0;
@@ -253,7 +266,7 @@ body {
 }
 
 .story-content h2 {
-    font-size: 45px;
+    font-size: 3.2rem;
     color: #5C3D2E;
     margin-bottom: 25px;
     position: relative;
@@ -270,7 +283,7 @@ body {
 }
 
 .story-content p {
-    font-size: 23px;
+    font-size: 1.6rem;
     color: #444;
     line-height: 1.8;
     margin-bottom: 20px;
@@ -290,7 +303,6 @@ body {
     color: #5C3D2E;
 }
 
-/*=======*/
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
@@ -311,10 +323,10 @@ body {
     100% {
         transform: translateY(0px);
     }
-/*>>>>>>> ae59bbfd5ba92a8225edc7672d2fda36d94406aa*/
 }
 
 .header {
+    text-align: center;
     margin-top: 20px;
 }
 
@@ -344,10 +356,10 @@ body {
     }
 
 
-.header {
+/* .header {
     text-align: center;
     margin-top: 20px;
-}
+} */
 
 .menu-header h1 {
     text-align: center;
@@ -389,3 +401,457 @@ body {
     .btn-cart:hover {
         background-color: #4b2e2b;
     }
+
+/* media queries */
+.hero-wrapper {
+    width: 100%;
+}
+
+/* ===== TABLET (max 1024px) ===== */
+@media (max-width: 1024px) {
+    .hero {
+        gap: 40px;
+        padding: 40px;
+    }
+
+    .hero-text h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-text p {
+        font-size: 1.5rem;
+    }
+
+    .story-container {
+        gap: 40px;
+    }
+
+    .drinks-menu h2 {
+        font-size: 2rem;
+    }
+}
+
+/* ===== MOBILE (max 768px) ===== */
+@media (max-width: 768px) {
+
+    /* NAVBAR */
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 15px;
+    }
+
+    /* HERO */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 25px;
+    }
+
+    .hero-text h1 {
+        font-size: 2.4rem;
+    }
+
+    .hero-text p {
+        font-size: 1.1rem;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* BOTTOM SECTION */
+    .bottom-section {
+        padding: 40px 10px;
+    }
+
+    .drinks-menu h2 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+
+    .drinks-grid {
+        gap: 20px;
+    }
+
+    .drink-card {
+        max-width: 85%;
+        min-width: unset;
+        width: 100%;
+        padding: 20px 15px;
+    }
+
+    .drink-image {
+        width: 160px;
+        height: 160px;
+    }
+
+    .drink-card h3 {
+        font-size: 16px;
+    }
+
+    /* MOTTO */
+    .motto h3 {
+        font-size: 1.4rem;
+    }
+
+    .motto p {
+        font-size: 1.2rem;
+    }
+
+    /* STORY SECTION */
+    .story-section {
+        padding: 50px 20px;
+    }
+
+    .story-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+    }
+
+    .story-content h2 {
+        font-size: 2rem;
+    }
+
+    .story-content h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .story-content p {
+        font-size: 1rem;
+    }
+
+    .story-ending {
+        font-size: 1rem;
+    }
+}
+
+/* ===== LARGE PHONES (max 480px) e.g. iPhone Pro Max, Samsung Ultra ===== */
+@media (max-width: 480px) {
+
+    /* NAVBAR */
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    /* HERO */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+        gap: 20px;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+
+    .hero-text p {
+        font-size: 1rem;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* BOTTOM SECTION */
+    .bottom-section {
+        padding: 35px 10px;
+    }
+
+    .drinks-menu h2 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .drinks-grid {
+        gap: 18px;
+    }
+
+    .drink-card {
+        max-width: 88%;
+        min-width: unset;
+        width: 100%;
+        padding: 18px 14px;
+    }
+
+    .drink-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    .drink-card h3 {
+        font-size: 15px;
+    }
+
+    /* MOTTO */
+    .motto h3 {
+        font-size: 1.3rem;
+    }
+
+    .motto p {
+        font-size: 1.1rem;
+    }
+
+    /* STORY SECTION */
+    .story-section {
+        padding: 45px 18px;
+    }
+
+    .story-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .story-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .story-content h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .story-content p {
+        font-size: 0.95rem;
+    }
+
+    .story-ending {
+        font-size: 0.95rem;
+    }
+}
+
+/* ===== MEDIUM PHONES (max 414px) e.g. iPhone 14, Samsung S23 ===== */
+@media (max-width: 414px) {
+
+    /* NAVBAR */
+    .navbar {
+        padding: 12px 16px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    /* HERO */
+    .hero {
+        padding: 20px 16px;
+        gap: 18px;
+    }
+
+    .hero-text h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero-text p {
+        font-size: 0.95rem;
+    }
+
+    /* BOTTOM SECTION */
+    .bottom-section {
+        padding: 30px 10px;
+    }
+
+    .drinks-menu h2 {
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+    }
+
+    .drinks-grid {
+        gap: 15px;
+    }
+
+    .drink-card {
+        max-width: 90%;
+        padding: 16px 12px;
+    }
+
+    .drink-image {
+        width: 135px;
+        height: 135px;
+    }
+
+    .drink-card h3 {
+        font-size: 14px;
+    }
+
+    /* MOTTO */
+    .motto {
+        margin-top: 25px;
+        padding: 20px 15px;
+    }
+
+    .motto h3 {
+        font-size: 1.1rem;
+    }
+
+    .motto p {
+        font-size: 1rem;
+    }
+
+    /* STORY SECTION */
+    .story-section {
+        padding: 40px 15px;
+    }
+
+    .story-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .story-content p {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    .story-ending {
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== SMALL PHONES (max 360px) e.g. iPhone SE, Samsung A series ===== */
+@media (max-width: 360px) {
+
+    /* NAVBAR */
+    .navbar {
+        padding: 10px 12px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    .nav-links {
+        gap: 8px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    /* HERO */
+    .hero {
+        padding: 18px 12px;
+        gap: 15px;
+    }
+
+    .hero-text h1 {
+        font-size: 1.4rem;
+    }
+
+    .hero-text p {
+        font-size: 0.85rem;
+    }
+
+    /* BOTTOM SECTION */
+    .bottom-section {
+        padding: 25px 8px;
+    }
+
+    .drinks-menu h2 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .drinks-grid {
+        gap: 12px;
+    }
+
+    .drink-card {
+        max-width: 95%;
+        padding: 14px 10px;
+    }
+
+    .drink-image {
+        width: 115px;
+        height: 115px;
+    }
+
+    .drink-card h3 {
+        font-size: 13px;
+    }
+
+    /* MOTTO */
+    .motto {
+        margin-top: 20px;
+        padding: 15px 10px;
+    }
+
+    .motto h3 {
+        font-size: 1rem;
+    }
+
+    .motto p {
+        font-size: 0.9rem;
+    }
+
+    /* STORY SECTION */
+    .story-section {
+        padding: 35px 12px;
+    }
+
+    .story-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .story-content p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+
+    .story-ending {
+        font-size: 0.85rem;
+    }
+}
