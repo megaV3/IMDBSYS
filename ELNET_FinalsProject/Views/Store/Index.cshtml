@@ -244,9 +244,10 @@
                             <p class="card-subtitle">
                                 PHP @item.Price.ToString("0")
                             </p>
-                            <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                                <button class="btn-cart">Add to Cart 🛒</button>
-                            </form>
+                        <form asp-controller="Order" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="menuId" value="1" />
+                            <button type="submit" class="btn-cart">Add to Basket 🛒</button>
+                        </form>
                         </div>
 
                     </div>
