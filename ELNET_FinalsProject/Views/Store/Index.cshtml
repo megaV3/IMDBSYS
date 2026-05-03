@@ -189,7 +189,7 @@
 
     <div class="row-fluid">
 
-        <!-- ITEM -->
+        @* <!-- ITEM -->
         <div class="card">
             <img src="~/images/kape kastila.png" />
             <div class="card-body">
@@ -226,7 +226,33 @@
                     <button class="btn-cart">Add to Cart 🛒</button>
                 </form>
             </div>
-        </div>
+        </div> *@
+        @foreach (var item in Model.Menus)
+        {
+            @if (item.Category == "Signatures")
+            {
+                @* <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;"> *@
+                    <div class="card">
+
+                        <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover" />
+
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Description</p>
+
+                            <p class="card-subtitle">
+                                PHP @item.Price.ToString("0")
+                            </p>
+                            <form asp-controller="Store" asp-action="OrderMenu" method="post">
+                                <button class="btn-cart">Add to Cart 🛒</button>
+                            </form>
+                        </div>
+
+                    </div>
+                @* </div> *@
+            
+            }
+        }
 
     </div>
 
