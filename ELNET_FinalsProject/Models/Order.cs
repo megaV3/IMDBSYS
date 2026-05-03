@@ -5,13 +5,14 @@ namespace ELNET_FinalsProject.Models
 {
     public class Order
     {
-        public int OrderID { get; set; } // ID for each order 
+        public int OrderId { get; set; } // ID for each order 
+        public DateTime OrderDate { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         public string CustomerName { get; set; } = string.Empty;
         [Required(ErrorMessage = "Order date is required")]
 
-        public DateTime OrderDate { get; set; }
         [Column(TypeName = "decimal(8, 2)")]
 
         public decimal TotalAmount { get; set; }
