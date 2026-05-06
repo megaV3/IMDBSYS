@@ -7,7 +7,7 @@
     var total = subtotal + tax;
 }
 
-<div class="navbar">
+<div class ="navbar">
 
     <div class="nav-left">
         <h2>PICKOUT COFFEE</h2>
@@ -18,10 +18,9 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
             🛒
-        </a>
-
+        </a> 
         <a href="#" class="nav-icon" onclick="openProfile(); return false;">
             👤
         </a>
@@ -29,28 +28,50 @@
 
 </div>
 <style>
-    body {
-        background-color: #9CAF6C;
-        font-family: Arial, sans-serif;
-    }
-
     .navbar {
         display: flex;
         justify-content: space-between;
-
+        position: sticky; /*sticks to one place whenever you scroll*/
+        top: 0;           /*sticks at the top*/
+        z-index: 100;     /*ensures that it stays above other content*/
+        background-color: #f5f5f5;
+        
         padding: 10px 30px;
         color: #9caf6c;
     }
 
     .nav-center {
-        color: #f5f5f5;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
     }
 
+    .nav-link {
+        text-decoration: none;
+        color: #9caf6c;
+        padding: 5px 20px;
+        border-radius: 30px;
+        transition: 0.3s ease;
+    }
+
+    .nav-link:hover {
+        background: #9caf6c;
+        text-decoration: none;
+        padding: 5px 30px;
+        color: white;
+    }
+
+    .nav-link.active {
+        border: 2px solid #9caf6c;
+    }
+
+    .active-cart {
+        background: #9caf6c;
+        border: 2px solid #9caf6c;
+        transition: 0.3s ease;
+    }
+
     .nav-left h2 {
-        color: #f5f5f5;
         margin: 0;
         font-weight: bold;
         font-size: 25px;
@@ -64,20 +85,21 @@
     .nav-icon {
         text-decoration: none;
         font-size: 25px;
-
-        display:inline-flex;
+        /* These 3 lines center the 🛒 perfectly */
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
-
+        /* This is the secret: it keeps the bubble relative to the icon */
+        position: relative;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         transition: 0.3s ease;
     }
 
     .nav-icon:hover {
-        text-decoration: none;
-        background: #9caf6c;
+         text-decoration: none;
+         background: #9caf6c;
     }
 
     .cart-container {
@@ -92,7 +114,7 @@
     }
 
     .cart-title {
-        color: white;
+        color: #9caf6c;
         margin-bottom: 20px;
     }
 
@@ -106,7 +128,7 @@
     }
 
     .cart-card {
-        background: white;
+        background: #9caf6c;
         border-radius: 30px;
         padding: 15px;
         margin-bottom: 15px;
@@ -158,7 +180,7 @@
     }
 
     .summary {
-        background: rgba(255,255,255,0.2);
+        background: #9caf6c;      
         border-radius: 40px;
         padding: 20px;
         color: white;
@@ -177,7 +199,7 @@
     .summary-row {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
     }
 
     .total-row{

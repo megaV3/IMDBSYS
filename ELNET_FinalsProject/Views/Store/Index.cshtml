@@ -20,7 +20,7 @@
                     top: 0;
                     right: 0;
                     font-size: 10px;
-                    background: red;
+                    background: #3e4e2c;
                     color: white;
                     border-radius: 50%;
                     padding: 2px 5px;
@@ -55,6 +55,24 @@
         transform: translateX(-50%);
     }
 
+    .nav-link {
+        text-decoration: none;
+        background-color: #9caf6c;
+        color: white;
+        padding: 5px 20px;
+        border-radius: 30px;
+        transition: 0.3s ease;
+    }
+
+    .nav-link:hover {
+        text-decoration: none;
+        padding: 5px 30px;
+        color: white;
+    }
+
+    .nav-link.active {
+        border: 2px solid #9caf6c;
+    }
 
     .nav-left h2 {
         margin: 0;
@@ -66,20 +84,6 @@
         display: flex;
         gap: 20px;
     }
-
-    /* .nav-icon {
-        text-decoration: none;
-        font-size: 25px;
-
-        display:inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-
-        border-radius: 50%;
-        transition: 0.3s ease;
-    } */
 
     .nav-icon {
         text-decoration: none;
@@ -96,16 +100,11 @@
         transition: 0.3s ease;
     }
 
-        .nav-icon:hover {
-            text-decoration: none;
-            background: #9caf6c;
-            color: white; /* Optional: makes the cart white on hover */
-        }
-
     .nav-icon:hover {
-        text-decoration: none;
-        background: #9caf6c;
+         text-decoration: none;
+         background: #9caf6c;
     }
+
 
     body {
         background-color: #f5f5f5;
@@ -158,7 +157,7 @@
     }
 
     .card {
-        width: 350px;
+        width: 270px;
         padding: 15px;
         border-radius: 15px;
         background: white;
