@@ -361,5 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/ELNET_FinalsProject/Models/Order.cs
-/ELNET_FinalsProject/Models/Menu.cs
