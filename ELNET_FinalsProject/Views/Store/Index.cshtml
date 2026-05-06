@@ -246,7 +246,7 @@
                                 PHP @item.Price.ToString("0")
                             </p>
                         <form asp-controller="Order" asp-action="AddToCart" method="post">
-                            <input type="hidden" name="menuId" value="1" />
+                            <input type="hidden" name="menuId" value="@item.MenuId" />
                             <button type="submit" class="btn-cart">Add to Basket 🛒</button>
                         </form>
                         </div>
