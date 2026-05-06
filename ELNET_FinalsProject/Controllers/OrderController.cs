@@ -82,7 +82,8 @@ namespace ELNET_FinalsProject.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Cart");
+            //return RedirectToAction("Index","Store");
+            return Ok();
         }
 
         // UPDATE QUANTITY

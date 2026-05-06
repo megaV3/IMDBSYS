@@ -11,8 +11,23 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
+        @* <a asp-controller="Order" asp-action="Cart" class="nav-icon">
             🛒
+        </a> *@
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
+            🛒 <span id="cart-count" style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    font-size: 10px;
+                    background: red;
+                    color: white;
+                    border-radius: 50%;
+                    padding: 2px 5px;
+                    line-height: 1;
+                    transform: translate(25%, -25%);">
+                0
+            </span> 
         </a>
 
         <a href="#" class="nav-icon" onclick="openProfile(); return false;">
@@ -25,7 +40,11 @@
     .navbar {
         display: flex;
         justify-content: space-between;
-
+        position: sticky; /*sticks to one place whenever you scroll*/
+        top: 0;           /*sticks at the top*/
+        z-index: 100;     /*ensures that it stays above other content*/
+        background-color: #f5f5f5;
+        
         padding: 10px 30px;
         color: #9caf6c;
     }
@@ -48,7 +67,7 @@
         gap: 20px;
     }
 
-    .nav-icon {
+    /* .nav-icon {
         text-decoration: none;
         font-size: 25px;
 
@@ -60,7 +79,28 @@
 
         border-radius: 50%;
         transition: 0.3s ease;
+    } */
+
+    .nav-icon {
+        text-decoration: none;
+        font-size: 25px;
+        /* These 3 lines center the 🛒 perfectly */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        /* This is the secret: it keeps the bubble relative to the icon */
+        position: relative;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        transition: 0.3s ease;
     }
+
+        .nav-icon:hover {
+            text-decoration: none;
+            background: #9caf6c;
+            color: white; /* Optional: makes the cart white on hover */
+        }
 
     .nav-icon:hover {
         text-decoration: none;
@@ -245,9 +285,9 @@
                             <p class="card-subtitle">
                                 PHP @item.Price.ToString("0")
                             </p>
-                        <form asp-controller="Order" asp-action="AddToCart" method="post">
+                        <form asp-controller="Order" asp-action="AddToCart" method="post" target="hidden_iframe">
                             <input type="hidden" name="menuId" value="@item.MenuId" />
-                            <button type="submit" class="btn-cart">Add to Basket 🛒</button>
+                            <button type="submit" class="btn-cart" onclick="updateCartCount()">Add to Basket 🛒</button>
                         </form>
                         </div>
 
@@ -561,3 +601,20 @@
         });
     }
 </script>
+
+<script>
+    function updateCartCount() {
+        // 1. Find the span element by its ID
+        var countElement = document.getElementById('cart-count');
+
+        // 2. Get the current number inside it
+        var currentCount = parseInt(countElement.innerText);
+
+        // 3. Add 1 and put it back
+        countElement.innerText = currentCount + 1;
+    }
+</script>
+
+
+<!-- This is an invisible box that will catch the "Redirect" so your page doesn't move -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
