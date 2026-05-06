@@ -21,7 +21,7 @@
         <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
             🛒
         </a> 
-        <a href="#" class="nav-icon" onclick="openProfile(); return false;">
+        <a asp-controller="Identity" asp-action="Profile" class="nav-icon">
             👤
         </a>
     </div>
@@ -110,7 +110,12 @@
 
     .cart-title h1 {
         font-weight: bold;
-        margin-bottom: 5px;
+        font-size: 65px;
+        margin-bottom: 1px;
+    }
+
+    .cart-title p {
+        font-size: 20px;
     }
 
     .cart-title {
@@ -152,10 +157,11 @@
     .item-name {
         font-size: 20px;
         font-weight: bold;
+        color: white;
     }
 
     .item-price {
-        color: #5C3D2E;
+        color: white;
         margin-top: 5px;
     }
 
@@ -259,8 +265,8 @@
     }
 
     .empty-cart {
-        background: rgba(255,255,255,0.2);
-        padding: 50px 30px;
+        background: #9CAF6C;
+        padding: 50px;
         border-radius: 25px;
         text-align: center;
         color: white;
