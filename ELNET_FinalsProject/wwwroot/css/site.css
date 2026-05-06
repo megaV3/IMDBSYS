@@ -325,20 +325,6 @@ body {
     }
 }
 
-.header {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.menu-header {
-    text-align:center;
-    margin-top:20px;
-}
-
-    .menu-header h1 {
-        font-weight:700
-    }
-
 .signatures-header {
     text-align:center;
 }

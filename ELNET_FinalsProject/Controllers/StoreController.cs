@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ELNET_FinalsProject.Data;
+using ELNET_FinalsProject.Models;
+using ELNET_FinalsProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ELNET_FinalsProject.Data;
 using System.Security.Claims;
-using ELNET_FinalsProject.ViewModels;
 
 namespace ELNET_FinalsProject.Controllers
 {
@@ -23,10 +24,19 @@ namespace ELNET_FinalsProject.Controllers
             var userProfile = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
 
+            // 2. Calculate Cart Count from the database
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.UserId == int.Parse(userId) && !o.IsCompleted);
+
+            // Sum up the quantities of all items in the cart
+            int count = order?.OrderItems.Sum(oi => oi.Quantity) ?? 0;
+            
             StoreViewModel viewModel = new StoreViewModel
             {
                 UserProfile = userProfile,
-                Menus = await _context.Menus.ToListAsync() // Fetch all menu items from the database
+                Menus = await _context.Menus.ToListAsync(), // Fetch all menu items from the database
+                CartCount = count // Pass the count here
             };
 
             // 3. Pass the data to the View

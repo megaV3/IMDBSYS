@@ -19,3 +19,4 @@ namespace ELNET_FinalsProject.Models
         public string? ImagePath { get; set; }
     }
 }
+

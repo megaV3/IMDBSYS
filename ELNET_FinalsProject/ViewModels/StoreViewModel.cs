@@ -6,5 +6,7 @@ namespace ELNET_FinalsProject.ViewModels
     {
         public User UserProfile { get; set; } = new User();
         public List<Menu> Menus { get; set; } = new List<Menu>();
+
+        public int CartCount { get; set; }
     }
 }
