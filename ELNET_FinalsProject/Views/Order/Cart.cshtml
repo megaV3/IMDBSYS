@@ -503,11 +503,36 @@
                             </div>
 
                             <div class="qty-group">
+                                <form asp-controller="Order" method="post" class="qty-group">
+                                    <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                                    <button type="submit" class="qty-btn" formaction="Decrease">
+                                        &#8722;
+                                    </button>
+                                    <span class="qty-val">@item.Quantity</span>
+                                    <button type="submit" class="qty-btn" formaction="Increase">
+                                        &#43;
+                                    </button>
+                                    <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                                    <button type="submit" class="delete-btn" formaction="Remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6" />
+                                            <path d="M19 6l-1 14H6L5 6" />
+                                            <path d="M10 11v6M14 11v6" />
+                                            <path d="M9 6V4h6v2" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                @*
                                 <a asp-action="Decrease" asp-route-id="@item.OrderItemId"
                                    class="qty-btn">&#8722;</a>
                                 <span class="qty-val">@item.Quantity</span>
                                 <a asp-action="Increase" asp-route-id="@item.OrderItemId"
                                    class="qty-btn">&#43;</a>
+                                *@
+                                   
+                                @*
                                 <a asp-action="Remove" asp-route-id="@item.OrderItemId"
                                    class="delete-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -519,6 +544,7 @@
                                         <path d="M9 6V4h6v2" />
                                     </svg>
                                 </a>
+                                *@
                             </div>
 
                         </div>
