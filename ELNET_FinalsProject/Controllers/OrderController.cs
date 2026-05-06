@@ -60,12 +60,11 @@ namespace ELNET_FinalsProject.Controllers
             var existingItem = await _context.OrderItems
                 .FirstOrDefaultAsync(oi => oi.OrderId == order.OrderId && oi.MenuId == menuId);
 
-            if (existingItem != null)
-
+            if (existingItem != null) //checks if the item already exists in the cart then increments quantity
             {
                 existingItem.Quantity++;
             }
-            else
+            else //else, the item is created
             {
                 var menu = await _context.Menus.FindAsync(menuId);
 
@@ -102,9 +101,18 @@ namespace ELNET_FinalsProject.Controllers
         }
 
         // REMOVE ITEM
+        [HttpPost]
         public async Task<IActionResult> Remove(int orderItemId)
         {
-            var item = await _context.OrderItems.FindAsync(orderItemId);
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+
+            int userId = int.Parse(userIdString);
+
+            var item = await _context.OrderItems
+                .Include(oi => oi.Order)
+                .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
 
             if (item != null)
             {
@@ -114,21 +122,84 @@ namespace ELNET_FinalsProject.Controllers
 
             return RedirectToAction("Cart");
         }
+        // INCREASE ITEM'S QTY.
+        [HttpPost]
+        public async Task<IActionResult> Increase(int orderItemId)
+        {
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+
+            int userId = int.Parse(userIdString);
+
+            // fetches the item added to the cart
+            var item = await _context.OrderItems 
+                .Include(oi => oi.Order)
+                .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
+
+            if (item != null)
+            {
+                item.Quantity++;
+                _context.OrderItems.Update(item);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Cart");
+        }
+
+        // DECREASE ITEM'S QTY.
+        [HttpPost]
+        public async Task<IActionResult> Decrease(int orderItemId)
+        {
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+
+            int userId = int.Parse(userIdString);
+
+            var item = await _context.OrderItems
+                .Include(oi => oi.Order)
+                .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
+
+            if (item != null)
+            {
+                item.Quantity--;
+                _context.OrderItems.Update(item);
+
+                if (item.Quantity == 0) //removes the item if the quantity reaches 0
+                {
+                    _context.OrderItems.Remove(item);
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Cart");
+        }
 
         // CHECKOUT
         public async Task<IActionResult> Checkout()
         {
+            // fetches the ID of user logged in
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
+            // fetches items placed in the cart
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
+
+            // fetches full name of customer making the order
+            var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            // fetches total amount of the items in the cart
+            var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
             if (order == null)
                 return RedirectToAction("Cart");
 
             order.IsCompleted = true;
             order.OrderDate = DateTime.Now;
+            order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
+            order.TotalAmount = totalAmount;
 
             await _context.SaveChangesAsync();
 
@@ -149,5 +220,6 @@ namespace ELNET_FinalsProject.Controllers
             return View(order);
         }
        
+
     }
 }

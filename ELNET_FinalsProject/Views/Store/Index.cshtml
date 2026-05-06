@@ -530,8 +530,14 @@
                     Save Changes
                 </button>
             </form>
-
-            <a href="/Identity/Logout" style="color:#c0392b; font-size:13px; text-decoration:none;">Sign Out</a>
+            <form asp-controller="Identity" asp-action="Logout" method="post" id="logoutForm">
+                <button type="submit" style="background:none; border:none; color:#c0392b; font-size:13px; text-decoration:none; cursor:pointer; padding:0;">
+                    Sign Out
+                </button>
+            </form>
+            @*
+                <a href="/Identity/Logout" style="color:#c0392b; font-size:13px; text-decoration:none;">Sign Out</a>
+            *@
         </div>
     </div>
 </div>
