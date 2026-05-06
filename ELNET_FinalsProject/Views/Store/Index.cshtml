@@ -226,7 +226,7 @@
     <h5>Enjoy your shopping experience, <b>@User.Identity.Name!</b></h5>
 </div>
 
-<div class="menu">
+<div class="menu pb-5">
 
     <div class="menu-header big-title">
         <h1>OUR MENU</h1>
@@ -306,247 +306,75 @@
         }
 
     </div>
-
+    
     <div class="espresso-header">
         <h2 class="mt-5">⋆.𐙚 ̊  ESPRESSO-BASED ̊  𐙚.⋆</h2>
     </div>
 
     <div class="row-fluid">
-
-        <div class="card">
-            <img src="~/images/cappuccino.png" />
-            <div class="card-body">
-                <h5 class="card-title">Cappuccino</h5>
-                <p class="card-text">Rich espresso with milk and foam.</p>
-                <p class="card-subtitle">PHP 75</p>
-                <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                    <button class="btn-cart">Add to Cart 🛒</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="~/images/iced brown sugar latte.png" />
-            <div class="card-body">
-                <h5 class="card-title">Iced Brown Sugar Latte</h5>
-                <p class="card-text">Espresso with milk and brown sugar.</p>
-                <p class="card-subtitle">PHP 79</p>
-                <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                    <button class="btn-cart">Add to Cart 🛒</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="~/images/sea salt biscoff latte.png" />
-            <div class="card-body">
-                <h5 class="card-title">Sea Salt Biscoff Latte</h5>
-                <p class="card-text">Espresso with milk and biscoff.</p>
-                <p class="card-subtitle">PHP 115</p>
-                <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                    <button class="btn-cart">Add to Cart 🛒</button>
-                </form>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-<div>
-    <div class="row-fluid">
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/iced sea salt latte.png" alt="iced sea salt latte" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Iced Sea Salt Latte</h5>
-                    <p class="card-text">Rich espresso with creamy milk, <br /> topped with sea salt milk foam.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 89</p>
-                </div>
-            </div>
-        </div>
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/vietnamese latte.png" alt="vietnamese latte" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Vietnamese Latte</h5>
-                    <p class="card-text">A strong blend of rich espresso with <br /> leche condensada.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 79</p>
-                </div>
-            </div>
-        </div>
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/iced vanilla latte.png" alt="iced vanilla latte" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Iced Vanilla Latte</h5>
-                    <p class="card-text">A velvety blend of creamy vanilla with <br /> milk and rich espresso, also available hot.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 85</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/americano.png" alt="americano" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Americano</h5>
-                    <p class="card-text">Rich espresso with water. Also <br /> available hot.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 50</p>
-                </div>
-            </div>
-        </div>
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/iced dark chocolate latte.png" alt="iced dark chocolate latte" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Iced Dark Chocolate Latte</h5>
-                    <p class="card-text">Dark chocolate with creamy milk and <br /> rich espresso, also available hot.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 85</p>
-                </div>
-            </div>
-        </div>
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/flat white.png" alt="flat white" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Flat White</h5>
-                    <p class="card-text">Rich espresso with hot steamed milk.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 75</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/iced latte.png" alt="iced latte" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Iced Latte</h5>
-                    <p class="card-text">Rich espresso with creamy milk. Also <br /> available hot.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 75</p>
-                </div>
-            </div>
-        </div>
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/espresso.png" alt="espresso" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Espresso</h5>
-                    <p class="card-text">A double shot of rich espresso.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 30</p>
-                </div>
-            </div>
-        </div>
-        <div class="span4 mt-5">
-            <div class="card" style="border:1px solid black; display:flex; align-items:center;">
-                <img src="~/images/iced hazelnut latte.png" alt="iced hazelnut latte" style="height:300px; width:300px; object-fit:cover" />
-                <div class="card-body" style="text-align: center;">
-                    <h5 class="card-title" style="text-transform:uppercase;">Iced Hazelnut Latte</h5>
-                    <p class="card-text">Rich espresso with creamy milk and <br /> Nutella. Also available hot.</p>
-                    <p class="card-subtitle" style="font-weight:bold;">PHP 95</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--
-    Testing foreach on Menu Items
-    -->
-    <h1>Testing foreach on Menu Items</h1>
-    <div class="d-flex justify-content-center flex-wrap" style="gap: 20px;">
+        
         @foreach (var item in Model.Menus)
         {
             @if (item.Category == "Espresso-based")
             {
-                <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;">
-                    <div class="card" style="border:1px solid black; display:flex; flex-direction:column; align-items:center; height: 450px; padding-bottom: 20px;">
-        
+                @* <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;"> *@
+                    <div class="card">
+
                         <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover" />
-        
-                        <div class="card-body" style="text-align: center; display:flex; flex-direction:column; flex-grow:1; width: 100%; padding: 0 15px;">
-                            <h5 class="card-title" style="text-transform:uppercase;">@item.Name</h5>
+
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
                             <p class="card-text">@item.Description</p>
-            
-                            <p class="card-subtitle" style="font-weight:bold; margin-top:auto;">
+
+                            <p class="card-subtitle">
                                 PHP @item.Price.ToString("0")
                             </p>
+                        <form asp-controller="Order" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="menuId" value="@item.MenuId" />
+                            <button type="submit" class="btn-cart">Add to Basket 🛒</button>
+                        </form>
                         </div>
 
                     </div>
-                </div>
+                @* </div> *@
+            
             }
         }
     </div>
-    <!-- Profile Modal Overlay -->
-    <div id="profileModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
-        <div style="background:white; border-radius:22px; padding:36px 40px 32px; width:100%; max-width:440px; display:flex; flex-direction:column; align-items:center; position:relative;">
 
-            <!-- Close button -->
-            <button onclick="closeProfile()" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:20px; cursor:pointer; color:#7a7a6a;">✕</button>
+    <div class="espresso-header">
+        <h2 class="mt-5">⋆.𐙚 ̊  PISTACHIO ̊  𐙚.⋆</h2>
+    </div>
 
-            <!-- Avatar -->
-            <div style="position:relative; margin-bottom:16px;">
-                <div id="avatarDisplay" style="width:84px; height:84px; border-radius:50%; border:3px solid #9aad78; background:#2d3e4f; color:white; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:600; overflow:hidden;">
-                    <span id="avatarInitials"></span>
-                    <img id="avatarImg" src="" style="display:none; width:100%; height:100%; object-fit:cover;" />
-                </div>
-                <button type="button" onclick="document.getElementById('imageUpload').click()"
-                        style="position:absolute; bottom:2px; right:2px; width:26px; height:26px; border-radius:50%; background:#5a6b40; border:2px solid white; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                        <circle cx="12" cy="13" r="4" />
-                    </svg>
-                </button>
-            </div>
+    <div class="row-fluid">
+        
+        @foreach (var item in Model.Menus)
+        {
+            @if (item.Category == "Pistachio")
+            {
+                @* <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;"> *@
+                <div class="card">
 
-            <p style="color:#5a6b40; font-size:16px; font-weight:600; margin-bottom:4px;">Your Profile</p>
-            <p style="color:#7a7a6a; font-size:12px; margin-bottom:20px; text-align:center;">Update your details for a personalized brew experience.</p>
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover" />
 
-            <div id="successMsg" style="display:none; background:#eaf3de; color:#3b6d11; border-radius:10px; padding:8px 16px; font-size:13px; margin-bottom:14px; width:100%; text-align:center;"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
 
-            <form id="profileForm" method="post" enctype="multipart/form-data" style="width:100%;">
-                @Html.AntiForgeryToken()
-                <input type="file" id="imageUpload" name="ProfileImage" accept="image/*" style="display:none" onchange="previewImage(this)" />
-
-                <div style="margin-bottom:14px;">
-                    <label style="font-size:10px; letter-spacing:0.1em; color:#7a7a6a; font-weight:700; display:block; margin-bottom:5px; text-transform:uppercase;">First Name</label>
-                    <div style="position:relative;">
-                        <input id="inputFirstName" name="FirstName" type="text" style="width:100%; background:#f6f8f2; border:1.5px solid #c8d4b0; border-radius:50px; padding:11px 42px 11px 18px; font-size:14px; outline:none;" />
-                        <span style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#9a9a8a;">✏️</span>
+                        <p class="card-subtitle">
+                            PHP @item.Price.ToString("0")
+                        </p>
+                        <form asp-controller="Order" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="menuId" value="@item.MenuId" />
+                            <button type="submit" class="btn-cart">Add to Basket 🛒</button>
+                        </form>
                     </div>
-                </div>
 
-                <div style="margin-bottom:14px;">
-                    <label style="font-size:10px; letter-spacing:0.1em; color:#7a7a6a; font-weight:700; display:block; margin-bottom:5px; text-transform:uppercase;">Last Name</label>
-                    <div style="position:relative;">
-                        <input id="inputLastName" name="LastName" type="text" style="width:100%; background:#f6f8f2; border:1.5px solid #c8d4b0; border-radius:50px; padding:11px 42px 11px 18px; font-size:14px; outline:none;" />
-                        <span style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#9a9a8a;">✏️</span>
-                    </div>
                 </div>
-
-                <div style="margin-bottom:20px;">
-                    <label style="font-size:10px; letter-spacing:0.1em; color:#7a7a6a; font-weight:700; display:block; margin-bottom:5px; text-transform:uppercase;">Email Address</label>
-                    <div style="position:relative;">
-                        <input id="inputEmail" name="Email" type="email" readonly style="width:100%; background:#f6f8f2; border:1.5px solid #c8d4b0; border-radius:50px; padding:11px 42px 11px 18px; font-size:14px; outline:none; opacity:0.55; cursor:not-allowed;" />
-                        <span style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#9a9a8a;">✉️</span>
-                    </div>
-                </div>
-
-                <button type="button" onclick="saveProfile()"
-                        style="width:100%; background:#5a6b40; color:white; border:none; border-radius:50px; padding:13px; font-size:14px; cursor:pointer; margin-bottom:14px; font-weight:500;">
-                    Save Changes
-                </button>
-            </form>
-            <form asp-controller="Identity" asp-action="Logout" method="post" id="logoutForm">
-                <button type="submit" style="background:none; border:none; color:#c0392b; font-size:13px; text-decoration:none; cursor:pointer; padding:0;">
-                    Sign Out
-                </button>
-            </form>
-            @*
-                <a href="/Identity/Logout" style="color:#c0392b; font-size:13px; text-decoration:none;">Sign Out</a>
-            *@
-        </div>
+                @* </div> *@
+            
+            }
+        }
     </div>
 </div>
 <script>
