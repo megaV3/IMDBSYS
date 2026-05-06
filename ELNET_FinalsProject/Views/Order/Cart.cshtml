@@ -64,6 +64,11 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
+        overflow-y: auto;
+        /* max-height:500px; */
+        max-height:427px;
+        padding-bottom:100px;
+        margin-bottom:100px;
     }
 
     .cart-card {
@@ -447,7 +452,7 @@
                     <p>Your cart is empty.</p>
                     <a asp-action="Index" asp-controller ="Store" class="btn-checkout"
                        style="display:inline-flex;width:auto;padding:12px 28px;">
-                        Browse Menu;
+                        Browse Menu
                     </a>
                 </div>
             }
