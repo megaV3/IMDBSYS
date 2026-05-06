@@ -68,7 +68,7 @@ namespace ELNET_FinalsProject.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Name, user.FirstName),
                         new Claim("LastLogin", DateTime.Now.ToString())
                     };
 
