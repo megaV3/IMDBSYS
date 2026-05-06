@@ -60,12 +60,11 @@ namespace ELNET_FinalsProject.Controllers
             var existingItem = await _context.OrderItems
                 .FirstOrDefaultAsync(oi => oi.OrderId == order.OrderId && oi.MenuId == menuId);
 
-            if (existingItem != null)
-
+            if (existingItem != null) //checks if the item already exists in the cart then increments quantity
             {
                 existingItem.Quantity++;
             }
-            else
+            else //else, the item is created
             {
                 var menu = await _context.Menus.FindAsync(menuId);
 
@@ -101,13 +100,74 @@ namespace ELNET_FinalsProject.Controllers
         }
 
         // REMOVE ITEM
+        [HttpPost]
         public async Task<IActionResult> Remove(int orderItemId)
         {
-            var item = await _context.OrderItems.FindAsync(orderItemId);
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+
+            int userId = int.Parse(userIdString);
+
+            var item = await _context.OrderItems
+                .Include(oi => oi.Order)
+                .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
 
             if (item != null)
             {
                 _context.OrderItems.Remove(item);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Cart");
+        }
+        // INCREASE ITEM'S QTY.
+        [HttpPost]
+        public async Task<IActionResult> Increase(int orderItemId)
+        {
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+
+            int userId = int.Parse(userIdString);
+
+            var item = await _context.OrderItems 
+                .Include(oi => oi.Order)
+                .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
+
+            if (item != null)
+            {
+                item.Quantity++;
+                _context.OrderItems.Update(item);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Cart");
+        }
+
+        // DECREASE ITEM'S QTY.
+        [HttpPost]
+        public async Task<IActionResult> Decrease(int orderItemId)
+        {
+            // 1. Get the User ID from the Claims (stored in the cookie)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+
+            int userId = int.Parse(userIdString);
+
+            var item = await _context.OrderItems
+                .Include(oi => oi.Order)
+                .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
+
+            if (item != null)
+            {
+                item.Quantity--;
+                _context.OrderItems.Update(item);
+
+                if (item.Quantity == 0) //removes the item if the quantity reaches 0
+                {
+                    _context.OrderItems.Remove(item);
+                }
                 await _context.SaveChangesAsync();
             }
 
@@ -128,6 +188,7 @@ namespace ELNET_FinalsProject.Controllers
 
             order.IsCompleted = true;
             order.OrderDate = DateTime.Now;
+            order.CustomerName = ClaimTypes.NameIdentifier;
 
             await _context.SaveChangesAsync();
 
@@ -148,5 +209,6 @@ namespace ELNET_FinalsProject.Controllers
             return View(order);
         }
        
+
     }
 }
