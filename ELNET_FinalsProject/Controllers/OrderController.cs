@@ -131,6 +131,7 @@ namespace ELNET_FinalsProject.Controllers
 
             int userId = int.Parse(userIdString);
 
+            // fetches the item added to the cart
             var item = await _context.OrderItems 
                 .Include(oi => oi.Order)
                 .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
@@ -177,18 +178,27 @@ namespace ELNET_FinalsProject.Controllers
         // CHECKOUT
         public async Task<IActionResult> Checkout()
         {
+            // fetches the ID of user logged in
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
+            // fetches items placed in the cart
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
+
+            // fetches full name of customer making the order
+            var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            // fetches total amount of the items in the cart
+            var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
             if (order == null)
                 return RedirectToAction("Cart");
 
             order.IsCompleted = true;
             order.OrderDate = DateTime.Now;
-            order.CustomerName = ClaimTypes.NameIdentifier;
+            order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
+            order.TotalAmount = totalAmount;
 
             await _context.SaveChangesAsync();
 
