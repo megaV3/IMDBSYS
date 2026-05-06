@@ -5,7 +5,7 @@
 namespace ELNET_FinalsProject.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial3 : Migration
+    public partial class SyncIncomingChanges : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

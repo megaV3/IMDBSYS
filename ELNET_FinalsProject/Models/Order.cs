@@ -1,26 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ELNET_FinalsProject.Models
 {
     public class Order
     {
-        public int OrderId { get; set; } // ID for each order 
-        public DateTime OrderDate { get; set; }
+        public int OrderId { get; set; }
+
+        public DateTime OrderDate { get; set; } = DateTime.Now;
+
         public int UserId { get; set; }
 
         [Required]
         public string CustomerName { get; set; } = string.Empty;
-        [Required(ErrorMessage = "Order date is required")]
 
         [Column(TypeName = "decimal(8, 2)")]
-
         public decimal TotalAmount { get; set; }
 
         public string PaymentMethod { get; set; } = string.Empty;
 
-        // Navigation property for One to Many relationship with OrderItem (One Order can have many OrderItems)
-        // The 'virtual' keyword enables lazy loading of related OrderItems when accessing the OrderItems property
+        public bool IsCompleted { get; set; }
+
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

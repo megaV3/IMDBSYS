@@ -5,7 +5,7 @@
 namespace ELNET_FinalsProject.Migrations
 {
     /// <inheritdoc />
-    public partial class MenuChanges : Migration
+    public partial class SeedDataChanges : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

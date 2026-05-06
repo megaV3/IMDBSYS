@@ -1,0 +1,574 @@
+﻿@model List<ELNET_FinalsProject.Models.OrderItem>
+
+@{
+    ViewData["Title"] = "Your Cart";
+    var subtotal = Model?.Sum(i => i.Total) ?? 0;
+    var tax = subtotal * 0.12m;
+    var total = subtotal + tax;
+}
+
+<style>
+    :root {
+        --primary: #9CAF6C;
+        --primary-dark: #7a9050;
+        --dark: #5C3D2E;
+        --light: #f7f9f2;
+        --muted: #8a9e74;
+        --border: #c8d9a0;
+        --white: #ffffff;
+        --red: #e05252;
+        --text-sub: #6b7c5a;
+    }
+
+    .cart-page {
+        background-color: var(--primary);
+        min-height: 100vh;
+        padding: 40px 24px;
+        font-family: 'DM Sans', Arial, sans-serif;
+    }
+
+    .cart-wrapper {
+        max-width: 980px;
+        margin: 0 auto;
+    }
+
+    /* Header */
+    .cart-header {
+        margin-bottom: 28px;
+    }
+
+        .cart-header h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.1;
+        }
+
+        .cart-header p {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.75);
+            margin-top: 4px;
+        }
+
+    /* Layout */
+    .cart-layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 20px;
+        align-items: start;
+    }
+
+    /* Cards */
+    .cart-items {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .cart-card {
+        background: rgba(255,255,255,0.93);
+        border-radius: 18px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+        transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+        .cart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+        }
+
+    .item-thumb {
+        width: 65px;
+        height: 65px;
+        border-radius: 12px;
+        background: var(--light);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        overflow: hidden;
+    }
+
+        .item-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .item-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--dark);
+    }
+
+    .item-category {
+        font-size: 0.76rem;
+        color: var(--text-sub);
+        margin-top: 2px;
+        text-transform: capitalize;
+    }
+
+    .item-desc {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .item-temp-badges {
+        display: flex;
+        gap: 5px;
+        margin-top: 5px;
+        flex-wrap: wrap;
+    }
+
+    .badge-temp {
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        padding: 2px 8px;
+        border-radius: 20px;
+    }
+
+    .badge-hot {
+        background: #ffe4d6;
+        color: #c0522a;
+    }
+
+    .badge-cold {
+        background: #d6eeff;
+        color: #2a6fc0;
+    }
+
+    .item-price {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-top: 6px;
+    }
+
+    /* Qty */
+    .qty-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1.5px solid #d5dfc8;
+        background: var(--white);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--dark);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        line-height: 1;
+        transition: background .15s;
+    }
+
+        .qty-btn:hover {
+            background: var(--light);
+        }
+
+    .qty-val {
+        font-weight: 700;
+        font-size: 0.92rem;
+        min-width: 16px;
+        text-align: center;
+        color: var(--dark);
+    }
+
+    .delete-btn {
+        background: none;
+        border: none;
+        color: var(--red);
+        cursor: pointer;
+        opacity: .7;
+        padding: 4px;
+        margin-left: 2px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: opacity .15s;
+    }
+
+        .delete-btn:hover {
+            opacity: 1;
+        }
+
+    /* Summary */
+    .order-summary {
+        background: rgba(255,255,255,0.22);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-radius: 20px;
+        padding: 26px 22px;
+        border: 1px solid rgba(255,255,255,0.35);
+        color: var(--white);
+    }
+
+    .summary-title {
+        font-size: 1.45rem;
+        font-weight: 900;
+        color: var(--white);
+        margin-bottom: 18px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.86rem;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 9px;
+    }
+
+        .summary-row.total-row {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.28);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--white);
+            align-items: center;
+        }
+
+    .total-amount {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--white);
+    }
+
+    .btn-checkout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        margin-top: 20px;
+        padding: 13px;
+        background: var(--white);
+        color: var(--dark);
+        border: none;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        transition: background .15s, transform .12s;
+    }
+
+        .btn-checkout:hover {
+            background: var(--light);
+            transform: translateY(-1px);
+        }
+
+    .btn-keep-shopping {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px;
+        background: rgba(255,255,255,0.15);
+        color: var(--white);
+        border: 1.5px solid rgba(255,255,255,0.45);
+        border-radius: 10px;
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background .15s;
+    }
+
+        .btn-keep-shopping:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+    /* Promo */
+    .promo-wrap {
+        margin-top: 18px;
+    }
+
+    .promo-label {
+        font-size: 0.67rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.55);
+        margin-bottom: 7px;
+    }
+
+    .promo-row {
+        display: flex;
+        gap: 7px;
+    }
+
+    .promo-input {
+        flex: 1;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.28);
+        border-radius: 8px;
+        padding: 9px 11px;
+        font-size: 0.81rem;
+        color: var(--white);
+        outline: none;
+    }
+
+        .promo-input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+    .promo-btn {
+        background: var(--white);
+        color: var(--primary-dark);
+        border: none;
+        border-radius: 8px;
+        padding: 9px 14px;
+        font-weight: 800;
+        font-size: 0.81rem;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .promo-btn:hover {
+            background: var(--light);
+        }
+
+    /* Empty */
+    .empty-state {
+        background: rgba(255,255,255,0.93);
+        border-radius: 18px;
+        padding: 60px 30px;
+        text-align: center;
+        color: var(--text-sub);
+        grid-column: 1 / -1;
+    }
+
+        .empty-state p {
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .cart-page {
+            padding: 28px 16px;
+        }
+
+        .cart-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .cart-items {
+            order: 1;
+        }
+
+        .order-summary {
+            order: 2;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .cart-page {
+            padding: 20px 12px;
+        }
+
+        .cart-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .cart-card {
+            padding: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item-thumb {
+            width: 54px;
+            height: 54px;
+            font-size: 1.4rem;
+        }
+
+        .qty-group {
+            margin-left: 0;
+            width: 100%;
+            justify-content: flex-end;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
+        }
+
+        .order-summary {
+            padding: 20px 16px;
+        }
+
+        .summary-title {
+            font-size: 1.2rem;
+        }
+
+        .total-amount {
+            font-size: 1.35rem;
+        }
+    }
+</style>
+
+<div class="cart-page">
+    <div class="cart-wrapper">
+
+        <div class="cart-header">
+            <h1>Your Cart</h1>
+            <p>Every sip is a step towards serenity.</p>
+        </div>
+
+        <div class="cart-layout">
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="empty-state">
+                    <p>Your cart is empty.</p>
+                    <a asp-action="Index" asp-controller ="Store" class="btn-checkout"
+                       style="display:inline-flex;width:auto;padding:12px 28px;">
+                        Browse Menu;
+                    </a>
+                </div>
+            }
+            else
+            {
+                <!-- LEFT: Items -->
+                <div class="cart-items">
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-card">
+
+                            <div class="item-thumb">
+                                @if (!string.IsNullOrEmpty(item.Menu?.ImagePath))
+                                {
+                                    <img src="@item.Menu.ImagePath" alt="@item.Menu.Name" />
+                                }
+                                else
+                                {
+                                    <span>&#9749;</span>
+                                }
+                            </div>
+
+                            <div class="item-info">
+                                <div class="item-name">@item.Menu?.Name</div>
+
+                                @if (!string.IsNullOrEmpty(item.Menu?.Category))
+                                {
+                                    <div class="item-category">@item.Menu.Category</div>
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.Menu?.Description))
+                                {
+                                    <div class="item-desc">@item.Menu.Description</div>
+                                }
+
+                                <div class="item-temp-badges">
+                                    @if (item.Menu?.CanBeHot == true)
+                                    {
+                                        <span class="badge-temp badge-hot">Hot</span>
+                                    }
+                                    @if (item.Menu?.CanBeCold == true)
+                                    {
+                                        <span class="badge-temp badge-cold">Cold</span>
+                                    }
+                                </div>
+
+                                <div class="item-price">&#8369;@item.Price.ToString("N2")</div>
+                            </div>
+
+                            <div class="qty-group">
+                                <a asp-action="Decrease" asp-route-id="@item.OrderItemId"
+                                   class="qty-btn">&#8722;</a>
+                                <span class="qty-val">@item.Quantity</span>
+                                <a asp-action="Increase" asp-route-id="@item.OrderItemId"
+                                   class="qty-btn">&#43;</a>
+                                <a asp-action="Remove" asp-route-id="@item.OrderItemId"
+                                   class="delete-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="none" viewBox="0 0 24 24"
+                                         stroke="currentColor" stroke-width="2">
+                                        <polyline points="3 6 5 6 21 6" />
+                                        <path d="M19 6l-1 14H6L5 6" />
+                                        <path d="M10 11v6M14 11v6" />
+                                        <path d="M9 6V4h6v2" />
+                                    </svg>
+                                </a>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+                <!-- RIGHT: Summary -->
+                <div class="order-summary">
+                    <div class="summary-title">Order Summary</div>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>&#8369;@subtotal.ToString("N2")</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (12%)</span>
+                        <span>&#8369;@tax.ToString("N2")</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <span class="total-amount">&#8369;@total.ToString("N2")</span>
+                    </div>
+
+                    <a asp-action="Checkout" class="btn-checkout">
+                        Checkout
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
+
+                    <a asp-action="Index" class="btn-keep-shopping">Keep Shopping</a>
+
+                    <div class="promo-wrap">
+                        <div class="promo-label">Add Promo Code</div>
+                        <div class="promo-row">
+                            <input type="text" class="promo-input"
+                                   placeholder="CODE123" id="promoCode" />
+                            <button class="promo-btn" type="button"
+                                    onclick="applyPromo()">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function applyPromo() {
+        const code = document.getElementById('promoCode').value.trim();
+        if (!code) return;
+        alert('Promo "' + code + '" applied!');
+    }
+</script>

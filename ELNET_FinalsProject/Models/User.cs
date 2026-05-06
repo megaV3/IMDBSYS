@@ -28,6 +28,6 @@ namespace ELNET_FinalsProject.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; } = string.Empty;
-
+        public string? ProfileImagePath { get; set; }
     }
 }
