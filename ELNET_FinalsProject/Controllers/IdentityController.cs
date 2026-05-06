@@ -192,6 +192,7 @@ namespace ELNET_FinalsProject.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
