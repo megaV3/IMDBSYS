@@ -1,50 +1,44 @@
 ﻿@{
 }
-<div class ="navbar">
 
+<div class="navbar">
     <div class="nav-left">
         <h2>PICKOUT COFFEE</h2>
     </div>
-
     <div class="nav-center">
         <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
     </div>
-
     <div class="nav-right">
-        @* <a asp-controller="Order" asp-action="Cart" class="nav-icon">
-            🛒
-        </a> *@
         <a asp-controller="Order" asp-action="Cart" class="nav-icon">
-            🛒 <span id="cart-count" style="
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    font-size: 10px;
-                    background: #3e4e2c;
-                    color: white;
-                    border-radius: 50%;
-                    padding: 2px 5px;
-                    line-height: 1;
-                    transform: translate(25%, -25%);">
+            🛒
+            <span id="cart-count" style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 10px;
+                background: #3e4e2c;
+                color: white;
+                border-radius: 50%;
+                padding: 2px 5px;
+                line-height: 1;
+                transform: translate(25%, -25%);">
                 @Model.CartCount
-            </span> 
+            </span>
         </a>
-
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon">
             👤
         </a>
     </div>
-
 </div>
+
 <style>
     .navbar {
         display: flex;
         justify-content: space-between;
-        position: sticky; /*sticks to one place whenever you scroll*/
-        top: 0;           /*sticks at the top*/
-        z-index: 100;     /*ensures that it stays above other content*/
+        position: sticky;
+        top: 0;
+        z-index: 100;
         background-color: #f5f5f5;
-        
         padding: 10px 30px;
         color: #9caf6c;
     }
@@ -64,15 +58,15 @@
         transition: 0.3s ease;
     }
 
-    .nav-link:hover {
-        text-decoration: none;
-        padding: 5px 30px;
-        color: white;
-    }
+        .nav-link:hover {
+            text-decoration: none;
+            padding: 5px 30px;
+            color: white;
+        }
 
-    .nav-link.active {
-        border: 2px solid #9caf6c;
-    }
+        .nav-link.active {
+            border: 2px solid #9caf6c;
+        }
 
     .nav-left h2 {
         margin: 0;
@@ -88,11 +82,9 @@
     .nav-icon {
         text-decoration: none;
         font-size: 25px;
-        /* These 3 lines center the 🛒 perfectly */
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        /* This is the secret: it keeps the bubble relative to the icon */
         position: relative;
         width: 45px;
         height: 45px;
@@ -100,11 +92,10 @@
         transition: 0.3s ease;
     }
 
-    .nav-icon:hover {
-         text-decoration: none;
-         background: #9caf6c;
-    }
-
+        .nav-icon:hover {
+            text-decoration: none;
+            background: #9caf6c;
+        }
 
     body {
         background-color: #f5f5f5;
@@ -117,43 +108,34 @@
         color: #9caf6c;
     }
 
-    .header h2 {
-        font-size: 26px;
+        .header h2 {
+            font-size: 26px;
+        }
 
-    }
-
-    .menu-header h1 {
-        text-align: center;
+    .signatures-header h2,
+    .espresso-header h2 {
         color: #3e4e2c;
     }
 
-    .signatures-header h2 {
-        color: #3e4e2c
-    }
-    
-    .espresso-header h2 {
-        color: #3e4e2c
-    }
-
     .big-title {
-    text-align: center;
-    margin-bottom: 30px;
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-    .big-title h1 {
-    font-size: 100px;
-    font-weight: 900;
-    color: #9caf6c;
-    letter-spacing: 5px;
-    text-shadow: 4px 4px 10px rgba(0,0,0,0.2);
-    }
+        .big-title h1 {
+            font-size: 100px;
+            font-weight: 900;
+            color: #9caf6c;
+            letter-spacing: 5px;
+            text-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+        }
 
     .row-fluid {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 30px;
-        margin-top: 30px; /* ⬅️ space from header */
+        margin-top: 30px;
     }
 
     .card {
@@ -165,24 +147,22 @@
         text-align: center;
     }
 
-    .card:hover {
-        background-color: #9caf6c;
-        color: white;
+        .card:hover {
+            background-color: #9caf6c;
+            color: white;
+        }
 
-    }
+            .card:hover .btn-cart {
+                background-color: #f5f5f5;
+                color: #9caf6c;
+            }
 
-    .card:hover .btn-cart {
-        background-color: #f5f5f5;
-        color: #9caf6c;
-
-    }
-
-    img {
-        height: 280px;
-        width: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-    }
+        .card img {
+            height: 280px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
 
     .card-title {
         font-size: 18px;
@@ -210,9 +190,302 @@
         cursor: pointer;
     }
 
-    .btn-cart:hover {
+        .btn-cart:hover {
             background-color: #f5f5f5;
-     }
+        }
+
+    @@keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ── BASKET MODAL ── */
+    #basketOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(62, 78, 44, 0.55);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #basketModal {
+        background: #fff;
+        border-radius: 24px;
+        width: 92%;
+        max-width: 440px;
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(62, 78, 44, 0.25);
+        animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    #bModalImgWrap {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, #d4e2b0, #9caf6c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        overflow: hidden;
+    }
+
+        #bModalImgWrap img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 0;
+        }
+
+    .modal-body {
+        padding: 20px 22px 24px;
+    }
+
+    .modal-row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 4px;
+    }
+
+    #bModalName {
+        font-size: 22px;
+        font-weight: 700;
+        color: #3e4e2c;
+    }
+
+    #bModalPrice {
+        font-size: 18px;
+        font-weight: 600;
+        color: #9caf6c;
+        margin-left: 12px;
+        white-space: nowrap;
+    }
+
+    #bModalDesc {
+        font-size: 13px;
+        color: #888;
+        margin: 0 0 16px;
+        line-height: 1.5;
+    }
+
+    .modal-section-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #9caf6c;
+        margin-bottom: 8px;
+    }
+
+    .temp-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .temp-btn {
+        flex: 1;
+        padding: 9px 0;
+        border-radius: 10px;
+        border: 1.5px solid #dde8c5;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        color: #5a7030;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: Arial, sans-serif;
+    }
+
+        .temp-btn:hover {
+            background: #f3f8ea;
+            border-color: #9caf6c;
+        }
+
+        .temp-btn.active {
+            background: #9caf6c;
+            border-color: #9caf6c;
+            color: #fff;
+        }
+
+        .temp-btn.disabled {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+    .qty-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .qty-row {
+        display: flex;
+        align-items: center;
+        background: #f5f5f5;
+        border-radius: 12px;
+        padding: 4px;
+    }
+
+    .qty-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        border: none;
+        background: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        color: #3e4e2c;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        transition: background 0.15s;
+        line-height: 1;
+    }
+
+        .qty-btn:hover {
+            background: #edf5d8;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.93);
+        }
+
+    #bQtyVal {
+        min-width: 44px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #3e4e2c;
+    }
+
+    #bSubtotal {
+        font-size: 13px;
+        color: #aaa;
+        margin-left: 12px;
+    }
+
+    .allergy-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-bottom: 16px;
+    }
+
+    .allergy-chip {
+        padding: 5px 12px;
+        border-radius: 20px;
+        border: 1.5px solid #dde8c5;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 500;
+        color: #5a7030;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.15s;
+    }
+
+        .allergy-chip:hover {
+            border-color: #9caf6c;
+            background: #f3f8ea;
+        }
+
+        .allergy-chip.active {
+            background: #fff3cd;
+            border-color: #d4a017;
+            color: #7a5a00;
+        }
+
+    #bNotes {
+        width: 100%;
+        border: 1.5px solid #dde8c5;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        color: #3e4e2c;
+        resize: none;
+        outline: none;
+        box-sizing: border-box;
+        margin-bottom: 18px;
+        transition: border-color 0.2s;
+    }
+
+        #bNotes:focus {
+            border-color: #9caf6c;
+        }
+
+    .modal-footer {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-cancel {
+        padding: 12px 18px;
+        border-radius: 12px;
+        border: 1.5px solid #dde8c5;
+        background: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        color: #888;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+        transition: background 0.18s;
+    }
+
+        .btn-cancel:hover {
+            background: #f5f5f5;
+        }
+
+    .btn-add-confirm {
+        flex: 1;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        background: #9caf6c;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+        transition: background 0.2s, transform 0.15s;
+    }
+
+        .btn-add-confirm:hover {
+            background: #7a9050;
+            transform: translateY(-1px);
+        }
+
+        .btn-add-confirm:active {
+            transform: scale(0.98);
+        }
+
+    #bToast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: #3e4e2c;
+        color: #fff;
+        padding: 10px 22px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        z-index: 10000;
+        white-space: nowrap;
+    }
+
 </style>
 
 @if (!User.Identity.IsAuthenticated)
@@ -234,109 +507,47 @@
     <div class="signatures-header">
         <h2 class="mt-4">⋆.𐙚 ̊  SIGNATURES ̊  𐙚.⋆</h2>
     </div>
-
     <div class="row-fluid">
-
-        @* <!-- ITEM -->
-        <div class="card">
-            <img src="~/images/kape kastila.png" />
-            <div class="card-body">
-                <h5 class="card-title">Kape Kastila</h5>
-                <p class="card-text">Leche condensada with creamy milk and espresso.</p>
-                <p class="card-subtitle">PHP 75</p>
-                <form asp-controller="Order" asp-action="AddToCart" method="post">
-                    <input type="hidden" name="menuId" value="1" />
-                    <button type="submit" class="btn-cart">Add to Basket 🛒</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- ITEM -->
-        <div class="card">
-            <img src="~/images/iced white mocha latte.png" />
-            <div class="card-body">
-                <h5 class="card-title">Iced White Mocha Latte</h5>
-                <p class="card-text">White chocolate with creamy milk and espresso.</p>
-                <p class="card-subtitle">PHP 89</p>
-                <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                    <button class="btn-cart">Add to Cart 🛒</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- ITEM -->
-        <div class="card">
-            <img src="~/images/iced caramel macchiato.png" />
-            <div class="card-body">
-                <h5 class="card-title">Iced Caramel Macchiato</h5>
-                <p class="card-text">Rich espresso with milk and caramel.</p>
-                <p class="card-subtitle">PHP 89</p>
-                <form asp-controller="Store" asp-action="OrderMenu" method="post">
-                    <button class="btn-cart">Add to Cart 🛒</button>
-                </form>
-            </div>
-        </div> *@
         @foreach (var item in Model.Menus)
         {
-            @if (item.Category == "Signatures")
+            if (item.Category == "Signatures")
             {
-                @* <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;"> *@
-                    <div class="card">
-
-                        <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover" />
-
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@item.Description</p>
-
-                            <p class="card-subtitle">
-                                PHP @item.Price.ToString("0")
-                            </p>
-                        <form asp-controller="Order" asp-action="AddToCart" method="post" target="hidden_iframe">
-                            <input type="hidden" name="menuId" value="@item.MenuId" />
-                            <button type="submit" class="btn-cart" onclick="updateCartCount()">Add to Basket 🛒</button>
-                        </form>
-                        </div>
-
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                            Add to Basket 🛒
+                        </button>
                     </div>
-                @* </div> *@
-            
+                </div>
             }
         }
-
     </div>
-    
+
     <div class="espresso-header">
         <h2 class="mt-5">⋆.𐙚 ̊  ESPRESSO-BASED ̊  𐙚.⋆</h2>
     </div>
-
     <div class="row-fluid">
-        
         @foreach (var item in Model.Menus)
         {
-            @if (item.Category == "Espresso-based")
+            if (item.Category == "Espresso-based")
             {
-                @* <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;"> *@
-                    <div class="card">
-
-                        <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover" />
-
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@item.Description</p>
-
-                            <p class="card-subtitle">
-                                PHP @item.Price.ToString("0")
-                            </p>
-                        <form asp-controller="Order" asp-action="AddToCart" method="post">
-                            <input type="hidden" name="menuId" value="@item.MenuId" />
-                            <button type="submit" class="btn-cart">Add to Basket 🛒</button>
-                        </form>
-                        </div>
-
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                            Add to Basket 🛒
+                        </button>
                     </div>
-                @* </div> *@
-            
+                </div>
             }
         }
     </div>
@@ -344,118 +555,196 @@
     <div class="espresso-header">
         <h2 class="mt-5">⋆.𐙚 ̊  PISTACHIO ̊  𐙚.⋆</h2>
     </div>
-
     <div class="row-fluid">
-        
         @foreach (var item in Model.Menus)
         {
-            @if (item.Category == "Pistachio")
+            if (item.Category == "Pistachio")
             {
-                @* <div class="span4 mt-5 mb-5" style="height: 400px; width: 400px;"> *@
                 <div class="card">
-
-                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover" />
-
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:cover;" />
                     <div class="card-body">
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-text">@item.Description</p>
-
-                        <p class="card-subtitle">
-                            PHP @item.Price.ToString("0")
-                        </p>
-                        <form asp-controller="Order" asp-action="AddToCart" method="post">
-                            <input type="hidden" name="menuId" value="@item.MenuId" />
-                            <button type="submit" class="btn-cart">Add to Basket 🛒</button>
-                        </form>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                            Add to Basket 🛒
+                        </button>
                     </div>
-
                 </div>
-                @* </div> *@
-            
             }
         }
     </div>
+
 </div>
+
+<!-- BASKET MODAL — once, outside all loops -->
+<div id="basketOverlay" onclick="handleOverlayClick(event)">
+    <div id="basketModal">
+
+        <div id="bModalImgWrap">☕</div>
+
+        <div class="modal-body">
+
+            <div class="modal-row-header">
+                <div id="bModalName"></div>
+                <div id="bModalPrice"></div>
+            </div>
+            <p id="bModalDesc"></p>
+
+            <div class="modal-section-label">Temperature</div>
+            <div class="temp-row">
+                <button id="btnHot" class="temp-btn" onclick="selectTemp('Hot')">🔥 Hot</button>
+                <button id="btnIced" class="temp-btn" onclick="selectTemp('Iced')">🧊 Iced</button>
+            </div>
+
+            <div class="modal-section-label">Quantity</div>
+            <div class="qty-wrapper">
+                <div class="qty-row">
+                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                    <span id="bQtyVal">1</span>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+                <span id="bSubtotal"></span>
+            </div>
+
+            <div class="modal-section-label">Allergy / Dietary</div>
+            <div class="allergy-chips">
+                <span class="allergy-chip" onclick="toggleChip(this)">Dairy-free milk</span>
+                <span class="allergy-chip" onclick="toggleChip(this)">No sugar</span>
+                <span class="allergy-chip" onclick="toggleChip(this)">Less sweet</span>
+                <span class="allergy-chip" onclick="toggleChip(this)">Nut allergy</span>
+                <span class="allergy-chip" onclick="toggleChip(this)">Oat milk</span>
+                <span class="allergy-chip" onclick="toggleChip(this)">Soy allergy</span>
+            </div>
+
+            <div class="modal-section-label">Special Instructions</div>
+            <textarea id="bNotes" rows="2" placeholder="e.g. extra shot, no ice, less sweet…"></textarea>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeBasketModal()">Cancel</button>
+                <button class="btn-add-confirm" onclick="submitBasket()">Add to Basket 🛒</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="bToast"></div>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 <script>
-    function openProfile() {
-        // Fetch current user profile data
-        fetch('/Identity/GetProfile')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('inputFirstName').value = data.firstName;
-                document.getElementById('inputLastName').value = data.lastName;
-                document.getElementById('inputEmail').value = data.email;
+    var _menuId, _price, _qty = 1, _temp = 'Iced';
 
-                // Set avatar
-                if (data.profileImagePath) {
-                    document.getElementById('avatarImg').src = data.profileImagePath;
-                    document.getElementById('avatarImg').style.display = 'block';
-                    document.getElementById('avatarInitials').style.display = 'none';
-                } else {
-                    document.getElementById('avatarInitials').textContent =
-                        data.firstName.charAt(0) + data.lastName.charAt(0);
-                    document.getElementById('avatarImg').style.display = 'none';
-                    document.getElementById('avatarInitials').style.display = 'block';
-                }
+    function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold) {
+        _menuId = menuId;
+        _price  = price;
+        _qty    = 1;
+        _temp   = canBeCold ? 'Iced' : 'Hot';
 
-                document.getElementById('profileModal').style.display = 'flex';
-            });
+        document.getElementById('bModalName').textContent  = name;
+        document.getElementById('bModalPrice').textContent = 'PHP ' + price;
+        document.getElementById('bModalDesc').textContent  = desc;
+        document.getElementById('bQtyVal').textContent     = 1;
+        document.getElementById('bSubtotal').textContent   = '= PHP ' + price;
+        document.getElementById('bNotes').value            = '';
+
+        document.querySelectorAll('.allergy-chip').forEach(function(c) {
+            c.classList.remove('active');
+        });
+
+        var wrap = document.getElementById('bModalImgWrap');
+        if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
+            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" />';
+        } else {
+            wrap.innerHTML = '☕';
+        }
+
+        var btnHot  = document.getElementById('btnHot');
+        var btnIced = document.getElementById('btnIced');
+        btnHot.classList.remove('active', 'disabled');
+        btnIced.classList.remove('active', 'disabled');
+        if (!canBeHot)  btnHot.classList.add('disabled');
+        if (!canBeCold) btnIced.classList.add('disabled');
+        document.getElementById(_temp === 'Hot' ? 'btnHot' : 'btnIced').classList.add('active');
+
+        document.getElementById('basketOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
-    function closeProfile() {
-        document.getElementById('profileModal').style.display = 'none';
+    function closeBasketModal() {
+        document.getElementById('basketOverlay').style.display = 'none';
+        document.body.style.overflow = '';
     }
 
-    // Close modal if clicking outside the card
-    document.getElementById('profileModal').addEventListener('click', function(e) {
-        if (e.target === this) closeProfile();
-    });
-
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('avatarImg').src = e.target.result;
-                document.getElementById('avatarImg').style.display = 'block';
-                document.getElementById('avatarInitials').style.display = 'none';
-            };
-            reader.readAsDataURL(input.files[0]);
+    function handleOverlayClick(e) {
+        if (e.target === document.getElementById('basketOverlay')) {
+            closeBasketModal();
         }
     }
 
-    function saveProfile() {
-        const form = document.getElementById('profileForm');
-        const formData = new FormData(form);
+    function selectTemp(t) {
+        _temp = t;
+        document.getElementById('btnHot').classList.toggle('active',  t === 'Hot');
+        document.getElementById('btnIced').classList.toggle('active', t === 'Iced');
+    }
 
-        fetch('/Identity/ProfileAjax', {
+    function changeQty(delta) {
+        _qty = Math.max(1, _qty + delta);
+        document.getElementById('bQtyVal').textContent   = _qty;
+        document.getElementById('bSubtotal').textContent = '= PHP ' + (_price * _qty);
+    }
+
+    function toggleChip(el) {
+        el.classList.toggle('active');
+    }
+
+    function submitBasket() {
+        var chips = [];
+        document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
+            chips.push(c.textContent);
+        });
+        var freeText = document.getElementById('bNotes').value.trim();
+        var parts    = chips.join(', ');
+        var notes    = (parts && freeText) ? (parts + ' | ' + freeText) : (parts || freeText);
+
+        fetch('/Order/AddToCart', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'menuId='       + encodeURIComponent(_menuId)
+                + '&quantity='    + encodeURIComponent(_qty)
+                + '&temperature=' + encodeURIComponent(_temp)
+                + '&notes='       + encodeURIComponent(notes)
         })
-        .then(res => res.json())
-        .then(data => {
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
             if (data.success) {
-                const msg = document.getElementById('successMsg');
-                msg.textContent = 'Profile updated successfully!';
-                msg.style.display = 'block';
-                setTimeout(() => msg.style.display = 'none', 3000);
+                closeBasketModal();
+                updateCartCount(_qty);
+                showToast('Added ' + _qty + ' item(s) to your basket! 🛒');
             }
+        })
+        .catch(function() {
+            showToast('Something went wrong. Please try again.');
         });
     }
-</script>
 
-<script>
-    function updateCartCount() {
-        // 1. Find the span element by its ID
-        var countElement = document.getElementById('cart-count');
+    function updateCartCount(added) {
+        var el = document.getElementById('cart-count');
+        if (el) {
+            el.textContent = (parseInt(el.textContent) || 0) + added;
+        }
+    }
 
-        // 2. Get the current number inside it
-        var currentCount = parseInt(countElement.innerText);
-
-        // 3. Add 1 and put it back
-        countElement.innerText = currentCount + 1;
+    function showToast(msg) {
+        var t = document.getElementById('bToast');
+        t.textContent = msg;
+        t.style.opacity   = '1';
+        t.style.transform = 'translateX(-50%) translateY(0)';
+        setTimeout(function() {
+            t.style.opacity   = '0';
+            t.style.transform = 'translateX(-50%) translateY(20px)';
+        }, 2800);
     }
 </script>
-
-
-<!-- This is an invisible box that will catch the "Redirect" so your page doesn't move -->
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>

@@ -25,14 +25,12 @@ namespace ELNET_FinalsProject.Controllers
             return View();
         }
 
-        // Displays the form
         [HttpGet]
         public IActionResult CreateAccount()
         {
             return View();
         }
 
-        // Handles form submission
         [HttpPost]
         public IActionResult CreateAccount(User register)
         {
@@ -140,7 +138,6 @@ namespace ELNET_FinalsProject.Controllers
             return RedirectToAction("Profile");
         }
 
-        // ✅ NEW — Returns profile data as JSON for the modal
         [HttpGet]
         public async Task<IActionResult> GetProfile()
         {
@@ -159,7 +156,6 @@ namespace ELNET_FinalsProject.Controllers
             });
         }
 
-        // ✅ NEW — Handles modal form save via AJAX
         [HttpPost]
         public async Task<IActionResult> ProfileAjax(ProfileViewModel vm)
         {

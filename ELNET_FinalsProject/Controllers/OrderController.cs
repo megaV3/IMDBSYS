@@ -12,6 +12,7 @@ namespace ELNET_FinalsProject.Controllers
     public class OrderController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly string? PaymentMethod;
 
         public OrderController(AppDbContext context)
         {
@@ -38,51 +39,47 @@ namespace ELNET_FinalsProject.Controllers
 
         // ADD TO CART
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int menuId)
+        public async Task<IActionResult> AddToCart(int menuId, int quantity, string? temperature, string? notes)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var order = await _context.Orders
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
 
-            // If no cart yet → create one
             if (order == null)
             {
-                order = new Order
-                {
-                    UserId = userId,
-                    IsCompleted = false
-                };
+                order = new Order { UserId = userId, IsCompleted = false };
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
             }
 
             var existingItem = await _context.OrderItems
-                .FirstOrDefaultAsync(oi => oi.OrderId == order.OrderId && oi.MenuId == menuId);
+                .FirstOrDefaultAsync(oi =>
+                    oi.OrderId == order.OrderId &&
+                    oi.MenuId == menuId &&
+                    oi.Temperature == temperature &&
+                    oi.Notes == notes);
 
-            if (existingItem != null) //checks if the item already exists in the cart then increments quantity
+            if (existingItem != null)
             {
-                existingItem.Quantity++;
+                existingItem.Quantity += quantity;
             }
-            else //else, the item is created
+            else
             {
                 var menu = await _context.Menus.FindAsync(menuId);
-
-                var newItem = new OrderItem
+                _context.OrderItems.Add(new OrderItem
                 {
                     OrderId = order.OrderId,
                     MenuId = menuId,
-                    Quantity = 1,
-                    Price = menu.Price
-                };
-
-                _context.OrderItems.Add(newItem);
+                    Quantity = quantity,
+                    Price = menu.Price,
+                    Temperature = temperature,
+                    Notes = notes
+                });
             }
 
             await _context.SaveChangesAsync();
-
-            //return RedirectToAction("Index","Store");
-            return Ok();
+            return Ok(new { success = true, quantityAdded = quantity });
         }
 
         // UPDATE QUANTITY
@@ -104,9 +101,8 @@ namespace ELNET_FinalsProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Remove(int orderItemId)
         {
-            // 1. Get the User ID from the Claims (stored in the cookie)
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+            if (string.IsNullOrEmpty(userIdString)) return Challenge();
 
             int userId = int.Parse(userIdString);
 
@@ -122,18 +118,17 @@ namespace ELNET_FinalsProject.Controllers
 
             return RedirectToAction("Cart");
         }
+
         // INCREASE ITEM'S QTY.
         [HttpPost]
         public async Task<IActionResult> Increase(int orderItemId)
         {
-            // 1. Get the User ID from the Claims (stored in the cookie)
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+            if (string.IsNullOrEmpty(userIdString)) return Challenge();
 
             int userId = int.Parse(userIdString);
 
-            // fetches the item added to the cart
-            var item = await _context.OrderItems 
+            var item = await _context.OrderItems
                 .Include(oi => oi.Order)
                 .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId && oi.Order.UserId == userId && !oi.Order.IsCompleted);
 
@@ -151,9 +146,8 @@ namespace ELNET_FinalsProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Decrease(int orderItemId)
         {
-            // 1. Get the User ID from the Claims (stored in the cookie)
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdString)) return Challenge(); // Ensure user is logged in
+            if (string.IsNullOrEmpty(userIdString)) return Challenge();
 
             int userId = int.Parse(userIdString);
 
@@ -166,7 +160,7 @@ namespace ELNET_FinalsProject.Controllers
                 item.Quantity--;
                 _context.OrderItems.Update(item);
 
-                if (item.Quantity == 0) //removes the item if the quantity reaches 0
+                if (item.Quantity == 0)
                 {
                     _context.OrderItems.Remove(item);
                 }
@@ -176,35 +170,32 @@ namespace ELNET_FinalsProject.Controllers
             return RedirectToAction("Cart");
         }
 
-        // CHECKOUT
+        // ✅ UPDATED — CHECKOUT with balance check
         public async Task<IActionResult> Checkout()
         {
-            // fetches the ID of user logged in
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            // fetches items placed in the cart
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
 
-            // fetches full name of customer making the order
-            var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-            // fetches total amount of the items in the cart
-            var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
-
             if (order == null)
                 return RedirectToAction("Cart");
+
+            var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
             order.IsCompleted = true;
             order.OrderDate = DateTime.Now;
             order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
             order.TotalAmount = totalAmount;
+            order.PaymentMethod =PaymentMethod;
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Receipt");
         }
+
         // RECEIPT PAGE
         public async Task<IActionResult> Receipt()
         {
@@ -219,7 +210,5 @@ namespace ELNET_FinalsProject.Controllers
 
             return View(order);
         }
-       
-
     }
 }

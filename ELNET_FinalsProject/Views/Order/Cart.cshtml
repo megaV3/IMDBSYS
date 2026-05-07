@@ -7,37 +7,50 @@
     var total = subtotal + tax;
 }
 
-<div class ="navbar">
-
+<div class="navbar">
     <div class="nav-left">
         <h2>PICKOUT COFFEE</h2>
     </div>
-
     <div class="nav-center">
         <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
     </div>
-
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
-            🛒
-        </a> 
-        <a asp-controller="Identity" asp-action="Profile" class="nav-icon">
-            👤
-        </a>
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">🛒</a>
+        <a asp-controller="Identity" asp-action="Profile" class="nav-icon">👤</a>
     </div>
-
 </div>
+
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #f4f6f0;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+    }
+
+    /* NAVBAR */
     .navbar {
         display: flex;
         justify-content: space-between;
-        position: sticky; /*sticks to one place whenever you scroll*/
-        top: 0;           /*sticks at the top*/
-        z-index: 100;     /*ensures that it stays above other content*/
-        background-color: #f5f5f5;
-        
-        padding: 10px 30px;
-        color: #9caf6c;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #fff;
+        border-bottom: 1px solid #e2ebd0;
+        padding: 0 36px;
+        height: 64px;
+    }
+
+    .nav-left h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        color: #3e4e2c;
     }
 
     .nav-center {
@@ -49,261 +62,715 @@
     .nav-link {
         text-decoration: none;
         color: #9caf6c;
-        padding: 5px 20px;
-        border-radius: 30px;
-        transition: 0.3s ease;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 7px 20px;
+        border-radius: 50px;
+        border: 1.5px solid transparent;
+        transition: .2s;
     }
 
-    .nav-link:hover {
-        background: #9caf6c;
-        text-decoration: none;
-        padding: 5px 30px;
-        color: white;
-    }
+        .nav-link:hover {
+            background: #f3f8ea;
+            text-decoration: none;
+        }
 
-    .nav-link.active {
-        border: 2px solid #9caf6c;
-    }
-
-    .active-cart {
-        background: #9caf6c;
-        border: 2px solid #9caf6c;
-        transition: 0.3s ease;
-    }
-
-    .nav-left h2 {
-        margin: 0;
-        font-weight: bold;
-        font-size: 25px;
-    }
+        .nav-link.active {
+            border-color: #9caf6c;
+        }
 
     .nav-right {
         display: flex;
-        gap: 20px;
+        gap: 8px;
     }
 
     .nav-icon {
-        text-decoration: none;
-        font-size: 25px;
-        /* These 3 lines center the 🛒 perfectly */
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1.5px solid #e2ebd0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        /* This is the secret: it keeps the bubble relative to the icon */
-        position: relative;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        transition: 0.3s ease;
-    }
-
-    .nav-icon:hover {
-         text-decoration: none;
-         background: #9caf6c;
-    }
-
-    .cart-container {
-        width: 90%;
-        margin: auto;
-        padding-top: 30px;
-    }
-
-    .cart-title h1 {
-        font-weight: bold;
-        font-size: 65px;
-        margin-bottom: 1px;
-    }
-
-    .cart-title p {
         font-size: 20px;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .nav-icon:hover {
+            background: #f3f8ea;
+            border-color: #9caf6c;
+            text-decoration: none;
+        }
+
+    .active-cart {
+        background: #9caf6c;
+        border-color: #9caf6c;
+    }
+
+    /* PAGE */
+    .cart-container {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 36px 28px 80px;
     }
 
     .cart-title {
-        color: #9caf6c;
-        margin-bottom: 20px;
+        margin-bottom: 28px;
     }
 
+        .cart-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2c3e1a;
+            margin: 0 0 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .cart-title p {
+            font-size: 13px;
+            color: #9aab82;
+            margin: 0;
+        }
+
+    /* TWO COLUMN */
     .cart-layout {
-        display: flex;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: 1fr 330px;
+        gap: 22px;
+        align-items: start;
     }
 
+    .items-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: #9aab82;
+        margin-bottom: 12px;
+    }
+
+    /* CART CARDS */
     .cart-items {
-        flex: 2;
+        display: flex;
+        flex-direction: column;
     }
 
     .cart-card {
-        background: #9caf6c;
-        border-radius: 30px;
-        padding: 15px;
-        margin-bottom: 15px;
-
+        background: #fff;
+        border: 1px solid #e2ebd0;
+        border-radius: 16px;
+        padding: 16px 18px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 10px;
+        transition: border-color .2s, box-shadow .2s;
     }
+
+        .cart-card:hover {
+            border-color: #c0d890;
+            box-shadow: 0 2px 12px rgba(156,175,108,.12);
+        }
 
     .item-left {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 14px;
+        flex: 1;
+        min-width: 0;
     }
 
-    .item-left img {
-        width: 80px;
+        .item-left img {
+            width: 66px;
+            height: 66px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #e2ebd0;
+            flex-shrink: 0;
+            background: #f3f8ea;
+        }
 
+    .item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
     }
 
     .item-name {
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        color: #2c3e1a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .item-price {
-        color: white;
-        margin-top: 5px;
+    .item-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .item-tag {
+        font-size: 11px;
+        padding: 2px 9px;
+        border-radius: 20px;
+        font-weight: 500;
+        background: #f3f8ea;
+        color: #5a7030;
+        border: 1px solid #d4e6a8;
+    }
+
+    .item-price-tag {
+        font-size: 13px;
+        color: #7a8f60;
+        margin-top: 2px;
+    }
+
+        .item-price-tag strong {
+            color: #3e4e2c;
+            font-weight: 700;
+        }
+
+    /* QTY CONTROLS */
+    .item-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
     }
 
     .qty-box {
         display: flex;
         align-items: center;
-        gap: 10px;
-
+        border: 1.5px solid #d4e6a8;
+        border-radius: 50px;
+        overflow: hidden;
+        background: #fff;
     }
 
     .qty-btn {
-        background: #ddd;
+        width: 36px;
+        height: 36px;
+        background: none;
         border: none;
-        width: 30px;
-        height: 30px;
-        border-radius: 50px;
         cursor: pointer;
+        font-size: 18px;
+        font-weight: 600;
+        color: #7a9050;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .15s, color .15s;
+        flex-shrink: 0;
     }
 
-    .qty-btn:hover {
-        transform: scale(1.1);
+        .qty-btn:hover {
+            background: #f3f8ea;
+            color: #3e4e2c;
+        }
+
+        .qty-btn:active {
+            transform: scale(.92);
+        }
+
+    .qty-count {
+        min-width: 34px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #3e4e2c;
     }
 
+    .remove-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1.5px solid #f0e8e8;
+        background: none;
+        cursor: pointer;
+        color: #cca8a8;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .2s;
+        flex-shrink: 0;
+    }
+
+        .remove-btn:hover {
+            color: #e24b4a;
+            background: #fff5f5;
+            border-color: #f5c8c8;
+        }
+
+    /* EMPTY CART */
+    .empty-cart {
+        background: #fff;
+        border: 1px solid #e2ebd0;
+        border-radius: 20px;
+        padding: 70px 40px;
+        text-align: center;
+        grid-column: 1 / -1;
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .empty-cart-icon {
+        width: 80px;
+        height: 80px;
+        background: #f3f8ea;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 36px;
+        border: 2px solid #d4e6a8;
+    }
+
+    .empty-cart h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #3e4e2c;
+        margin-bottom: 6px;
+    }
+
+    .empty-cart p {
+        font-size: 14px;
+        color: #9aab82;
+        margin: 0;
+    }
+
+    .browse-btn {
+        margin-top: 24px;
+        display: inline-block;
+        background: #9caf6c;
+        color: #fff;
+        padding: 13px 30px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+        .browse-btn:hover {
+            background: #7a9050;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+    /* SUMMARY */
     .summary {
-        background: #9caf6c;      
-        border-radius: 40px;
-        padding: 20px;
-        color: white;
-        height: fit-content;
+        background: #fff;
+        border: 1px solid #e2ebd0;
+        border-radius: 20px;
+        overflow: hidden;
+        position: sticky;
+        top: 80px;
     }
 
-    .summary h2 {
-        margin-bottom: 20px;
+    .summary-header {
+        background: #9caf6c;
+        padding: 20px 22px;
     }
 
-    .total-price {
-        font-size: 32px;
-        font-weight: 800;
+        .summary-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 2px;
+        }
+
+        .summary-header p {
+            font-size: 12px;
+            color: rgba(255,255,255,.75);
+            margin: 0;
+        }
+
+    .summary-body {
+        padding: 18px 22px 22px;
+    }
+
+    .summary-items {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .summary-item-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+    }
+
+    .summary-item-name {
+        color: #5a6e40;
+        max-width: 175px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .summary-item-qty {
+        font-size: 11px;
+        color: #aabf80;
+        margin-left: 3px;
+    }
+
+    .summary-item-amt {
+        font-weight: 600;
+        color: #3e4e2c;
+    }
+
+    .summary-divider {
+        border: none;
+        border-top: 1px solid #eef2e6;
+        margin: 12px 0;
     }
 
     .summary-row {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 5px;
+        font-size: 13px;
+        color: #7a8f60;
+        margin-bottom: 6px;
     }
 
-    .total-row{
+    .summary-total-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 12px;
+    }
+
+    .summary-total-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2c3e1a;
+    }
+
+    .total-price {
+        font-size: 22px;
+        font-weight: 800;
+        color: #2c3e1a;
+        letter-spacing: -0.5px;
     }
 
     .checkout-btn {
         display: block;
-        background-color: white;
         width: 100%;
-        text-align: center;
-        padding: 12px;
-        margin-top: 10px;
-        border-radius: 25px;
-        border: 1px solid white;
-        color: #9CAF6C;
-        text-decoration: none;
-        transition: 0.3s;
+        padding: 13px;
+        margin-top: 18px;
+        background: #9caf6c;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: 'Segoe UI', sans-serif;
+        transition: .2s;
     }
 
-    .checkout-btn:hover {
-        text-decoration: none;
-
-    }
+        .checkout-btn:hover {
+            background: #7a9050;
+            transform: translateY(-1px);
+        }
 
     .keep-shopping-btn {
         display: block;
         width: 100%;
+        padding: 11px;
+        margin-top: 8px;
+        background: none;
+        border: 1.5px solid #d4e6a8;
+        border-radius: 12px;
+        color: #7a9050;
+        font-size: 13px;
+        font-weight: 500;
         text-align: center;
-        padding: 12px;
-        margin-top: 10px;
-        border-radius: 25px;
-        border: 1px solid white;
-        color: white;
         text-decoration: none;
-        transition: 0.3s;
+        transition: .2s;
     }
 
-    .keep-shopping-btn:hover {
-        text-decoration: none;
-        background: rgba(255,255,255,0.2);
-        color: #f5f5f5;
+        .keep-shopping-btn:hover {
+            background: #f3f8ea;
+            border-color: #9caf6c;
+            text-decoration: none;
+        }
+
+    /* PAYMENT MODAL */
+    @@keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: translateY(16px) scale(.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
-    .delete-btn {
-        text-decoration: none;
-        font-size: 20px;
-        margin-left: 10px;
-        transition: 0.3s;
+    #paymentOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(46,60,30,.55);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
     }
 
-    .delete-btn:hover {
-        text-decoration: none;
-        transform: scale(1.1);
-    }
-
-    .empty-cart {
-        background: #9CAF6C;
-        padding: 50px;
-        border-radius: 25px;
-        text-align: center;
-        color: white;
-        backdrop-filter: blur(10px);
-    }
-
-    .empty-cart h2 {
-    font-size: 40px;
-    margin-bottom: 5px;
-    }
-
-    .empty-cart p {
-        margin-top: 5px;
-        font-size: 18px;
-    }
-
-    .browse-btn {
-        margin-top: 25px;
-        display: inline-block;
-        background: white;
-        color: #9CAF6C;
-        padding: 14px 30px;
+    #paymentModal {
+        background: #fff;
         border-radius: 20px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: 0.3s;
+        width: 92%;
+        max-width: 400px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(62,78,44,.2);
+        animation: modalIn .3s cubic-bezier(.34,1.56,.64,1) both;
     }
 
-    .browse-btn:hover {
-        text-decoration: none;
-        transform: translateY(-2px);
-        background: #f5f5f5;
+    #paymentModalHeader {
+        background: #9caf6c;
+        padding: 22px 24px 18px;
+    }
+
+        #paymentModalHeader h4 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        #paymentModalHeader p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: rgba(255,255,255,.8);
+        }
+
+    #paymentModalBody {
+        padding: 20px 24px 24px;
+    }
+
+    .payment-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: #9caf6c;
+        margin-bottom: 10px;
+    }
+
+    .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .payment-card {
+        border: 1.5px solid #e0eac8;
+        border-radius: 14px;
+        padding: 14px 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: .2s;
+        background: #fff;
+    }
+
+        .payment-card:hover {
+            border-color: #9caf6c;
+            background: #f9fdf3;
+        }
+
+        .payment-card.active {
+            border-color: #9caf6c;
+            background: #f3f8ea;
+        }
+
+        .payment-card .pay-icon {
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .payment-card .pay-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #3e4e2c;
+        }
+
+    #amountSection {
+        display: none;
+        margin-bottom: 16px;
+    }
+
+    #payAmount {
+        width: 100%;
+        border: 1.5px solid #e0eac8;
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 15px;
+        color: #3e4e2c;
+        outline: none;
+        text-align: center;
+        transition: border-color .2s;
+    }
+
+        #payAmount:focus {
+            border-color: #9caf6c;
+        }
+
+    .pay-hint {
+        font-size: 12px;
+        color: #bbb;
+        text-align: center;
+        margin-top: 6px;
+    }
+
+    .order-total-display {
+        background: #f4f6f0;
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+        .order-total-display span {
+            font-size: 12px;
+            color: #9aab82;
+        }
+
+        .order-total-display strong {
+            display: block;
+            font-size: 22px;
+            font-weight: 800;
+            color: #2c3e1a;
+            margin-top: 2px;
+        }
+
+    .btn-pay-now {
+        width: 100%;
+        padding: 13px;
+        border-radius: 12px;
+        border: none;
+        background: #9caf6c;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        font-family: 'Segoe UI', sans-serif;
+        transition: .2s;
+        margin-bottom: 8px;
+    }
+
+        .btn-pay-now:hover {
+            background: #7a9050;
+            transform: translateY(-1px);
+        }
+
+        .btn-pay-now:disabled {
+            background: #d4d4d4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+    .btn-pay-cancel {
+        width: 100%;
+        padding: 11px;
+        border-radius: 12px;
+        border: 1.5px solid #e0eac8;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        color: #9aab82;
+        cursor: pointer;
+        font-family: 'Segoe UI', sans-serif;
+        transition: .2s;
+    }
+
+        .btn-pay-cancel:hover {
+            background: #f7f8f5;
+        }
+
+    /* SUCCESS SCREEN */
+    #successOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(46,60,30,.55);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #successModal {
+        background: #fff;
+        border-radius: 20px;
+        width: 92%;
+        max-width: 360px;
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(62,78,44,.2);
+        animation: modalIn .3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    .success-icon-wrap {
+        width: 72px;
+        height: 72px;
+        background: #f3f8ea;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 36px;
+        border: 2px solid #d4e6a8;
+    }
+
+    #successModal h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2c3e1a;
+        margin: 0 0 8px;
+    }
+
+    #successModal p {
+        font-size: 13px;
+        color: #9aab82;
+        margin: 0;
+    }
+
+    #successModal .success-method {
+        display: inline-block;
+        margin-top: 14px;
+        background: #f3f8ea;
+        color: #3e4e2c;
+        font-weight: 600;
+        font-size: 12px;
+        padding: 5px 14px;
+        border-radius: 20px;
+        border: 1px solid #d4e6a8;
+    }
+
+    .success-redirect-msg {
+        margin-top: 14px;
+        font-size: 12px;
+        color: #bbb;
     }
 </style>
 
 <div class="cart-container">
-    
+
     <div class="cart-title">
         <h1>Your Cart</h1>
         <p>Every sip is a step towards serenity.</p>
@@ -311,112 +778,238 @@
 
     <div class="cart-layout">
 
-        <!-- left -->
-        <div class="cart-items"> 
-            @if (Model == null || !Model.Any())
-            {
-                <div class="empty-cart">
-                    <h2> Your Cart is empty</h2>
-                    <p>Looks like you haven't added anything yet.</p>
-                    
-                    <a asp-controller="Store" asp-action="Index" class="browse-btn">
-                        Browse Menu
-                    </a>
-
-                </div>
-            } 
-            else
-            {
-                @foreach (var item in Model)
-                {
-                    <div class="cart-card">
-                        <div class="item-left">
-                            <img src="@item.Menu.ImagePath" />
-                            <div>
-                                <div class="item-name">
-                                    @item.Menu.Name
-                                </div>
-                                <div class="item-price">
-                                    ₱@item.Price
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <form asp-controller="Order" method="post" class="qty-box justify-content-center">
-                                <input type="hidden" name="orderItemId" value="@item.OrderItemId"/>
-                                <button type="submit" class="qty-btn" formaction="Decrease">-</button>
-                                <span>@item.Quantity</span>
-                                <button type="submit" class="qty-btn" formaction="Increase">+</button>
-                                <button type="submit" class="qty-btn" formaction="Remove">🗑️</button>
-                            </form>
-                            @*
-                                
-                            <a asp-action="Decrease"
-                                   asp-route-id="@item.OrderItemId">
-                                <button class="qty-btn">-</button>
-                            </a>
-
-                            <span>@item.Quantity</span>
-
-                            <a asp-action="Increase"
-                                   asp-route-id="@item.OrderItemId">
-                                <button class="qty-btn">+</button>
-                            </a>
-
-                            <a asp-action="Remove"
-                                   asp-route-id="@item.OrderItemId"
-                                   class="delete-btn">
-                                🗑️
-                            </a>
-                            *@
-
-                        </div>
-
-
-
-                    </div>
-                }
-            }   
-        </div>
-
-        <!--RIGHT-->
-        @if (Model != null && Model.Any())
+        @if (Model == null || !Model.Any())
         {
-            <div class="summary">
-                <h2>Order Summary</h2>
-
-
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span>₱@subtotal</span>
-                </div>
-
-                <div class="summary-row">
-                    <span>Tax</span>
-                    <span>₱@tax.ToString("N2")</span>
-                </div>
-                <hr>
-                <div class="summary-row total-row">
-                    <span>Total</span>
-                    <span class="total-price">₱@total.ToString("N2")</span>
-                </div>
-
-                <a asp-action="Checkout"
-                class="checkout-btn">
-
-                    Checkout →
-                </a>
-
-                <a asp-controller="Store"
-                asp-action="Index"
-                class="keep-shopping-btn">
-
-                    Keep Shopping
-                </a>
+            <div class="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <h2>Your cart is empty</h2>
+                <p>Looks like you haven't added anything yet.</p>
+                <a asp-controller="Store" asp-action="Index" class="browse-btn">Browse Menu</a>
             </div>
         }
-    </div>
+        else
+        {
+            <div>
+                <div class="items-label">@Model.Count item@(Model.Count != 1 ? "s" : "") in your cart</div>
 
+                <div class="cart-items">
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-card">
+                            <div class="item-left">
+                                <img src="@item.Menu.ImagePath" alt="@item.Menu.Name" />
+                                <div class="item-info">
+                                    <div class="item-name">@item.Menu.Name</div>
+                                    <div class="item-tags">
+                                        @if (!string.IsNullOrEmpty(item.Temperature))
+                                        {
+                                            <span class="item-tag">
+                                                @(item.Temperature == "Hot" ? "🔥" : "🧊") @item.Temperature
+                                            </span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(item.Notes))
+                                        {
+                                            <span class="item-tag">📝 @item.Notes</span>
+                                        }
+                                    </div>
+                                    <div class="item-price-tag">
+                                        ₱@item.Price × @item.Quantity = <strong>₱@item.Total</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-controls">
+                                <form asp-controller="Order" method="post">
+                                    <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                                    <div class="qty-box">
+                                        <button type="submit" class="qty-btn" formaction="Decrease">−</button>
+                                        <span class="qty-count">@item.Quantity</span>
+                                        <button type="submit" class="qty-btn" formaction="Increase">+</button>
+                                    </div>
+                                </form>
+
+                                <form asp-controller="Order" method="post">
+                                    <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                                    <button type="submit" class="remove-btn" formaction="Remove" title="Remove item">🗑️</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="summary">
+                <div class="summary-header">
+                    <h3>Order Summary</h3>
+                    <p>Review your items before checkout</p>
+                </div>
+                <div class="summary-body">
+
+                    <div class="summary-items">
+                        @foreach (var item in Model)
+                        {
+                            <div class="summary-item-row">
+                                <span class="summary-item-name">
+                                    @item.Menu.Name
+                                    <span class="summary-item-qty">×@item.Quantity</span>
+                                </span>
+                                <span class="summary-item-amt">₱@item.Total.ToString("N2")</span>
+                            </div>
+                        }
+                    </div>
+
+                    <hr class="summary-divider" />
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>₱@subtotal.ToString("N2")</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (12%)</span>
+                        <span>₱@tax.ToString("N2")</span>
+                    </div>
+
+                    <hr class="summary-divider" />
+
+                    <div class="summary-total-row">
+                        <span class="summary-total-label">Total</span>
+                        <span class="total-price">₱@total.ToString("N2")</span>
+                    </div>
+
+                    <button type="button" class="checkout-btn" onclick="openPaymentModal()">
+                        Checkout →
+                    </button>
+                    <a asp-controller="Store" asp-action="Index" class="keep-shopping-btn">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        }
+
+    </div>
 </div>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentOverlay">
+    <div id="paymentModal">
+        <div id="paymentModalHeader">
+            <h4>Choose Payment Method</h4>
+            <p>Order Total: <strong>₱@total.ToString("N2")</strong></p>
+        </div>
+        <div id="paymentModalBody">
+            <div class="payment-label">Select Method</div>
+            <div class="payment-methods">
+                <div class="payment-card" onclick="selectPayment('GCash', this)">
+                    <div class="pay-icon">💙</div>
+                    <div class="pay-name">GCash</div>
+                </div>
+                <div class="payment-card" onclick="selectPayment('PayMaya', this)">
+                    <div class="pay-icon">💚</div>
+                    <div class="pay-name">PayMaya</div>
+                </div>
+                <div class="payment-card" onclick="selectPayment('Cash', this)">
+                    <div class="pay-icon">💵</div>
+                    <div class="pay-name">Cash on Pickup</div>
+                </div>
+            </div>
+
+            <div id="amountSection">
+                <div class="payment-label">Enter Amount</div>
+                <input type="number" id="payAmount" min="1" max="99999" placeholder="e.g. 500" />
+                <p class="pay-hint">Enter the amount you are sending via <span id="methodHint"></span></p>
+            </div>
+
+            <div class="order-total-display">
+                <span>Amount Due</span>
+                <strong>₱@total.ToString("N2")</strong>
+            </div>
+
+            <button class="btn-pay-now" id="btnPayNow" onclick="submitPayment()" disabled>
+                Pay Now
+            </button>
+            <button class="btn-pay-cancel" onclick="closePaymentModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div id="successOverlay">
+    <div id="successModal">
+        <div class="success-icon-wrap">✅</div>
+        <h3>Payment Confirmed!</h3>
+        <p>Your order has been placed successfully.</p>
+        <div class="success-method" id="successMethodLabel"></div>
+        <p class="success-redirect-msg">Redirecting to your receipt...</p>
+    </div>
+</div>
+
+<!-- Hidden checkout form -->
+<form id="checkoutForm" asp-controller="Order" asp-action="Checkout" method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="paymentMethodInput" name="paymentMethod" />
+</form>
+
+<script>
+    var _selectedMethod = null;
+
+    function openPaymentModal() {
+        _selectedMethod = null;
+        document.getElementById('paymentOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.getElementById('btnPayNow').disabled = true;
+        document.getElementById('amountSection').style.display = 'none';
+        document.getElementById('payAmount').value = '';
+        document.querySelectorAll('.payment-card').forEach(function (c) { c.classList.remove('active'); });
+    }
+
+    function closePaymentModal() {
+        document.getElementById('paymentOverlay').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function selectPayment(method, el) {
+        _selectedMethod = method;
+        document.querySelectorAll('.payment-card').forEach(function (c) { c.classList.remove('active'); });
+        el.classList.add('active');
+
+        if (method === 'Cash') {
+            document.getElementById('amountSection').style.display = 'none';
+            document.getElementById('btnPayNow').disabled = false;
+        } else {
+            document.getElementById('amountSection').style.display = 'block';
+            document.getElementById('methodHint').textContent = method;
+            document.getElementById('btnPayNow').disabled = true;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('payAmount').addEventListener('input', function () {
+            var val = parseFloat(this.value);
+            document.getElementById('btnPayNow').disabled = !(val > 0);
+        });
+    });
+
+    function submitPayment() {
+        if (!_selectedMethod) return;
+
+        if (_selectedMethod !== 'Cash') {
+            var amount = parseFloat(document.getElementById('payAmount').value);
+            if (!amount || amount <= 0) { alert('Please enter a valid amount.'); return; }
+        }
+
+        closePaymentModal();
+
+        document.getElementById('successMethodLabel').textContent =
+            _selectedMethod === 'Cash'  ? '💵 Cash on Pickup' :
+            _selectedMethod === 'GCash' ? '💙 Paid via GCash' :
+                                          '💚 Paid via PayMaya';
+
+        document.getElementById('successOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        setTimeout(function () {
+            document.getElementById('paymentMethodInput').value = _selectedMethod;
+            document.getElementById('checkoutForm').submit();
+        }, 2000);
+    }
+</script>
