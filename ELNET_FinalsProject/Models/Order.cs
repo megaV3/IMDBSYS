@@ -19,7 +19,7 @@ namespace ELNET_FinalsProject.Models
         [Column(TypeName = "decimal(8, 2)")]
         public decimal TotalAmount { get; set; }
 
-        public string PaymentMethod { get; set; } = string.Empty;
+        public string? PaymentMethod { get; set; }
 
         public bool IsCompleted { get; set; }
 

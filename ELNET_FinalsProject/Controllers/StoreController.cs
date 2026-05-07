@@ -36,7 +36,7 @@ namespace ELNET_FinalsProject.Controllers
             {
                 UserProfile = userProfile,
                 Menus = await _context.Menus.ToListAsync(), // Fetch all menu items from the database
-                CartCount = count // Pass the count here
+                CartCount = count, // Pass the count here
             };
 
             // 3. Pass the data to the View
