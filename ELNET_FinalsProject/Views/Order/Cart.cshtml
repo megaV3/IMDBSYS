@@ -343,7 +343,16 @@
                         </div>
 
 
-                        <div class="qty-box">
+                        <div class="row">
+                            <form asp-controller="Order" method="post" class="qty-box justify-content-center">
+                                <input type="hidden" name="orderItemId" value="@item.OrderItemId"/>
+                                <button type="submit" class="qty-btn" formaction="Decrease">-</button>
+                                <span>@item.Quantity</span>
+                                <button type="submit" class="qty-btn" formaction="Increase">+</button>
+                                <button type="submit" class="qty-btn" formaction="Remove">🗑️</button>
+                            </form>
+                            @*
+                                
                             <a asp-action="Decrease"
                                    asp-route-id="@item.OrderItemId">
                                 <button class="qty-btn">-</button>
@@ -361,6 +370,7 @@
                                    class="delete-btn">
                                 🗑️
                             </a>
+                            *@
 
                         </div>
 
