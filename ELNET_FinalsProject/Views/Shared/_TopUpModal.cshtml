@@ -1,15 +1,17 @@
-﻿@model ELNET_FinalsProject.ViewModels.TopUpViewModel
-<style>
-    #topUpModal {
-        display: none;
-    }
-</style>
+﻿@* 
+@model ELNET_FinalsProject.ViewModels.TopUpViewModel
+    <style>
+        #topUpModal {
+            display: none;
+        }
+    </style>
 <div class="modal fade" id="topUpModal" tabindex="-1" aria-labelledby="topUpModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 15px;">
             <div class="modal-header">
                 <h5 class="modal-title" id="topUpModalLabel">Top Up Balance</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
             <form asp-action="ProcessTopUp" method="post">
                 <div class="modal-body">
@@ -17,10 +19,34 @@
                     <input asp-for="Amount" class="form-control" placeholder="₱0.00" required />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Confirm</button>
                 </div>
             </form>
         </div>
+    </div>
+</div> *@
+
+@model ELNET_FinalsProject.ViewModels.TopUpViewModel
+
+<div id="topUpOverlay" class="custom-modal-overlay" onclick="handleTopUpOverlayClick(event)">
+    <div id="topUpModal" class="custom-modal-content">
+
+        <div class="modal-header-custom">
+            <h3 style="margin:0; color: #333;">Top Up Balance</h3>
+            <button type="button" class="close-custom" onclick="closeTopUpModal()">×</button>
+        </div>
+
+        <form asp-action="ProcessTopUp" asp-controller="Identity" method="post" style="margin: 0;">
+            <div class="modal-body-custom">
+                <label style="color: #333; font-weight: bold; display: block; margin-bottom: 10px;">Amount to Add</label>
+                <input asp-for="Amount" type="number" class="modal-input" placeholder="₱0.00" required />
+            </div>
+
+            <div class="modal-footer-custom">
+                <button type="button" class="btn-cancel-custom" onclick="closeTopUpModal()">Close</button>
+                <button type="submit" class="btn-confirm-custom">Confirm</button>
+            </div>
+        </form>
     </div>
 </div>

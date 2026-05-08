@@ -20,7 +20,6 @@
     <div class="nav-right">
         <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
             🛒
-            </span>
         </a> 
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             <img class="nav-icon active-profile" src="@Url.Content(ViewBag.ProfileImagePath)" />
@@ -102,6 +101,13 @@
          background: #9caf6c;
     }
 
+    .nav-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* This is the magic line */
+        border-radius: 50%; /* Ensures the image itself is also clipped to a circle */
+    }
+
     /* PAGE */
     .cart-container {
         max-width: 1080px;
@@ -162,10 +168,10 @@
         transition: border-color .2s, box-shadow .2s;
     }
 
-        .cart-card:hover {
-            border-color: #c0d890;
-            box-shadow: 0 2px 12px rgba(156,175,108,.12);
-        }
+    .cart-card:hover {
+        border-color: #c0d890;
+        box-shadow: 0 2px 12px rgba(156,175,108,.12);
+    }
 
     .item-left {
         display: flex;
@@ -175,15 +181,15 @@
         min-width: 0;
     }
 
-        .item-left img {
-            width: 66px;
-            height: 66px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid #e2ebd0;
-            flex-shrink: 0;
-            background: #f3f8ea;
-        }
+    .item-left img {
+        width: 66px;
+        height: 66px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid #e2ebd0;
+        flex-shrink: 0;
+        background: #f3f8ea;
+    }
 
     .item-info {
         display: flex;
