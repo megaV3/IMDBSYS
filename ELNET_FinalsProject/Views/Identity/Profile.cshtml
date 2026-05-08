@@ -304,12 +304,14 @@
                 Save Changes
             </button>
 
-            <!-- SIGN OUT -->
-            <a asp-controller="Auth"
-               asp-action="Logout"
-               class="logout-btn">
-               Sign Out
-            </a>
+            
+        </form>
+        <!-- SIGN OUT -->
+        <form asp-controller="Identity"
+              asp-action="Logout" method="post">
+            <button type="submit" class="logout-btn" style="background:none; cursor:pointer; border:none;">
+                Sign Out
+            </button>
         </form>
     </div>
 </div>
