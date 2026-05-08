@@ -32,6 +32,9 @@
 </div>
 
 <style>
+    body{
+        scroll-behavior: smooth;
+    }
     .navbar {
         display: flex;
         justify-content: space-between;
@@ -399,16 +402,16 @@
         transition: all 0.15s;
     }
 
-        .allergy-chip:hover {
-            border-color: #9caf6c;
-            background: #f3f8ea;
-        }
+    .allergy-chip:hover {
+        border-color: #9caf6c;
+        background: #f3f8ea;
+    }
 
-        .allergy-chip.active {
-            background: #fff3cd;
-            border-color: #d4a017;
-            color: #7a5a00;
-        }
+    .allergy-chip.active {
+        background: #fff3cd;
+        border-color: #d4a017;
+        color: #7a5a00;
+    }
 
     #bNotes {
         width: 100%;
@@ -425,9 +428,9 @@
         transition: border-color 0.2s;
     }
 
-        #bNotes:focus {
-            border-color: #9caf6c;
-        }
+    #bNotes:focus {
+        border-color: #9caf6c;
+    }
 
     .modal-footer {
         display: flex;
@@ -447,9 +450,9 @@
         transition: background 0.18s;
     }
 
-        .btn-cancel:hover {
-            background: #f5f5f5;
-        }
+    .btn-cancel:hover {
+        background: #f5f5f5;
+    }
 
     .btn-add-confirm {
         flex: 1;
@@ -465,14 +468,14 @@
         transition: background 0.2s, transform 0.15s;
     }
 
-        .btn-add-confirm:hover {
-            background: #7a9050;
-            transform: translateY(-1px);
-        }
+    .btn-add-confirm:hover {
+        background: #7a9050;
+        transform: translateY(-1px);
+    }
 
-        .btn-add-confirm:active {
-            transform: scale(0.98);
-        }
+    .btn-add-confirm:active {
+        transform: scale(0.98);
+    }
 
     #bToast {
         position: fixed;
@@ -490,6 +493,36 @@
         transition: all 0.3s ease;
         z-index: 10000;
         white-space: nowrap;
+    }
+
+    .quick-menu {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-bottom: 50px;
+    }
+
+    .quick-btn {
+        text-decoration: none;
+        color: #3e4e2c;
+        border: 2px solid #9caf6c;
+        padding: 12px 28px;
+        border-radius: 18px;
+        font-weight: bold;
+        transition: 0.3s ease;
+    }
+
+    .quick-btn:hover {
+        text-decoration: none;
+        background: #9caf6c;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .active-menu {
+        background: #9caf6c;
+        color: white;
     }
 
 </style>
@@ -510,7 +543,23 @@
         <h1>OUR MENU</h1>
     </div>
 
-    <div class="signatures-header">
+    <div class="quick-menu">
+
+        <a href="#signatures" class="quick-btn active-menu">
+            SIGNATURES
+        </a>
+
+        <a href="#espresso" class="quick-btn">
+            ESPRESSO-BASED
+        </a>
+
+        <a href="#pistachio" class="quick-btn">
+            PISTACHIO
+        </a>
+
+    </div>
+
+    <div class="signatures-header" id="signatures">
         <h2 class="mt-4">⋆.𐙚 ̊  SIGNATURES ̊  𐙚.⋆</h2>
     </div>
     <div class="row-fluid">
@@ -534,7 +583,7 @@
         }
     </div>
 
-    <div class="espresso-header">
+    <div class="espresso-header" id="espresso">
         <h2 class="mt-5">⋆.𐙚 ̊  ESPRESSO-BASED ̊  𐙚.⋆</h2>
     </div>
     <div class="row-fluid">
@@ -558,7 +607,7 @@
         }
     </div>
 
-    <div class="espresso-header">
+    <div class="espresso-header" id="pistachio">
         <h2 class="mt-5">⋆.𐙚 ̊  PISTACHIO ̊  𐙚.⋆</h2>
     </div>
     <div class="row-fluid">
