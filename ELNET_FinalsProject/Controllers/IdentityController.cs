@@ -94,12 +94,21 @@ namespace ELNET_FinalsProject.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return RedirectToAction("Login");
 
+            // 2. Calculate Cart Count from the database
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
+
+            // Sum up the quantities of all items in the cart
+            int count = order?.OrderItems.Sum(oi => oi.Quantity) ?? 0;
+
             var vm = new ProfileViewModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                ProfileImagePath = user.ProfileImagePath
+                ProfileImagePath = user.ProfileImagePath,
+                CartCount = count
             };
             return View(vm);
         }
