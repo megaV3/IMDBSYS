@@ -7,6 +7,7 @@
         public string Email { get; set; } = string.Empty;
         public string? ProfileImagePath { get; set; }
         public IFormFile? ProfileImage { get; set; }
+        public int CartCount { get; set; }
 
 
     }

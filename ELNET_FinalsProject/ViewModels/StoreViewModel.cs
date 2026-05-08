@@ -8,5 +8,6 @@ namespace ELNET_FinalsProject.ViewModels
         public List<Menu> Menus { get; set; } = new List<Menu>();
 
         public int CartCount { get; set; }
+        public string? ProfileImagePath { get; set; }
     }
 }

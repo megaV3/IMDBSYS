@@ -29,6 +29,11 @@ namespace ELNET_FinalsProject.Controllers
                 .ThenInclude(oi => oi.Menu)
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
 
+            var userProfile = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            ViewBag.ProfileImagePath = userProfile.ProfileImagePath;
+
             if (order == null)
             {
                 return View(new List<OrderItem>());

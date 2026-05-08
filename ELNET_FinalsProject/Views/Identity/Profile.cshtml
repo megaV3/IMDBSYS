@@ -3,6 +3,8 @@
     ViewData["Title"] = "Profile";
 }
 
+@model ELNET_FinalsProject.ViewModels.ProfileViewModel
+
 <div class ="navbar">
 
     <div class="nav-left">
@@ -14,11 +16,24 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
             🛒
-        </a> 
+            <span id="cart-count" style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 10px;
+                background: #3e4e2c;
+                color: white;
+                border-radius: 50%;
+                padding: 2px 5px;
+                line-height: 1;
+                transform: translate(25%, -25%);">
+                @Model.CartCount
+            </span>
+        </a>
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
-            👤
+            <img class="nav-icon active-profile" src="@Url.Content(Model.ProfileImagePath)" />
         </a>
     </div>
 
@@ -96,6 +111,12 @@
          text-decoration: none;
          background: #9caf6c;
     }
+        .nav-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This is the magic line */
+            border-radius: 50%; /* Ensures the image itself is also clipped to a circle */
+        }
 
     body {
         background: white;
@@ -193,19 +214,6 @@
         cursor: not-allowed;
     }
 
-    <!--wala pani gamit ang topup-btn-->
-    .topup-btn {
-        display: inline-block;
-        margin-top: 10px;
-        margin-bottom: 25px;
-        background: #dfe7c7;
-        color: #556b2f;
-        padding: 10px 20px;
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
     .save-btn {
         width: 100%;
         background: white;
@@ -232,43 +240,109 @@
         font-size: 14px;
     }
 
+    .wallet-box {
+        background: rgba(255,255,255,0.15);
+        border: 2px solid rgba(255,255,255,0.5);
+        border-radius: 25px;
+        padding: 18px 22px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .wallet-left p {
+        margin: 0;
+        color: white;
+        font-size: 15px;
+    }
+
+    .wallet-left h2 {
+        margin: 5px 0 0 0;
+        color: white;
+        font-size: 30px;
+        font-weight: 900;
+    }
+
+    .topup-btn {
+        text-decoration: none;
+        background: white;
+        color: #5f7338;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .topup-btn:hover {
+        text-decoration: none;
+        background: #f5f5f5;
+        color: #5f7338;
+    }
+
+
+
 </style>
 
 <div class="profile-page">
     <div class="profile-card">
-
-
-        <!--prof image-->
-        <div class="profile-image-section">
-
-            <img id="previewImage" src="@(string.IsNullOrEmpty(Model.ProfileImagePath) ? "/images/default-avatar.png" : Model.ProfileImagePath)"
-                 class="profile-image"/>
-
-            <label for="profileUpload" class="edit-icon">
-                ✎
-            </label>
-
-            <input type="file"
-                   id="profileUpload"
-                   name="profileImage"
-                   accept="image/*"
-                   hidden
-                   onchange="previewProfileImage(event)" />
-
-        </div>
-
-        <!--title-->
-        <h2>Your Profile</h2>
-
-        <p class="profile-subtitle">
-            Update your details for a personalized brew experience.
-        </p>
-
+        
         <!--form-->
         <form asp-action="Profile"
               asp-controller="Identity"
               method="post"
               enctype="multipart/form-data">
+
+
+            <!--prof image-->
+            <div class="profile-image-section">
+            
+                <!--
+                <img id="previewImage" src="~(string.IsNullOrEmpty(Model.ProfileImagePath) ? "/images/default-avatar.png" : Model.ProfileImagePath)"
+                     class="profile-image" />
+                -->
+
+                <img id="previewImage" src="@Url.Content(Model.ProfileImagePath)"
+                     class="profile-image" />
+
+                <label for="profileUpload" class="edit-icon">
+                    ✎
+                </label>
+
+                <input type="file"
+                       id="profileUpload"
+                       name="profileImage"
+                       accept="image/*"
+                       hidden
+                       onchange="previewProfileImage(event)" />
+
+            </div>
+
+            <!--title-->
+            <h2>Your Profile</h2>
+
+            <p class="profile-subtitle">
+                Update your details for a personalized brew experience.
+            </p>
+
+            <div class="wallet-box">
+
+                <div class="wallet-left">
+
+                    <p>My Coffee Wallet</p>
+
+                    <h2>₱2,500.00</h2>
+
+                </div>
+
+                <a asp-controller="Wallet"
+                       asp-action="TopUp"
+                       class="topup-btn">
+
+                    + Top Up Balance
+                </a>
+
+            </div>
 
              <!--first name-->
             <div class="input-group">
@@ -303,6 +377,8 @@
                 Save Changes
             </button>
 
+            <div asp-validation-summary="All"></div>
+
             
         </form>
         <!-- SIGN OUT -->
@@ -322,6 +398,13 @@
         const image = document.getElementById("previewImage");
 
         image.src = URL.createObjectURL(event.target.files[0]);
+    }
+    
+    function updateCartCount(added) {
+        var el = document.getElementById('cart-count');
+        if (el) {
+            el.textContent = (parseInt(el.textContent) || 0) + added;
+        }
     }
 
 </script>
