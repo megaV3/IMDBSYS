@@ -344,17 +344,19 @@
 
                     <p>My Coffee Wallet</p>
 
-                    <h2>₱2,500.00</h2>
+                    <h2>₱@Model.Balance</h2>
 
                 </div>
 
-                <a asp-controller="Wallet"
-                       asp-action="TopUp"
-                       class="topup-btn">
-
+                <a asp-action="TopUp" class="topup-btn">
                     + Top Up Balance
                 </a>
-
+                <button type="button"
+                        class="topup-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#topUpModal">
+                    + Top Up Balance
+                </button>
             </div>
 
              <!--first name-->
@@ -403,7 +405,7 @@
         </form>
     </div>
 </div>
-
+@await Html.PartialAsync("_TopUpModal", new ELNET_FinalsProject.ViewModels.TopUpViewModel())
 <script>
 
     function previewProfileImage(event) {
