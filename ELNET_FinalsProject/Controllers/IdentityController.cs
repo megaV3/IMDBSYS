@@ -161,7 +161,8 @@ namespace ELNET_FinalsProject.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                ProfileImagePath = user.ProfileImagePath
+                ProfileImagePath = user.ProfileImagePath,
+                Balance = user.Balance
 
             };
 
@@ -234,6 +235,37 @@ namespace ELNET_FinalsProject.Controllers
         public IActionResult TopUp()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProcessTopUp(TopUpViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Handle validation errors (e.g., negative amount)
+                return RedirectToAction("Index");
+            }
+
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) return Unauthorized();
+
+            // 1. Update the User's Wallet Balance
+            var user = await _context.Users.FindAsync(userIdClaim);
+            user.Balance += model.Amount;
+
+            // 2. Create the History Record
+            var history = new TopUpHistory
+            {
+                UserId = user.Id,
+                Amount = model.Amount,
+                TransactionDate = DateTime.Now,
+                Status = "Success"
+            };
+
+            _context.TopUpHistories.Add(history);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index"); // Refresh the profile page to show new balance
         }
     }
 }
