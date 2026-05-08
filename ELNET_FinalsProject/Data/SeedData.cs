@@ -283,6 +283,146 @@ namespace ELNET_FinalsProject.Data
                         CanBeHot = true,
                         CanBeCold = false,
                         ImagePath = "/images/pistachio/hot pistachio latte.png"
+                    },
+                     new Menu
+                    {
+                        Name = "White Mocha Frappe",
+                        Category = "Frappes",
+                        Price = 119m,
+                        Description = "Rich espresso and white chocolate, ice-blended with creamy milk, topped with whipped cream.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/white mocha frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Matcha Frappe",
+                        Category = "Frappes",
+                        Price = 115m,
+                        Description = "Pure matcha, ice-blended with creamy milk, topped with whipped cream.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/matcha frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Tripple Choco Chip Frappe",
+                        Category = "Frappes",
+                        Price = 115m,
+                        Description = "Dark chocolate, ice-blended with milk chocolate chips and creamy milk, topped with whipped cream.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/tripple choco chip frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Oreo Frappe",
+                        Category = "Frappes",
+                        Price = 115m,
+                        Description = "Oreo, ice-blended with creamy milk, topped with whipped cream.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/oreo frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Kape Kastila Frappe",
+                        Category = "Frappes",
+                        Price = 99m,
+                        Description = "Rich espresso and leche condensada, ice-blended with creamy milk, topped with whipped cream. Our take on a Spanish Latte frappe.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/kape kastila frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Cafe Mocha Chip Frappe",
+                        Category = "Frappes",
+                        Price = 115m,
+                        Description = "Rich espresso and dark chocolate, ice-blended with milk chocolate chips and creamy milk, topped with whipped cream.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/cafe mocha chip frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Brown Sugar Coffee Jelly Frappe",
+                        Category = "Frappes",
+                        Price = 129m,
+                        Description = "Rich espresso and brown molasses syrup, ice-blended with creamy milk, with a base of coffee jelly, topped with whipped cream.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/brown sugar coffee jelly frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Caramel Frappe",
+                        Category = "Frappes",
+                        Price = 99m,
+                        Description = "Rich espresso and buttery caramel, ice-blended with creamy milk, topped with whipped cream and caramel drizzle",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/frappes/caramel frappe.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Sea Salt Biscoff Milk",
+                        Category = "Milk-Based",
+                        Price = 99m,
+                        Description = "Creamy milk with Biscoff cookie bits, topped with sea salt cream mousse, over ice.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/milkbased/sea salt biscoff milk.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Classic Milk Tea",
+                        Category = "Milk-Based",
+                        Price = 70m,
+                        Description = "Creamy milk with black tea and boba pearls. Our take on a classic Milk Tea.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/milkbased/classic milk tea.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Brown Sugar Boba Milk",
+                        Category = "Milk-Based",
+                        Price = 75m,
+                        Description = "Creamy milk, brown sugar and boba pearls, topped with cream mousse.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/milkbased/brown sugar boba milk.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Milosaurus",
+                        Category = "Milk-Based",
+                        Price = 79m,
+                        Description = "Milo with creamy milk and cream mousse. Our take on the classic Milo Dinosaur.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/milkbased/milosaurus.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Classic Chocolate Milk",
+                        Category = "Milk-Based",
+                        Price = 75m,
+                        Description = "Creamy milk with rich chocolate, also available hot.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/milkbased/classic chocolate milk.png"
+                    },
+                    new Menu
+                    {
+                        Name = "Iced Ube Milk",
+                        Category = "Milk-Based",
+                        Price = 75m,
+                        Description = "Creamy milk with rich ube. A special bevarage using a Filipino favorite, also available hot.",
+                        CanBeHot = false,
+                        CanBeCold = true,
+                        ImagePath = "/images/milkbased/iced ube milk.png"
                     }
                     /*
                     new Menu
