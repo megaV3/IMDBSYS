@@ -14,5 +14,6 @@ namespace ELNET_FinalsProject.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<TopUpHistory> TopUpHistories { get; set; }
     }
 }
