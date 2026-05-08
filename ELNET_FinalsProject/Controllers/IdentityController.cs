@@ -147,6 +147,17 @@ namespace ELNET_FinalsProject.Controllers
             var user = await _context.Users.FindAsync(int.Parse(userIdClaim));
             if (user == null) return NotFound();
 
+            var vm = new ProfileViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ProfileImagePath = user.ProfileImagePath
+
+            };
+
+            return View(vm);
+
             return Json(new
             {
                 firstName = user.FirstName,
@@ -156,6 +167,7 @@ namespace ELNET_FinalsProject.Controllers
             });
         }
 
+        // For saving changes of user's profile
         [HttpPost]
         public async Task<IActionResult> ProfileAjax(ProfileViewModel vm)
         {
