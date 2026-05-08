@@ -94,12 +94,21 @@ namespace ELNET_FinalsProject.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return RedirectToAction("Login");
 
+            // 2. Calculate Cart Count from the database
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
+
+            // Sum up the quantities of all items in the cart
+            int count = order?.OrderItems.Sum(oi => oi.Quantity) ?? 0;
+
             var vm = new ProfileViewModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                ProfileImagePath = user.ProfileImagePath
+                ProfileImagePath = user.ProfileImagePath,
+                CartCount = count
             };
             return View(vm);
         }
@@ -147,6 +156,17 @@ namespace ELNET_FinalsProject.Controllers
             var user = await _context.Users.FindAsync(int.Parse(userIdClaim));
             if (user == null) return NotFound();
 
+            var vm = new ProfileViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ProfileImagePath = user.ProfileImagePath
+
+            };
+
+            return View(vm);
+
             return Json(new
             {
                 firstName = user.FirstName,
@@ -156,6 +176,7 @@ namespace ELNET_FinalsProject.Controllers
             });
         }
 
+        // For saving changes of user's profile
         [HttpPost]
         public async Task<IActionResult> ProfileAjax(ProfileViewModel vm)
         {
@@ -206,6 +227,11 @@ namespace ELNET_FinalsProject.Controllers
         }
 
         public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public IActionResult TopUp()
         {
             return View();
         }
