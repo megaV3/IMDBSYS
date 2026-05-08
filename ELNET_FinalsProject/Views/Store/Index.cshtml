@@ -501,7 +501,8 @@
 
 <div class="header">
     <h2>Welcome to the Pickout Coffee store page!</h2>
-    <h5>Enjoy your shopping experience, <b>@User.Identity.Name!</b></h5>
+    @* <h5>Enjoy your shopping experience, <b>@User.Identity.Name!</b></h5> *@
+    <h5>Enjoy your shopping experience, <b>@Model.UserProfile.FirstName!</b></h5>
 </div>
 
 <div class="menu pb-5">
