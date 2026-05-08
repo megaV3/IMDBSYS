@@ -16,9 +16,22 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
             🛒
-        </a> 
+            <span id="cart-count" style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 10px;
+                background: #3e4e2c;
+                color: white;
+                border-radius: 50%;
+                padding: 2px 5px;
+                line-height: 1;
+                transform: translate(25%, -25%);">
+                @Model.CartCount
+            </span>
+        </a>
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             👤
         </a>
@@ -331,6 +344,13 @@
         const image = document.getElementById("previewImage");
 
         image.src = URL.createObjectURL(event.target.files[0]);
+    }
+    
+    function updateCartCount(added) {
+        var el = document.getElementById('cart-count');
+        if (el) {
+            el.textContent = (parseInt(el.textContent) || 0) + added;
+        }
     }
 
 </script>
