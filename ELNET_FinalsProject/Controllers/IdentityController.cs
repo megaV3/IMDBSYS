@@ -192,7 +192,7 @@ namespace ELNET_FinalsProject.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Identity");
         }
 
         public IActionResult Menu()

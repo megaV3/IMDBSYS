@@ -7,50 +7,38 @@
     var total = subtotal + tax;
 }
 
-<div class="navbar">
+<div class ="navbar">
+
     <div class="nav-left">
         <h2>PICKOUT COFFEE</h2>
     </div>
+
     <div class="nav-center">
         <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
     </div>
+
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">🛒</a>
-        <a asp-controller="Identity" asp-action="Profile" class="nav-icon">👤</a>
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
+            🛒
+            </span>
+        </a> 
+        <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
+            👤
+        </a>
     </div>
+
 </div>
-
 <style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        background: #f4f6f0;
-        font-family: 'Segoe UI', sans-serif;
-        margin: 0;
-    }
-
-    /* NAVBAR */
     .navbar {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: #fff;
-        border-bottom: 1px solid #e2ebd0;
-        padding: 0 36px;
-        height: 64px;
-    }
-
-    .nav-left h2 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 800;
-        letter-spacing: 3px;
-        color: #3e4e2c;
+        position: sticky; /*sticks to one place whenever you scroll*/
+        top: 0;           /*sticks at the top*/
+        z-index: 100;     /*ensures that it stays above other content*/
+        background-color: #f5f5f5;
+        
+        padding: 10px 30px;
+        color: #9caf6c;
     }
 
     .nav-center {
@@ -62,50 +50,56 @@
     .nav-link {
         text-decoration: none;
         color: #9caf6c;
-        font-size: 13px;
-        font-weight: 500;
-        padding: 7px 20px;
-        border-radius: 50px;
-        border: 1.5px solid transparent;
-        transition: .2s;
+        padding: 5px 20px;
+        border-radius: 30px;
+        transition: 0.3s ease;
     }
 
-        .nav-link:hover {
-            background: #f3f8ea;
-            text-decoration: none;
-        }
-
-        .nav-link.active {
-            border-color: #9caf6c;
-        }
-
-    .nav-right {
-        display: flex;
-        gap: 8px;
-    }
-
-    .nav-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1.5px solid #e2ebd0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
+    .nav-link:hover {
+        background: #9caf6c;
         text-decoration: none;
-        transition: .2s;
+        color: white;
     }
 
-        .nav-icon:hover {
-            background: #f3f8ea;
-            border-color: #9caf6c;
-            text-decoration: none;
-        }
+    .nav-link.active {
+        border: 2px solid #9caf6c;
+    }
 
     .active-cart {
         background: #9caf6c;
-        border-color: #9caf6c;
+        border: 2px solid #9caf6c;
+        transition: 0.3s ease;
+    }
+
+    .nav-left h2 {
+        margin: 0;
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    .nav-right {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav-icon {
+        text-decoration: none;
+        font-size: 25px;
+        /* These 3 lines center the 🛒 perfectly */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        /* This is the secret: it keeps the bubble relative to the icon */
+        position: relative;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        transition: 0.3s ease;
+    }
+
+    .nav-icon:hover {
+         text-decoration: none;
+         background: #9caf6c;
     }
 
     /* PAGE */
@@ -119,19 +113,19 @@
         margin-bottom: 28px;
     }
 
-        .cart-title h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: #2c3e1a;
-            margin: 0 0 4px;
-            letter-spacing: -0.5px;
-        }
+    .cart-title h1 {
+         font-size: 40px;
+         font-weight: 800;
+         color: #3e4e2c;
+         margin: 0 0 4px;
+         letter-spacing: -0.5px;
+    }
 
-        .cart-title p {
-            font-size: 13px;
-            color: #9aab82;
-            margin: 0;
-        }
+    .cart-title p {
+         font-size: 15px;
+         color: #9aab82;
+         margin: 0;
+    }
 
     /* TWO COLUMN */
     .cart-layout {
@@ -505,268 +499,6 @@
             border-color: #9caf6c;
             text-decoration: none;
         }
-
-    /* PAYMENT MODAL */
-    @@keyframes modalIn {
-        from {
-            opacity: 0;
-            transform: translateY(16px) scale(.97);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-
-    #paymentOverlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(46,60,30,.55);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #paymentModal {
-        background: #fff;
-        border-radius: 20px;
-        width: 92%;
-        max-width: 400px;
-        overflow: hidden;
-        box-shadow: 0 20px 50px rgba(62,78,44,.2);
-        animation: modalIn .3s cubic-bezier(.34,1.56,.64,1) both;
-    }
-
-    #paymentModalHeader {
-        background: #9caf6c;
-        padding: 22px 24px 18px;
-    }
-
-        #paymentModalHeader h4 {
-            margin: 0;
-            font-size: 17px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        #paymentModalHeader p {
-            margin: 4px 0 0;
-            font-size: 13px;
-            color: rgba(255,255,255,.8);
-        }
-
-    #paymentModalBody {
-        padding: 20px 24px 24px;
-    }
-
-    .payment-label {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        color: #9caf6c;
-        margin-bottom: 10px;
-    }
-
-    .payment-methods {
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-        gap: 10px;
-        margin-bottom: 18px;
-    }
-
-    .payment-card {
-        border: 1.5px solid #e0eac8;
-        border-radius: 14px;
-        padding: 14px 8px;
-        text-align: center;
-        cursor: pointer;
-        transition: .2s;
-        background: #fff;
-    }
-
-        .payment-card:hover {
-            border-color: #9caf6c;
-            background: #f9fdf3;
-        }
-
-        .payment-card.active {
-            border-color: #9caf6c;
-            background: #f3f8ea;
-        }
-
-        .payment-card .pay-icon {
-            font-size: 26px;
-            margin-bottom: 5px;
-        }
-
-        .payment-card .pay-name {
-            font-size: 11px;
-            font-weight: 600;
-            color: #3e4e2c;
-        }
-
-    #amountSection {
-        display: none;
-        margin-bottom: 16px;
-    }
-
-    #payAmount {
-        width: 100%;
-        border: 1.5px solid #e0eac8;
-        border-radius: 10px;
-        padding: 11px 14px;
-        font-family: 'Segoe UI', sans-serif;
-        font-size: 15px;
-        color: #3e4e2c;
-        outline: none;
-        text-align: center;
-        transition: border-color .2s;
-    }
-
-        #payAmount:focus {
-            border-color: #9caf6c;
-        }
-
-    .pay-hint {
-        font-size: 12px;
-        color: #bbb;
-        text-align: center;
-        margin-top: 6px;
-    }
-
-    .order-total-display {
-        background: #f4f6f0;
-        border-radius: 12px;
-        padding: 12px;
-        text-align: center;
-        margin-bottom: 16px;
-    }
-
-        .order-total-display span {
-            font-size: 12px;
-            color: #9aab82;
-        }
-
-        .order-total-display strong {
-            display: block;
-            font-size: 22px;
-            font-weight: 800;
-            color: #2c3e1a;
-            margin-top: 2px;
-        }
-
-    .btn-pay-now {
-        width: 100%;
-        padding: 13px;
-        border-radius: 12px;
-        border: none;
-        background: #9caf6c;
-        font-size: 14px;
-        font-weight: 600;
-        color: #fff;
-        cursor: pointer;
-        font-family: 'Segoe UI', sans-serif;
-        transition: .2s;
-        margin-bottom: 8px;
-    }
-
-        .btn-pay-now:hover {
-            background: #7a9050;
-            transform: translateY(-1px);
-        }
-
-        .btn-pay-now:disabled {
-            background: #d4d4d4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-    .btn-pay-cancel {
-        width: 100%;
-        padding: 11px;
-        border-radius: 12px;
-        border: 1.5px solid #e0eac8;
-        background: #fff;
-        font-size: 13px;
-        font-weight: 500;
-        color: #9aab82;
-        cursor: pointer;
-        font-family: 'Segoe UI', sans-serif;
-        transition: .2s;
-    }
-
-        .btn-pay-cancel:hover {
-            background: #f7f8f5;
-        }
-
-    /* SUCCESS SCREEN */
-    #successOverlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(46,60,30,.55);
-        z-index: 10000;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #successModal {
-        background: #fff;
-        border-radius: 20px;
-        width: 92%;
-        max-width: 360px;
-        padding: 40px 30px;
-        text-align: center;
-        box-shadow: 0 20px 50px rgba(62,78,44,.2);
-        animation: modalIn .3s cubic-bezier(.34,1.56,.64,1) both;
-    }
-
-    .success-icon-wrap {
-        width: 72px;
-        height: 72px;
-        background: #f3f8ea;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 16px;
-        font-size: 36px;
-        border: 2px solid #d4e6a8;
-    }
-
-    #successModal h3 {
-        font-size: 20px;
-        font-weight: 700;
-        color: #2c3e1a;
-        margin: 0 0 8px;
-    }
-
-    #successModal p {
-        font-size: 13px;
-        color: #9aab82;
-        margin: 0;
-    }
-
-    #successModal .success-method {
-        display: inline-block;
-        margin-top: 14px;
-        background: #f3f8ea;
-        color: #3e4e2c;
-        font-weight: 600;
-        font-size: 12px;
-        padding: 5px 14px;
-        border-radius: 20px;
-        border: 1px solid #d4e6a8;
-    }
-
-    .success-redirect-msg {
-        margin-top: 14px;
-        font-size: 12px;
-        color: #bbb;
-    }
 </style>
 
 <div class="cart-container">
@@ -876,9 +608,12 @@
                         <span class="total-price">₱@total.ToString("N2")</span>
                     </div>
 
-                    <button type="button" class="checkout-btn" onclick="openPaymentModal()">
-                        Checkout →
-                    </button>
+                    <form asp-controller="Order" asp-action="Checkout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="checkout-btn">
+                            Checkout →
+                        </button>
+                    </form>
                     <a asp-controller="Store" asp-action="Index" class="keep-shopping-btn">
                         Continue Shopping
                     </a>
@@ -888,128 +623,3 @@
 
     </div>
 </div>
-
-<!-- PAYMENT MODAL -->
-<div id="paymentOverlay">
-    <div id="paymentModal">
-        <div id="paymentModalHeader">
-            <h4>Choose Payment Method</h4>
-            <p>Order Total: <strong>₱@total.ToString("N2")</strong></p>
-        </div>
-        <div id="paymentModalBody">
-            <div class="payment-label">Select Method</div>
-            <div class="payment-methods">
-                <div class="payment-card" onclick="selectPayment('GCash', this)">
-                    <div class="pay-icon">💙</div>
-                    <div class="pay-name">GCash</div>
-                </div>
-                <div class="payment-card" onclick="selectPayment('PayMaya', this)">
-                    <div class="pay-icon">💚</div>
-                    <div class="pay-name">PayMaya</div>
-                </div>
-                <div class="payment-card" onclick="selectPayment('Cash', this)">
-                    <div class="pay-icon">💵</div>
-                    <div class="pay-name">Cash on Pickup</div>
-                </div>
-            </div>
-
-            <div id="amountSection">
-                <div class="payment-label">Enter Amount</div>
-                <input type="number" id="payAmount" min="1" max="99999" placeholder="e.g. 500" />
-                <p class="pay-hint">Enter the amount you are sending via <span id="methodHint"></span></p>
-            </div>
-
-            <div class="order-total-display">
-                <span>Amount Due</span>
-                <strong>₱@total.ToString("N2")</strong>
-            </div>
-
-            <button class="btn-pay-now" id="btnPayNow" onclick="submitPayment()" disabled>
-                Pay Now
-            </button>
-            <button class="btn-pay-cancel" onclick="closePaymentModal()">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<!-- SUCCESS SCREEN -->
-<div id="successOverlay">
-    <div id="successModal">
-        <div class="success-icon-wrap">✅</div>
-        <h3>Payment Confirmed!</h3>
-        <p>Your order has been placed successfully.</p>
-        <div class="success-method" id="successMethodLabel"></div>
-        <p class="success-redirect-msg">Redirecting to your receipt...</p>
-    </div>
-</div>
-
-<!-- Hidden checkout form -->
-<form id="checkoutForm" asp-controller="Order" asp-action="Checkout" method="post" style="display:none;">
-    @Html.AntiForgeryToken()
-    <input type="hidden" id="paymentMethodInput" name="paymentMethod" />
-</form>
-
-<script>
-    var _selectedMethod = null;
-
-    function openPaymentModal() {
-        _selectedMethod = null;
-        document.getElementById('paymentOverlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        document.getElementById('btnPayNow').disabled = true;
-        document.getElementById('amountSection').style.display = 'none';
-        document.getElementById('payAmount').value = '';
-        document.querySelectorAll('.payment-card').forEach(function (c) { c.classList.remove('active'); });
-    }
-
-    function closePaymentModal() {
-        document.getElementById('paymentOverlay').style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    function selectPayment(method, el) {
-        _selectedMethod = method;
-        document.querySelectorAll('.payment-card').forEach(function (c) { c.classList.remove('active'); });
-        el.classList.add('active');
-
-        if (method === 'Cash') {
-            document.getElementById('amountSection').style.display = 'none';
-            document.getElementById('btnPayNow').disabled = false;
-        } else {
-            document.getElementById('amountSection').style.display = 'block';
-            document.getElementById('methodHint').textContent = method;
-            document.getElementById('btnPayNow').disabled = true;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('payAmount').addEventListener('input', function () {
-            var val = parseFloat(this.value);
-            document.getElementById('btnPayNow').disabled = !(val > 0);
-        });
-    });
-
-    function submitPayment() {
-        if (!_selectedMethod) return;
-
-        if (_selectedMethod !== 'Cash') {
-            var amount = parseFloat(document.getElementById('payAmount').value);
-            if (!amount || amount <= 0) { alert('Please enter a valid amount.'); return; }
-        }
-
-        closePaymentModal();
-
-        document.getElementById('successMethodLabel').textContent =
-            _selectedMethod === 'Cash'  ? '💵 Cash on Pickup' :
-            _selectedMethod === 'GCash' ? '💙 Paid via GCash' :
-                                          '💚 Paid via PayMaya';
-
-        document.getElementById('successOverlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-
-        setTimeout(function () {
-            document.getElementById('paymentMethodInput').value = _selectedMethod;
-            document.getElementById('checkoutForm').submit();
-        }, 2000);
-    }
-</script>

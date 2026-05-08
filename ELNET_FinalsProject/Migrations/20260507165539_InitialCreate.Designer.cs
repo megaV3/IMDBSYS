@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELNET_FinalsProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260503064118_SyncPullChanges")]
-    partial class SyncPullChanges
+    [Migration("20260507165539_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace ELNET_FinalsProject.Migrations
 
             modelBuilder.Entity("ELNET_FinalsProject.Models.Menu", b =>
                 {
-                    b.Property<long>("MenuID")
+                    b.Property<int>("MenuId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("MenuID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
 
                     b.Property<bool>("CanBeCold")
                         .HasColumnType("bit");
@@ -55,9 +55,9 @@ namespace ELNET_FinalsProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(B, 2)");
+                        .HasColumnType("decimal(8,2)");
 
-                    b.HasKey("MenuID");
+                    b.HasKey("MenuId");
 
                     b.ToTable("Menus");
                 });
@@ -74,11 +74,13 @@ namespace ELNET_FinalsProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentMethod")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
@@ -103,16 +105,24 @@ namespace ELNET_FinalsProject.Migrations
                     b.Property<int>("MenuId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(8, 2)");
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Temperature")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("OrderItemId");
+
+                    b.HasIndex("MenuId");
 
                     b.HasIndex("OrderId");
 
@@ -143,6 +153,9 @@ namespace ELNET_FinalsProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProfileImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -154,11 +167,19 @@ namespace ELNET_FinalsProject.Migrations
 
             modelBuilder.Entity("ELNET_FinalsProject.Models.OrderItem", b =>
                 {
+                    b.HasOne("ELNET_FinalsProject.Models.Menu", "Menu")
+                        .WithMany()
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ELNET_FinalsProject.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Menu");
 
                     b.Navigation("Order");
                 });

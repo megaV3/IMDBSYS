@@ -53,7 +53,6 @@
     .nav-link:hover {
         background: #9caf6c;
         text-decoration: none;
-        padding: 5px 30px;
         color: white;
     }
 
@@ -217,8 +216,8 @@
         font-size: 15px;
         cursor: pointer;
         transition: 0.3s ease;
-        margin-top: 50px;
-        margin-bottom: 20px;
+        margin-top: 30px;
+        margin-bottom: 10px;
     }
 
     .save-btn:hover {
@@ -304,12 +303,14 @@
                 Save Changes
             </button>
 
-            <!-- SIGN OUT -->
-            <a asp-controller="Auth"
-               asp-action="Logout"
-               class="logout-btn">
-               Sign Out
-            </a>
+            
+        </form>
+        <!-- SIGN OUT -->
+        <form asp-controller="Identity"
+              asp-action="Logout" method="post">
+            <button type="submit" class="logout-btn" style="background:none; cursor:pointer; border:none;">
+                Sign Out
+            </button>
         </form>
     </div>
 </div>
