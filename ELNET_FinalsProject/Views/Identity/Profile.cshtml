@@ -1,9 +1,10 @@
-﻿
+﻿@model ELNET_FinalsProject.ViewModels.ProfileViewModel
+@await Html.PartialAsync("_TopUpModal", new ELNET_FinalsProject.ViewModels.TopUpViewModel())
 @{
     ViewData["Title"] = "Profile";
 }
 
-@model ELNET_FinalsProject.ViewModels.ProfileViewModel
+
 
 <div class ="navbar">
 
@@ -279,7 +280,95 @@
         color: #5f7338;
     }
 
+    /* This forces the modal to sit ON TOP of your green card and navbar */
+    /* .modal-backdrop {
+        z-index: 10000 !important;
+    }
 
+    #topUpModal {
+        z-index: 10001 !important;
+        background-color: white !important;
+        width: 500px;
+        margin-left: -250px; /* Centers the modal 
+        top: 25% !important;
+    } */
+
+        /* Ensure form inputs are visible
+        #topUpModal input {
+            display: block !important;
+            visibility: visible !important;
+        } */
+
+    /* Custom Modal Styling (Matches Basket Modal) */
+    .custom-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(62, 78, 44, 0.55);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-modal-content {
+        background: #fff;
+        border-radius: 24px;
+        width: 92%;
+        max-width: 400px;
+        padding: 30px;
+        box-shadow: 0 24px 60px rgba(62, 78, 44, 0.25);
+        animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .modal-header-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .close-custom {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #aaa;
+    }
+
+    .modal-input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #dde8c5;
+        border-radius: 12px;
+        font-size: 18px;
+        box-sizing: border-box;
+    }
+
+    .modal-footer-custom {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .btn-cancel-custom {
+        flex: 1;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1.5px solid #dde8c5;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .btn-confirm-custom {
+        flex: 1;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        background: #9caf6c;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
 </style>
 
@@ -330,17 +419,28 @@
 
                     <p>My Coffee Wallet</p>
 
-                    <h2>₱2,500.00</h2>
+                    <h2>₱@Model.Balance</h2>
 
                 </div>
 
-                <a asp-controller="Wallet"
-                       asp-action="TopUp"
-                       class="topup-btn">
-
+                @* <a asp-action="TopUp" class="topup-btn">
                     + Top Up Balance
-                </a>
-
+                </a> *@
+                @* <button type="button"
+                        class="topup-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#topUpModal">
+                    + Top Up Balance
+                </button> *@
+                @* <button type="button"
+                        class="topup-btn"
+                        data-toggle="modal"
+                        data-target="#topUpModal">
+                    + Top Up Balance
+                </button> *@
+                <button type="button" class="topup-btn" onclick="openTopUpModal()">
+                    + Top Up Balance
+                </button>
             </div>
 
              <!--first name-->
@@ -389,7 +489,7 @@
         </form>
     </div>
 </div>
-
+@* @await Html.PartialAsync("_TopUpModal", new ELNET_FinalsProject.ViewModels.TopUpViewModel()) *@
 <script>
 
     function previewProfileImage(event) {
@@ -403,6 +503,22 @@
         var el = document.getElementById('cart-count');
         if (el) {
             el.textContent = (parseInt(el.textContent) || 0) + added;
+        }
+    }
+
+        function openTopUpModal() {
+        document.getElementById('topUpOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Stop scrolling
+    }
+
+    function closeTopUpModal() {
+        document.getElementById('topUpOverlay').style.display = 'none';
+        document.body.style.overflow = ''; // Resume scrolling
+    }
+
+    function handleTopUpOverlayClick(e) {
+        if (e.target === document.getElementById('topUpOverlay')) {
+            closeTopUpModal();
         }
     }
 

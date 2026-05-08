@@ -8,7 +8,6 @@
         public string? ProfileImagePath { get; set; }
         public IFormFile? ProfileImage { get; set; }
         public int CartCount { get; set; }
-
-
-    }
+        public decimal Balance { get; set; }
+    }   
 }

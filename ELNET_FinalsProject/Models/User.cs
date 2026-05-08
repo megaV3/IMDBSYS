@@ -29,5 +29,6 @@ namespace ELNET_FinalsProject.Models
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; } = string.Empty;
         public string? ProfileImagePath { get; set; } = "~/images/profiles/default-picture.webp";
+        public decimal Balance { get; set; } = 0;
     }
 }
