@@ -579,6 +579,14 @@
             PISTACHIO
         </a>
 
+        <a href="#milk-based" class="quick-btn">
+            MILK-BASED
+        </a>
+
+        <a href="#frappes" class="quick-btn">
+            FRAPPES
+        </a>
+
     </div>
 
     <div class="signatures-header" id="signatures">
@@ -653,7 +661,7 @@
         }
     </div>
 
-    <div class="espresso-header">
+    <div class="espresso-header" id="milk-based">
         <h2 class="mt-5">⋆.𐙚 ̊  MILK-BASED ̊  𐙚.⋆</h2>
     </div>
     <div class="row-fluid">
@@ -677,10 +685,10 @@
         }
     </div>
 
-    <div class="espresso-header">
+    <div class="espresso-header" id="frappes">
         <h2 class="mt-5">⋆.𐙚 ̊  FRAPPES ̊  𐙚.⋆</h2>
     </div>
-    <div class="row-fluid">
+    <div class="row-fluid" style="margin-bottom:3rem;">
         @foreach (var item in Model.Menus)
         {
             if (item.Category == "Frappes")
@@ -872,4 +880,14 @@
             t.style.transform = 'translateX(-50%) translateY(20px)';
         }, 2800);
     }
+</script>
+
+<script>
+    document.querySelectorAll('.quick-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.quick-btn'). forEach(btn => btn.classList.remove('active-menu'));
+
+            this.classList.add('active-menu');
+        });
+    });
 </script>

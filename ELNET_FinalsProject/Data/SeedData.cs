@@ -77,52 +77,52 @@ namespace ELNET_FinalsProject.Data
                     new Menu
                     {
                         Name = "Biscoff Frappe",
-                        Category = "Signatures",
+                        Category = "Frappes",
                         Price = 110m,
                         Description = "A smooth and creamy iced frappe blended with Biscoff, delivering a rich caramel flavor with a subtle spiced finish.",
                         CanBeHot = false,
                         CanBeCold = true,
-                        ImagePath = "/images/signatures/biscoff.png"
+                        ImagePath = "/images/frappes/biscoff.png"
                     },
                     new Menu
                     {
                         Name = "Strawberry Milkshake",
-                        Category = "Signatures",
+                        Category = "Milk-Based",
                         Price = 95m,
                         Description = "A creamy, refreshing blend of milk and sweet strawberries, offering a smooth and fruity treat in every sip.",
                         CanBeHot = false,
                         CanBeCold = true,
-                        ImagePath = "/images/signatures/strawberry.png"
+                        ImagePath = "/images/milkbased/strawberry.png"
                     },
                     new Menu
                     {
                         Name = "Cocoa Fudge Frappe",
-                        Category = "Signatures",
+                        Category = "Frappes",
                         Price = 115m,
                         Description = "A rich, chocolatey frappe with smooth cocoa and fudgy sweetness.",
                         CanBeHot = false,
                         CanBeCold = true,
-                        ImagePath = "/images/signatures/chocolate.png"
+                        ImagePath = "/images/frappes/chocolate.png"
                     },
                     new Menu
                     {
                         Name = "Cold Matcha Frappe",
-                        Category = "Signatures",
+                        Category = "Frappes",
                         Price = 85m,
                         Description = "A creamy matcha frappe topped with light, airy cloud foam.",
                         CanBeHot = false,
                         CanBeCold = true,
-                        ImagePath = "/images/signatures/matcha.png"
+                        ImagePath = "/images/frappes/matcha.png"
                     },
                     new Menu
                     {
                         Name = "Salted Caramel Frappe",
-                        Category = "Signatures",
+                        Category = "Frappes",
                         Price = 79m,
                         Description = "A rich caramel frappe with a smooth, lightly salted finish.",
                         CanBeHot = false,
                         CanBeCold = true,
-                        ImagePath = "/images/signatures/caramel.png"
+                        ImagePath = "/images/frappes/caramel.png"
                     },
                     new Menu
                     {
