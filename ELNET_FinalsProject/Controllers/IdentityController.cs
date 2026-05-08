@@ -104,6 +104,7 @@ namespace ELNET_FinalsProject.Controllers
 
             var vm = new ProfileViewModel
             {
+                Balance = user.Balance,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -243,29 +244,34 @@ namespace ELNET_FinalsProject.Controllers
             if (!ModelState.IsValid)
             {
                 // Handle validation errors (e.g., negative amount)
-                return RedirectToAction("Index");
+                return RedirectToAction("Profile", "Identity");
             }
 
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userIdClaim == null) return Unauthorized();
 
             // 1. Update the User's Wallet Balance
-            var user = await _context.Users.FindAsync(userIdClaim);
+            var user = await _context.Users.FindAsync(int.Parse(userIdClaim));
             user.Balance += model.Amount;
 
             // 2. Create the History Record
             var history = new TopUpHistory
             {
                 UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Amount = model.Amount,
                 TransactionDate = DateTime.Now,
+                Email = user.Email,
+                PaymentMethod = "Credit Card", // This can be dynamic based on user input
                 Status = "Success"
             };
 
+            _context.Users.Update(user);
             _context.TopUpHistories.Add(history);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index"); // Refresh the profile page to show new balance
+            return RedirectToAction("Profile", "Identity"); // Refresh the profile page to show new balance
         }
     }
 }
