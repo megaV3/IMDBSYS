@@ -3,6 +3,8 @@
     ViewData["Title"] = "Profile";
 }
 
+@model ELNET_FinalsProject.ViewModels.ProfileViewModel
+
 <div class ="navbar">
 
     <div class="nav-left">
@@ -236,39 +238,44 @@
 
 <div class="profile-page">
     <div class="profile-card">
-
-
-        <!--prof image-->
-        <div class="profile-image-section">
-
-            <img id="previewImage" src="@(string.IsNullOrEmpty(Model.ProfileImagePath) ? "/images/default-avatar.png" : Model.ProfileImagePath)"
-                 class="profile-image"/>
-
-            <label for="profileUpload" class="edit-icon">
-                ✎
-            </label>
-
-            <input type="file"
-                   id="profileUpload"
-                   name="profileImage"
-                   accept="image/*"
-                   hidden
-                   onchange="previewProfileImage(event)" />
-
-        </div>
-
-        <!--title-->
-        <h2>Your Profile</h2>
-
-        <p class="profile-subtitle">
-            Update your details for a personalized brew experience.
-        </p>
-
+        
         <!--form-->
         <form asp-action="Profile"
               asp-controller="Identity"
               method="post"
               enctype="multipart/form-data">
+
+
+            <!--prof image-->
+            <div class="profile-image-section">
+            
+                <!--
+                <img id="previewImage" src="~(string.IsNullOrEmpty(Model.ProfileImagePath) ? "/images/default-avatar.png" : Model.ProfileImagePath)"
+                     class="profile-image" />
+                -->
+
+                <img id="previewImage" src="@Url.Content(Model.ProfileImagePath)"
+                     class="profile-image" />
+
+                <label for="profileUpload" class="edit-icon">
+                    ✎
+                </label>
+
+                <input type="file"
+                       id="profileUpload"
+                       name="profileImage"
+                       accept="image/*"
+                       hidden
+                       onchange="previewProfileImage(event)" />
+
+            </div>
+
+            <!--title-->
+            <h2>Your Profile</h2>
+
+            <p class="profile-subtitle">
+                Update your details for a personalized brew experience.
+            </p>
 
              <!--first name-->
             <div class="input-group">
@@ -302,6 +309,8 @@
             <button type="submit" class="save-btn">
                 Save Changes
             </button>
+
+            <div asp-validation-summary="All"></div>
 
             
         </form>
