@@ -7,50 +7,37 @@
     var total = subtotal + tax;
 }
 
-<div class="navbar">
+<div class ="navbar">
+
     <div class="nav-left">
         <h2>PICKOUT COFFEE</h2>
     </div>
+
     <div class="nav-center">
         <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
     </div>
+
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">🛒</a>
-        <a asp-controller="Identity" asp-action="Profile" class="nav-icon">👤</a>
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
+            🛒
+        </a> 
+        <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
+            👤
+        </a>
     </div>
+
 </div>
-
 <style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        background: #f4f6f0;
-        font-family: 'Segoe UI', sans-serif;
-        margin: 0;
-    }
-
-    /* NAVBAR */
     .navbar {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: #fff;
-        border-bottom: 1px solid #e2ebd0;
-        padding: 0 36px;
-        height: 64px;
-    }
-
-    .nav-left h2 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 800;
-        letter-spacing: 3px;
-        color: #3e4e2c;
+        position: sticky; /*sticks to one place whenever you scroll*/
+        top: 0;           /*sticks at the top*/
+        z-index: 100;     /*ensures that it stays above other content*/
+        background-color: #f5f5f5;
+        
+        padding: 10px 30px;
+        color: #9caf6c;
     }
 
     .nav-center {
@@ -62,50 +49,57 @@
     .nav-link {
         text-decoration: none;
         color: #9caf6c;
-        font-size: 13px;
-        font-weight: 500;
-        padding: 7px 20px;
-        border-radius: 50px;
-        border: 1.5px solid transparent;
-        transition: .2s;
+        padding: 5px 20px;
+        border-radius: 30px;
+        transition: 0.3s ease;
     }
 
-        .nav-link:hover {
-            background: #f3f8ea;
-            text-decoration: none;
-        }
-
-        .nav-link.active {
-            border-color: #9caf6c;
-        }
-
-    .nav-right {
-        display: flex;
-        gap: 8px;
-    }
-
-    .nav-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1.5px solid #e2ebd0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
+    .nav-link:hover {
+        background: #9caf6c;
         text-decoration: none;
-        transition: .2s;
+        padding: 5px 30px;
+        color: white;
     }
 
-        .nav-icon:hover {
-            background: #f3f8ea;
-            border-color: #9caf6c;
-            text-decoration: none;
-        }
+    .nav-link.active {
+        border: 2px solid #9caf6c;
+    }
 
     .active-cart {
         background: #9caf6c;
-        border-color: #9caf6c;
+        border: 2px solid #9caf6c;
+        transition: 0.3s ease;
+    }
+
+    .nav-left h2 {
+        margin: 0;
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    .nav-right {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav-icon {
+        text-decoration: none;
+        font-size: 25px;
+        /* These 3 lines center the 🛒 perfectly */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        /* This is the secret: it keeps the bubble relative to the icon */
+        position: relative;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        transition: 0.3s ease;
+    }
+
+    .nav-icon:hover {
+         text-decoration: none;
+         background: #9caf6c;
     }
 
     /* PAGE */
@@ -119,19 +113,19 @@
         margin-bottom: 28px;
     }
 
-        .cart-title h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: #2c3e1a;
-            margin: 0 0 4px;
-            letter-spacing: -0.5px;
-        }
+    .cart-title h1 {
+         font-size: 40px;
+         font-weight: 800;
+         color: #3e4e2c;
+         margin: 0 0 4px;
+         letter-spacing: -0.5px;
+    }
 
-        .cart-title p {
-            font-size: 13px;
-            color: #9aab82;
-            margin: 0;
-        }
+    .cart-title p {
+         font-size: 15px;
+         color: #9aab82;
+         margin: 0;
+    }
 
     /* TWO COLUMN */
     .cart-layout {
