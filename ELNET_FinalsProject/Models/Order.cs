@@ -19,8 +19,6 @@ namespace ELNET_FinalsProject.Models
         [Column(TypeName = "decimal(8, 2)")]
         public decimal TotalAmount { get; set; }
 
-        public string? PaymentMethod { get; set; }
-
         public bool IsCompleted { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

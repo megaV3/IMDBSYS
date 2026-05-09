@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Your Cart";
+    bool isAmountEnough = TempData["AmountCheck"] as bool? ?? false;
     var subtotal = Model?.Sum(i => i.Total) ?? 0;
     var tax = subtotal * 0.12m;
     var total = subtotal + tax;
@@ -608,10 +609,15 @@
                     </div>
 
                     <hr class="summary-divider" />
-
+                    
                     <div class="summary-total-row">
                         <span class="summary-total-label">Total</span>
                         <span class="total-price">₱@total.ToString("N2")</span>
+                    </div>
+
+                    <div class="summary-total-row">
+                        <span class="summary-total-label">Balance</span>
+                        <span class="total-price">₱@ViewBag.UserBalance</span>
                     </div>
 
                     <form asp-controller="Order" asp-action="Checkout" method="post">
@@ -619,7 +625,11 @@
                         <button type="submit" class="checkout-btn">
                             Checkout →
                         </button>
-                    </form>
+                        @if (isAmountEnough == false)
+                            { 
+                                 <p class="text-danger" style="text-align: center; margin-top: 10px;">Insufficient Balance</p>
+                            }
+                        </form>
                     <a asp-controller="Store" asp-action="Index" class="keep-shopping-btn">
                         Continue Shopping
                     </a>

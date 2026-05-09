@@ -1,5 +1,9 @@
 ﻿@model ELNET_FinalsProject.ViewModels.ProfileViewModel
-@await Html.PartialAsync("_TopUpModal", new ELNET_FinalsProject.ViewModels.TopUpViewModel())
+@await Html.PartialAsync("_TopUpModal", new ELNET_FinalsProject.ViewModels.TopUpViewModel()
+{
+    Email = Model.Email
+})
+
 @{
     ViewData["Title"] = "Profile";
 }
@@ -523,3 +527,8 @@
     }
 
 </script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

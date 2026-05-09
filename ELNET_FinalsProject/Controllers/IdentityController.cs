@@ -244,7 +244,7 @@ namespace ELNET_FinalsProject.Controllers
             if (!ModelState.IsValid)
             {
                 // Handle validation errors (e.g., negative amount)
-                return RedirectToAction("Profile", "Identity");
+                return RedirectToAction("Index", "Store");
             }
 
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -263,7 +263,7 @@ namespace ELNET_FinalsProject.Controllers
                 Amount = model.Amount,
                 TransactionDate = DateTime.Now,
                 Email = user.Email,
-                PaymentMethod = "Credit Card", // This can be dynamic based on user input
+                PaymentMethod = model.PaymentMethod, // This can be dynamic based on user input
                 Status = "Success"
             };
 

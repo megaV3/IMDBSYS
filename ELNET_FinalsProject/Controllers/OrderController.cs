@@ -33,6 +33,7 @@ namespace ELNET_FinalsProject.Controllers
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             ViewBag.ProfileImagePath = userProfile.ProfileImagePath;
+            ViewBag.UserBalance = userProfile.Balance;
 
             if (order == null)
             {
@@ -53,7 +54,7 @@ namespace ELNET_FinalsProject.Controllers
 
             if (order == null)
             {
-                order = new Order { UserId = userId, IsCompleted = false };
+                order = new Order { UserId = userId, IsCompleted = false};
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
             }
@@ -190,12 +191,20 @@ namespace ELNET_FinalsProject.Controllers
             var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
-            order.IsCompleted = true;
-            order.OrderDate = DateTime.Now;
-            order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
-            order.TotalAmount = totalAmount;
-            order.PaymentMethod =PaymentMethod;
+            if (customerName.Balance >= totalAmount)
+            {
+                order.IsCompleted = true;
+                order.OrderDate = DateTime.Now;
+                order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
+                order.TotalAmount = totalAmount;
 
+                customerName.Balance = customerName.Balance - order.TotalAmount;
+            }
+            else
+            {
+                TempData["AmountCheck"] = false;
+                return RedirectToAction("Cart");
+            }
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Receipt");
