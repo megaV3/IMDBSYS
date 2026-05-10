@@ -19,9 +19,12 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
-            🛒
-        </a> 
+        <!-- Wrap only the images in the circular div -->
+        <div class="cart-wrapper">
+            <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
+            <img class="cart-img hover-img" src="~/images/cart-green.png" alt="Cart Hover" />
+        </div>
+
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             <img class="nav-icon active-profile" src="@Url.Content(ViewBag.ProfileImagePath)" />
         </a>
@@ -79,7 +82,55 @@
 
     .nav-right {
         display: flex;
-        gap: 20px;
+        align-items: center; /* Keeps them perfectly level */
+        gap: 15px; /* Adjust this to change the distance between them */
+    }
+
+    .cart-wrapper, .profile-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 40px; /* Set a fixed size for a perfect circle */
+        height: 40px;
+        vertical-align: middle;
+        /* This creates the rounded shape */
+        border-radius: 50%;
+        overflow: hidden; /* Ensures nothing spills out of the circle */
+        background-color: transparent; /* Or a light background if your PNGs have transparency */
+    }
+
+    .cart-img, .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 'cover' is better for rounded icons to ensure they fill the circle */
+        border-radius: 50%; /* Double-ensure the images are rounded */
+        transition: opacity 0.3s ease;
+    }
+
+    .hover-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 2;
+    }
+
+    .default-img {
+        position: relative;
+        opacity: 1;
+        z-index: 1;
+        border: 2px solid #9caf6c;
+        box-sizing: border-box;
+    }
+
+    /* Hover States */
+    .cart-wrapper:hover .hover-img,
+    .profile-wrapper:hover .hover-img {
+        opacity: 1;
+    }
+
+    .cart-wrapper:hover .default-img,
+    .profile-wrapper:hover .default-img {
+        opacity: 0;
     }
 
     .nav-icon {
@@ -95,7 +146,9 @@
         height: 45px;
         border-radius: 50%;
         transition: 0.3s ease;
+
     }
+
 
     .nav-icon:hover {
          text-decoration: none;
@@ -105,8 +158,8 @@
     .nav-icon img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* This is the magic line */
-        border-radius: 50%; /* Ensures the image itself is also clipped to a circle */
+        object-fit: cover; 
+        border-radius: 50%; 
     }
 
     /* PAGE */
@@ -230,10 +283,10 @@
         margin-top: 2px;
     }
 
-        .item-price-tag strong {
-            color: #3e4e2c;
-            font-weight: 700;
-        }
+            .item-price-tag strong {
+                color: #3e4e2c;
+                font-weight: 700;
+            }
 
     /* QTY CONTROLS */
     .item-controls {
@@ -301,11 +354,11 @@
         flex-shrink: 0;
     }
 
-        .remove-btn:hover {
-            color: #e24b4a;
-            background: #fff5f5;
-            border-color: #f5c8c8;
-        }
+    .remove-btn:hover {
+        color: #e24b4a;
+        background: #fff5f5;
+        border-color: #f5c8c8;
+    }
 
     /* EMPTY CART */
     .empty-cart {
@@ -359,11 +412,11 @@
         transition: .2s;
     }
 
-        .browse-btn:hover {
-            background: #7a9050;
-            text-decoration: none;
-            transform: translateY(-1px);
-        }
+    .browse-btn:hover {
+        background: #7a9050;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
 
     /* SUMMARY */
     .summary {

@@ -27,16 +27,53 @@
     </div>
 </div> *@
 <style>
-    .payment-card{
-        border: 1px solid black;
-        border-radius:4px;
-        margin-right:40px;
+    .payment-container {
+        display: flex;
+        flex-direction: column; /* Stack cards vertically, or keep row if you prefer */
+        gap: 12px;
+        max-width: 400px;
+        margin: 20px auto;
     }
 
-    .payment-container{
-        flex-wrap:wrap;
-        gap:10px;
-    } 
+    .payment-card {
+        background: #fff;
+        border: 1px solid #e2ebd0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        transition: 0.2s ease;
+    }
+
+        .payment-card:hover {
+            border-color: #9caf6c;
+            background-color: #f9fbf4;
+        }
+
+    .payment-label {
+        display: flex;
+        align-items: center; /* Vertically centers radio, img, and text */
+        gap: 15px; /* Space between elements */
+        cursor: pointer;
+        width: 100%;
+    }
+
+        /* Fix the image size */
+        .payment-label img {
+            width: 40px; /* Adjust size as needed */
+            height: 30px;
+            object-fit: contain; /* Keeps logo proportions perfect */
+        }
+
+    .payment-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #3e4e2c;
+    }
+
+    /* Optional: Highlight the card when radio is checked */
+    .payment-card:has(input:checked) {
+        border: 2px solid #9caf6c;
+        background-color: #f3f8ea;
+    }
 
     .modal-input {
         width: 90% !important;
@@ -100,32 +137,40 @@
                 @* <input asp-for="PaymentMethod" class="modal-input" /> *@
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
 
-                <div class="payment-container" style="display:flex; justify-content:center; align-items:center;">
+                <div class="payment-container">
+                    <!-- GCash -->
                     <div class="payment-card">
-                        <label>
+                        <label class="payment-label">
                             <input type="radio" asp-for="PaymentMethod" value="Gcash">
-                            <img src="coffee.jpg" alt="Coffee"> <!--Gcashi-->
+                            <img src="~/images/gcash.png" alt="GCash">
+                            <span class="payment-name">GCash</span>
                         </label>
                     </div>
 
+                    <!-- PayMaya -->
                     <div class="payment-card">
-                        <label>
+                        <label class="payment-label">
                             <input type="radio" asp-for="PaymentMethod" value="PayMaya">
-                            <img src="coffee.jpg" alt="Coffee"> <!--Paymaya-->
-                        </label>
-                    </div>
-                    
-                    <div class="payment-card">
-                        <label>
-                            <input type="radio" asp-for="PaymentMethod" value="GoTyme">
-                            <img src="coffee.jpg" alt="Coffee"> <!--GoTyme-->
+                            <img src="/images/paymaya.png" alt="PayMaya">
+                            <span class="payment-name">PayMaya</span>
                         </label>
                     </div>
 
+                    <!-- GoTyme -->
                     <div class="payment-card">
-                        <label>
+                        <label class="payment-label">
+                            <input type="radio" asp-for="PaymentMethod" value="GoTyme">
+                            <img src="/images/gotyme.jpg" alt="GoTyme">
+                            <span class="payment-name">GoTyme</span>
+                        </label>
+                    </div>
+
+                    <!-- Credit Card -->
+                    <div class="payment-card">
+                        <label class="payment-label">
                             <input type="radio" asp-for="PaymentMethod" value="Credit Card">
-                            <img src="coffee.jpg" alt="Coffee"> <!--Credit Cards and Sh-->
+                            <img src="/images/cards.png" alt="Credit Card">
+                            <span class="payment-name">Credit Card</span>
                         </label>
                     </div>
                 </div>
