@@ -184,6 +184,19 @@
             <button type="submit" class="save-btn">
                 Save Changes
             </button>
+            
+            @if (ViewBag.IsProfileUpdated != null && ViewBag.IsProfileUpdated)
+            {
+                <div class="badge bg-success">
+                    Profile updated successfully!
+                </div>
+            }
+            else if (ViewBag.IsNameSame != null && ViewBag.IsNameSame)
+            {
+                <div class="badge bg-danger">
+                    Name is still the same!
+                </div>
+            }
 
             <div asp-validation-summary="All"></div>
 
