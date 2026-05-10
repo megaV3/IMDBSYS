@@ -360,6 +360,7 @@
 
     .browse-btn:hover {
         background: #7a9050;
+        color: #fff;
         text-decoration: none;
         transform: translateY(-1px);
     }
