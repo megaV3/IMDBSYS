@@ -272,12 +272,16 @@ namespace ELNET_FinalsProject.Controllers
                 .Where(o => o.UserId == userId && o.IsCompleted)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
-            
+
+            var activeCartItemCount = await _context.OrderItems
+                .Where(oi => oi.Order.UserId == userId && !oi.Order.IsCompleted)
+                .SumAsync(oi => oi.Quantity);
+
             var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             var userOrders = new OrderHistoryViewModel
             {
-                CartCount = orders.Count,
+                CartCount = activeCartItemCount,
                 ProfileImagePath = userProfile.ProfileImagePath,
                 OrderHistory = orders,
             };
