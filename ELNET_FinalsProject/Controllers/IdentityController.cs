@@ -136,6 +136,15 @@ namespace ELNET_FinalsProject.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return RedirectToAction("Login");
 
+            // Check if the first name and last name is the same as the current record *@
+            
+            if (user.FirstName == vm.FirstName && user.LastName == vm.LastName)
+            {
+                ViewBag.IsNameSame = true;
+                vm.Email = user.Email;
+                vm.ProfileImagePath = user.ProfileImagePath;
+                return View(vm);
+            }
             user.FirstName = vm.FirstName;
             user.LastName = vm.LastName;
 
@@ -156,8 +165,11 @@ namespace ELNET_FinalsProject.Controllers
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = "Profile updated successfully!";
-            return RedirectToAction("Profile");
+            // Populate viewmodel with user data
+            vm.Email = user.Email;
+            vm.ProfileImagePath = user.ProfileImagePath;
+            ViewBag.IsProfileUpdated = true;
+            return View(vm);
         }
 
         [HttpGet]
@@ -200,8 +212,19 @@ namespace ELNET_FinalsProject.Controllers
             var user = await _context.Users.FindAsync(int.Parse(userIdClaim));
             if (user == null) return NotFound();
 
-            user.FirstName = vm.FirstName;
-            user.LastName = vm.LastName;
+            if (user.FirstName == vm.FirstName)
+            {
+                ViewBag.IsFirstNameSame = true;
+                return RedirectToAction("Profile");
+            } else if (user.LastName == vm.LastName)
+            {
+                ViewBag.IsLastNameSame = true;
+                return RedirectToAction("Profile");
+            } else 
+            {
+                user.FirstName = vm.FirstName;
+                user.LastName = vm.LastName;
+            }
 
             if (vm.ProfileImage != null && vm.ProfileImage.Length > 0)
             {
