@@ -102,6 +102,12 @@ namespace ELNET_FinalsProject.Controllers
             // Sum up the quantities of all items in the cart
             int count = order?.OrderItems.Sum(oi => oi.Quantity) ?? 0;
 
+            var topUpHistory = await _context.TopUpHistories
+                .Where(h => h.UserId == userId)
+                .OrderByDescending(h => h.TransactionDate)
+                .ToListAsync();
+
+
             var vm = new ProfileViewModel
             {
                 Balance = user.Balance,
@@ -109,7 +115,8 @@ namespace ELNET_FinalsProject.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 ProfileImagePath = user.ProfileImagePath,
-                CartCount = count
+                CartCount = count,
+                TopUpHistory = topUpHistory
             };
             return View(vm);
         }
@@ -215,7 +222,7 @@ namespace ELNET_FinalsProject.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Identity");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Menu()
