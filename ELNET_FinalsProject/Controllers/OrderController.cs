@@ -5,6 +5,7 @@ using ELNET_FinalsProject.Data;
 using ELNET_FinalsProject.Models;
 using System.Security.Claims;
 using System.Text.Json;
+using ELNET_FinalsProject.ViewModels;
 
 namespace ELNET_FinalsProject.Controllers
 {
@@ -33,12 +34,45 @@ namespace ELNET_FinalsProject.Controllers
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             ViewBag.ProfileImagePath = userProfile.ProfileImagePath;
+            ViewBag.UserBalance = userProfile.Balance;
 
+
+            // Checks if the order is null
             if (order == null)
             {
-                return View(new List<OrderItem>());
+                ViewBag.IsCartEmpty = true;
+                return View();
             }
 
+            //If the order is no longer null, it then checks if the count of cartItems is 0, then initializes a ViewBag that cart is empty and returns View
+            var cartItems = await _context.Orders
+                .Where(o => o.UserId == userId && !o.IsCompleted)
+                .SelectMany(o => o.OrderItems)
+                .Include(oi => oi.Menu)
+                .ToListAsync();
+
+            if (cartItems.Count == 0)
+            {
+                ViewBag.IsCartEmpty = true;
+                return View();
+            }
+
+
+            decimal totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
+            totalAmount *= 1.12m;
+
+            ViewBag.UserBalance = userProfile.Balance;
+
+            if (userProfile.Balance >= totalAmount)
+            {
+                ViewBag.IsAmountEnough = true;
+            }
+            else
+            {
+                ViewBag.IsAmountEnough = false;
+            }
+
+            ViewBag.IsCartEmpty = false;
             return View(order.OrderItems);
         }
 
@@ -53,7 +87,7 @@ namespace ELNET_FinalsProject.Controllers
 
             if (order == null)
             {
-                order = new Order { UserId = userId, IsCompleted = false };
+                order = new Order { UserId = userId, IsCompleted = false};
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
             }
@@ -190,11 +224,22 @@ namespace ELNET_FinalsProject.Controllers
             var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
-            order.IsCompleted = true;
-            order.OrderDate = DateTime.Now;
-            order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
-            order.TotalAmount = totalAmount;
-            order.PaymentMethod =PaymentMethod;
+            if (customerName.Balance >= totalAmount)
+            {
+                order.IsCompleted = true;
+                order.OrderDate = DateTime.Now;
+                order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
+                order.TotalAmount = totalAmount;
+
+                customerName.Balance = customerName.Balance - order.TotalAmount;
+
+                ViewData["AmountCheck"] = true;
+            }
+            else
+            {
+                ViewData["AmountCheck"] = false;
+                return RedirectToAction("Cart");
+            }
 
             await _context.SaveChangesAsync();
 
@@ -214,6 +259,30 @@ namespace ELNET_FinalsProject.Controllers
                 .FirstOrDefaultAsync();
 
             return View(order);
+        }
+
+        // ORDER HISTORY PAGE
+        public async Task<IActionResult> History()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Menu)
+                .Where(o => o.UserId == userId && o.IsCompleted)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+            
+            var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            var userOrders = new OrderHistoryViewModel
+            {
+                CartCount = orders.Count,
+                ProfileImagePath = userProfile.ProfileImagePath,
+                OrderHistory = orders,
+            };
+
+            return View(userOrders);
         }
     }
 }

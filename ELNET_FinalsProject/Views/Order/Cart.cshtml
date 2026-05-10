@@ -7,6 +7,9 @@
     var total = subtotal + tax;
 }
 
+<!--  For Cart.cshtml design -->
+<link href="~/css/cart.css" rel="stylesheet" />
+
 <div class ="navbar">
 
     <div class="nav-left">
@@ -18,9 +21,17 @@
     </div>
 
     <div class="nav-right">
+        @if (ViewBag.IsCartEmpty)
+        {
+            <div class="nav-balance">
+                <span class="balance-label">₱</span>
+                <span class="balance-amount">@ViewBag.UserBalance.ToString("0.00")</span>
+            </div>
+        }
         <a asp-controller="Order" asp-action="Cart" class="nav-icon active-cart">
             🛒
         </a> 
+
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             <img class="nav-icon active-profile" src="@Url.Content(ViewBag.ProfileImagePath)" />
         </a>
@@ -28,483 +39,6 @@
 
 </div>
 <style>
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        position: sticky; /*sticks to one place whenever you scroll*/
-        top: 0;           /*sticks at the top*/
-        z-index: 100;     /*ensures that it stays above other content*/
-        background-color: #f5f5f5;
-        
-        padding: 10px 30px;
-        color: #9caf6c;
-    }
-
-    .nav-center {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .nav-link {
-        text-decoration: none;
-        color: #9caf6c;
-        padding: 5px 20px;
-        border-radius: 30px;
-        transition: 0.3s ease;
-    }
-
-    .nav-link:hover {
-        background: #9caf6c;
-        text-decoration: none;
-        color: white;
-    }
-
-    .nav-link.active {
-        border: 2px solid #9caf6c;
-    }
-
-    .active-cart {
-        background: #9caf6c;
-        border: 2px solid #9caf6c;
-        transition: 0.3s ease;
-    }
-
-    .nav-left h2 {
-        margin: 0;
-        font-weight: bold;
-        font-size: 25px;
-    }
-
-    .nav-right {
-        display: flex;
-        gap: 20px;
-    }
-
-    .nav-icon {
-        text-decoration: none;
-        font-size: 25px;
-        /* These 3 lines center the 🛒 perfectly */
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        /* This is the secret: it keeps the bubble relative to the icon */
-        position: relative;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        transition: 0.3s ease;
-    }
-
-    .nav-icon:hover {
-         text-decoration: none;
-         background: #9caf6c;
-    }
-
-    .nav-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* This is the magic line */
-        border-radius: 50%; /* Ensures the image itself is also clipped to a circle */
-    }
-
-    /* PAGE */
-    .cart-container {
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 36px 28px 80px;
-    }
-
-    .cart-title {
-        margin-bottom: 28px;
-    }
-
-    .cart-title h1 {
-         font-size: 40px;
-         font-weight: 800;
-         color: #3e4e2c;
-         margin: 0 0 4px;
-         letter-spacing: -0.5px;
-    }
-
-    .cart-title p {
-         font-size: 15px;
-         color: #9aab82;
-         margin: 0;
-    }
-
-    /* TWO COLUMN */
-    .cart-layout {
-        display: grid;
-        grid-template-columns: 1fr 330px;
-        gap: 22px;
-        align-items: start;
-    }
-
-    .items-label {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: .1em;
-        text-transform: uppercase;
-        color: #9aab82;
-        margin-bottom: 12px;
-    }
-
-    /* CART CARDS */
-    .cart-items {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .cart-card {
-        background: #fff;
-        border: 1px solid #e2ebd0;
-        border-radius: 16px;
-        padding: 16px 18px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-bottom: 10px;
-        transition: border-color .2s, box-shadow .2s;
-    }
-
-    .cart-card:hover {
-        border-color: #c0d890;
-        box-shadow: 0 2px 12px rgba(156,175,108,.12);
-    }
-
-    .item-left {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        flex: 1;
-        min-width: 0;
-    }
-
-    .item-left img {
-        width: 66px;
-        height: 66px;
-        object-fit: cover;
-        border-radius: 12px;
-        border: 1px solid #e2ebd0;
-        flex-shrink: 0;
-        background: #f3f8ea;
-    }
-
-    .item-info {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        min-width: 0;
-    }
-
-    .item-name {
-        font-size: 15px;
-        font-weight: 700;
-        color: #2c3e1a;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .item-tags {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-    }
-
-    .item-tag {
-        font-size: 11px;
-        padding: 2px 9px;
-        border-radius: 20px;
-        font-weight: 500;
-        background: #f3f8ea;
-        color: #5a7030;
-        border: 1px solid #d4e6a8;
-    }
-
-    .item-price-tag {
-        font-size: 13px;
-        color: #7a8f60;
-        margin-top: 2px;
-    }
-
-        .item-price-tag strong {
-            color: #3e4e2c;
-            font-weight: 700;
-        }
-
-    /* QTY CONTROLS */
-    .item-controls {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-    }
-
-    .qty-box {
-        display: flex;
-        align-items: center;
-        border: 1.5px solid #d4e6a8;
-        border-radius: 50px;
-        overflow: hidden;
-        background: #fff;
-    }
-
-    .qty-btn {
-        width: 36px;
-        height: 36px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        font-weight: 600;
-        color: #7a9050;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background .15s, color .15s;
-        flex-shrink: 0;
-    }
-
-        .qty-btn:hover {
-            background: #f3f8ea;
-            color: #3e4e2c;
-        }
-
-        .qty-btn:active {
-            transform: scale(.92);
-        }
-
-    .qty-count {
-        min-width: 34px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 700;
-        color: #3e4e2c;
-    }
-
-    .remove-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1.5px solid #f0e8e8;
-        background: none;
-        cursor: pointer;
-        color: #cca8a8;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: .2s;
-        flex-shrink: 0;
-    }
-
-        .remove-btn:hover {
-            color: #e24b4a;
-            background: #fff5f5;
-            border-color: #f5c8c8;
-        }
-
-    /* EMPTY CART */
-    .empty-cart {
-        background: #fff;
-        border: 1px solid #e2ebd0;
-        border-radius: 20px;
-        padding: 70px 40px;
-        text-align: center;
-        grid-column: 1 / -1;
-        max-width: 500px;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .empty-cart-icon {
-        width: 80px;
-        height: 80px;
-        background: #f3f8ea;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-        font-size: 36px;
-        border: 2px solid #d4e6a8;
-    }
-
-    .empty-cart h2 {
-        font-size: 22px;
-        font-weight: 700;
-        color: #3e4e2c;
-        margin-bottom: 6px;
-    }
-
-    .empty-cart p {
-        font-size: 14px;
-        color: #9aab82;
-        margin: 0;
-    }
-
-    .browse-btn {
-        margin-top: 24px;
-        display: inline-block;
-        background: #9caf6c;
-        color: #fff;
-        padding: 13px 30px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: .2s;
-    }
-
-        .browse-btn:hover {
-            background: #7a9050;
-            text-decoration: none;
-            transform: translateY(-1px);
-        }
-
-    /* SUMMARY */
-    .summary {
-        background: #fff;
-        border: 1px solid #e2ebd0;
-        border-radius: 20px;
-        overflow: hidden;
-        position: sticky;
-        top: 80px;
-    }
-
-    .summary-header {
-        background: #9caf6c;
-        padding: 20px 22px;
-    }
-
-        .summary-header h3 {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            margin: 0 0 2px;
-        }
-
-        .summary-header p {
-            font-size: 12px;
-            color: rgba(255,255,255,.75);
-            margin: 0;
-        }
-
-    .summary-body {
-        padding: 18px 22px 22px;
-    }
-
-    .summary-items {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 16px;
-    }
-
-    .summary-item-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 13px;
-    }
-
-    .summary-item-name {
-        color: #5a6e40;
-        max-width: 175px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .summary-item-qty {
-        font-size: 11px;
-        color: #aabf80;
-        margin-left: 3px;
-    }
-
-    .summary-item-amt {
-        font-weight: 600;
-        color: #3e4e2c;
-    }
-
-    .summary-divider {
-        border: none;
-        border-top: 1px solid #eef2e6;
-        margin: 12px 0;
-    }
-
-    .summary-row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 13px;
-        color: #7a8f60;
-        margin-bottom: 6px;
-    }
-
-    .summary-total-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 12px;
-    }
-
-    .summary-total-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #2c3e1a;
-    }
-
-    .total-price {
-        font-size: 22px;
-        font-weight: 800;
-        color: #2c3e1a;
-        letter-spacing: -0.5px;
-    }
-
-    .checkout-btn {
-        display: block;
-        width: 100%;
-        padding: 13px;
-        margin-top: 18px;
-        background: #9caf6c;
-        color: #fff;
-        border: none;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        font-family: 'Segoe UI', sans-serif;
-        transition: .2s;
-    }
-
-        .checkout-btn:hover {
-            background: #7a9050;
-            transform: translateY(-1px);
-        }
-
-    .keep-shopping-btn {
-        display: block;
-        width: 100%;
-        padding: 11px;
-        margin-top: 8px;
-        background: none;
-        border: 1.5px solid #d4e6a8;
-        border-radius: 12px;
-        color: #7a9050;
-        font-size: 13px;
-        font-weight: 500;
-        text-align: center;
-        text-decoration: none;
-        transition: .2s;
-    }
-
-        .keep-shopping-btn:hover {
-            background: #f3f8ea;
-            border-color: #9caf6c;
-            text-decoration: none;
-        }
 </style>
 
 <div class="cart-container">
@@ -608,18 +142,33 @@
                     </div>
 
                     <hr class="summary-divider" />
-
+                    
                     <div class="summary-total-row">
                         <span class="summary-total-label">Total</span>
                         <span class="total-price">₱@total.ToString("N2")</span>
                     </div>
 
+                    <div class="summary-total-row">
+                        <span class="summary-total-label">Balance</span>
+                        <span class="total-price bal">₱@ViewBag.UserBalance</span>
+                    </div>
+
                     <form asp-controller="Order" asp-action="Checkout" method="post">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="checkout-btn">
-                            Checkout →
-                        </button>
-                    </form>
+                        @if (!ViewBag.IsAmountEnough)
+                        {
+                            <button type="submit" class="checkout-btn" disabled>
+                                Checkout →
+                            </button>
+                            <p class="text-danger" style="text-align: center; margin-top: 10px;">Insufficient Balance</p>
+                        } else
+                        {
+                            <button type="submit" class="checkout-btn">
+                                Checkout →
+                            </button>
+                                
+                        }
+                        </form>
                     <a asp-controller="Store" asp-action="Index" class="keep-shopping-btn">
                         Continue Shopping
                     </a>

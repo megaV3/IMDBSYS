@@ -1,0 +1,394 @@
+﻿body {
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #f5f5f5;
+    padding: 10px 30px;
+    color: #9caf6c;
+}
+
+.nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #9caf6c;
+    padding: 5px 20px;
+    border-radius: 30px;
+    transition: 0.3s ease;
+}
+
+    .nav-link:hover {
+        background: #9caf6c;
+        text-decoration: none;
+        color: white;
+    }
+
+    .nav-link.active {
+        border: 2px solid #9caf6c;
+    }
+
+.active-profile {
+    border: 1px solid #9caf6c;
+}
+
+.nav-left h2 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-icon {
+    text-decoration: none;
+    font-size: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    transition: 0.3s ease;
+}
+
+    .nav-icon:hover {
+        text-decoration: none;
+        background: #9caf6c;
+    }
+
+    .nav-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+body {
+    background: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.profile-page {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    margin-bottom: 50px;
+}
+
+.profile-card {
+    width: 500px;
+    background: #9caf6c;
+    border-radius: 30px;
+    padding: 40px 35px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+}
+
+.profile-image-section {
+    position: relative;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: white;
+    color: #9caf6c;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.profile-card h2 {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.profile-subtitle {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+    .input-group label {
+        font-size: 13px;
+        color: antiquewhite;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 20px 22px;
+        border: 2px solid #ddd;
+        border-radius: 20px !important;
+        outline: none;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+.readonly-input {
+    background: #efefef;
+    cursor: not-allowed;
+}
+
+.save-btn {
+    width: 100%;
+    background: white;
+    color: #556b2f;
+    border: none;
+    padding: 14px;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+    .save-btn:hover {
+        background: #85995b;
+        color: white;
+    }
+
+.logout-btn {
+    display: inline-block;
+    color: #ff0000;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* WALLET BOX */
+.wallet-box {
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 25px;
+    padding: 18px 22px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.wallet-left p {
+    margin: 0;
+    color: white;
+    font-size: 15px;
+}
+
+.wallet-left h2 {
+    margin: 5px 0 0 0;
+    color: white;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+/* WALLET RIGHT — stacked buttons */
+.wallet-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.topup-btn {
+    text-decoration: none;
+    background: white;
+    color: #5f7338;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+    .topup-btn:hover {
+        background: #f0f0f0;
+        color: #5f7338;
+        text-decoration: none;
+    }
+
+/* This forces the modal to sit ON TOP of your green card and navbar */
+/* .modal-backdrop {
+            z-index: 10000 !important;
+        }
+
+        #topUpModal {
+            z-index: 10001 !important;
+            background-color: white !important;
+            width: 500px;
+            margin-left: -250px; /* Centers the modal
+            top: 25% !important;
+        } */
+
+/* Ensure form inputs are visible
+            #topUpModal input {
+                display: block !important;
+                visibility: visible !important;
+            } */
+
+/* Custom Modal Styling (Matches Basket Modal) */
+/* History link — no border, subtle */
+.history-link-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.85);
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    transition: 0.2s ease;
+}
+
+    .history-link-btn:hover {
+        color: white;
+    }
+
+/* Custom Modal Styling */
+.custom-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(62, 78, 44, 0.55);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-modal-content {
+    background: #fff;
+    border-radius: 24px;
+    width: 92%;
+    max-width: 400px;
+    padding: 30px;
+    box-shadow: 0 24px 60px rgba(62, 78, 44, 0.25);
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-custom {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dde8c5;
+    border-radius: 12px;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+
+.modal-footer-custom {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn-cancel-custom {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid #dde8c5;
+    background: #fff;
+    cursor: pointer;
+}
+
+.btn-confirm-custom {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #9caf6c;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.history-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1.5px solid rgba(255,255,255,0.6);
+    border-radius: 20px;
+    transition: 0.2s ease;
+}
+
+.history-btn:hover{
+    text-decoration: none;
+    background:rgba(255,255,255,0.1);
+    color: #006400;
+}

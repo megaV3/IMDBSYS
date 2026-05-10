@@ -41,6 +41,11 @@ namespace ELNET_FinalsProject.Controllers
                     ModelState.AddModelError("Username", "Username already exists.");
                     return View(register);
                 }
+                else if (_context.Users.Any(r => r.Email == register.Email))
+                {
+                    ModelState.AddModelError("Email", "Email already exists.");
+                    return View(register);
+                }
                 _context.Users.Add(register);
                 _context.SaveChanges();
                 return RedirectToAction("Login");
@@ -102,6 +107,12 @@ namespace ELNET_FinalsProject.Controllers
             // Sum up the quantities of all items in the cart
             int count = order?.OrderItems.Sum(oi => oi.Quantity) ?? 0;
 
+            var topUpHistory = await _context.TopUpHistories
+                .Where(h => h.UserId == userId)
+                .OrderByDescending(h => h.TransactionDate)
+                .ToListAsync();
+
+
             var vm = new ProfileViewModel
             {
                 Balance = user.Balance,
@@ -109,7 +120,8 @@ namespace ELNET_FinalsProject.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 ProfileImagePath = user.ProfileImagePath,
-                CartCount = count
+                CartCount = count,
+                TopUpHistory = topUpHistory
             };
             return View(vm);
         }
@@ -215,7 +227,7 @@ namespace ELNET_FinalsProject.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Identity");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Menu()
@@ -244,7 +256,7 @@ namespace ELNET_FinalsProject.Controllers
             if (!ModelState.IsValid)
             {
                 // Handle validation errors (e.g., negative amount)
-                return RedirectToAction("Profile", "Identity");
+                return RedirectToAction("Index", "Store");
             }
 
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -263,7 +275,7 @@ namespace ELNET_FinalsProject.Controllers
                 Amount = model.Amount,
                 TransactionDate = DateTime.Now,
                 Email = user.Email,
-                PaymentMethod = "Credit Card", // This can be dynamic based on user input
+                PaymentMethod = model.PaymentMethod, // This can be dynamic based on user input
                 Status = "Success"
             };
 

@@ -26,6 +26,89 @@
         </div>
     </div>
 </div> *@
+<style>
+    .payment-container {
+        display: flex;
+        flex-direction: column; /* Stack cards vertically, or keep row if you prefer */
+        gap: 12px;
+        max-width: 400px;
+        margin: 20px auto;
+    }
+
+    .payment-card {
+        background: #fff;
+        border: 1px solid #e2ebd0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        transition: 0.2s ease;
+    }
+
+        .payment-card:hover {
+            border-color: #9caf6c;
+            background-color: #f9fbf4;
+        }
+
+    .payment-label {
+        display: flex;
+        align-items: center; /* Vertically centers radio, img, and text */
+        gap: 15px; /* Space between elements */
+        cursor: pointer;
+        width: 100%;
+    }
+
+        /* Fix the image size */
+        .payment-label img {
+            width: 40px; /* Adjust size as needed */
+            height: 30px;
+            object-fit: contain; /* Keeps logo proportions perfect */
+        }
+
+    .payment-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #3e4e2c;
+    }
+
+    /* Optional: Highlight the card when radio is checked */
+    .payment-card:has(input:checked) {
+        border: 2px solid #9caf6c;
+        background-color: #f3f8ea;
+    }
+
+    .modal-input {
+        width: 90% !important;
+        padding: 17px !important; /* top-bottom | left-right */
+        border: 1px solid #3e4e2c !important;
+        border-radius: 10px !important;
+        font-size: 15px !important;
+    }
+
+    .modal-header-custom{
+        background-color: #9CAF6C; /* green */
+        padding: 10px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: -30px -30px 20px -30px;
+        border-radius: 20px 20px 0 0;
+        }
+
+    .modal-header-custom h3{
+        margin: 0;
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .close-custom{
+        background: none;
+        border: none;
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+    }
+
+</style>
 
 @model ELNET_FinalsProject.ViewModels.TopUpViewModel
 
@@ -33,14 +116,65 @@
     <div id="topUpModal" class="custom-modal-content">
 
         <div class="modal-header-custom">
-            <h3 style="margin:0; color: #333;">Top Up Balance</h3>
+            <h3>Top Up Balance</h3>
             <button type="button" class="close-custom" onclick="closeTopUpModal()">×</button>
         </div>
 
         <form asp-action="ProcessTopUp" asp-controller="Identity" method="post" style="margin: 0;">
             <div class="modal-body-custom">
                 <label style="color: #333; font-weight: bold; display: block; margin-bottom: 10px;">Amount to Add</label>
-                <input asp-for="Amount" type="number" class="modal-input" placeholder="₱0.00" required />
+                <input asp-for="Amount" class="modal-input" placeholder="₱0.00" required />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+
+            <div class="modal-body-custom">
+                <label style="color: #333; font-weight: bold; display: block; margin-bottom: 10px;">Email</label>
+                <input asp-for="Email" class="modal-input" value="@Model.Email" readonly />
+            </div>
+
+            <div class="modal-body-custom">
+                <label style="color: #333; font-weight: bold; display: block; margin-bottom: 10px;">Payment Method</label>
+                @* <input asp-for="PaymentMethod" class="modal-input" /> *@
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+
+                <div class="payment-container">
+                    <!-- GCash -->
+                    <div class="payment-card">
+                        <label class="payment-label">
+                            <input type="radio" asp-for="PaymentMethod" value="Gcash">
+                            <img src="~/images/gcash.png" alt="GCash">
+                            <span class="payment-name">GCash</span>
+                        </label>
+                    </div>
+
+                    <!-- PayMaya -->
+                    <div class="payment-card">
+                        <label class="payment-label">
+                            <input type="radio" asp-for="PaymentMethod" value="PayMaya">
+                            <img src="/images/paymaya.png" alt="PayMaya">
+                            <span class="payment-name">PayMaya</span>
+                        </label>
+                    </div>
+
+                    <!-- GoTyme -->
+                    <div class="payment-card">
+                        <label class="payment-label">
+                            <input type="radio" asp-for="PaymentMethod" value="GoTyme">
+                            <img src="/images/gotyme.jpg" alt="GoTyme">
+                            <span class="payment-name">GoTyme</span>
+                        </label>
+                    </div>
+
+                    <!-- Credit Card -->
+                    <div class="payment-card">
+                        <label class="payment-label">
+                            <input type="radio" asp-for="PaymentMethod" value="Credit Card">
+                            <img src="/images/cards.png" alt="Credit Card">
+                            <span class="payment-name">Credit Card</span>
+                        </label>
+                    </div>
+                </div>
+
             </div>
 
             <div class="modal-footer-custom">

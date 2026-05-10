@@ -47,6 +47,7 @@ body {
 .bottom-section {
     background-color: #ffffff;
     padding: 60px 20px;
+    min-height: 100vh;
 }
 
 .navbar {
@@ -185,6 +186,15 @@ body {
     transform: scale(1.05);
 }
 
+.drinks-menu h2 {
+    font-size: 45px;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    color: #9CAF6C;
+    text-align: center;
+}
+
 /* sig png names */
 .drink-card h3 {
     font-size: 20px;
@@ -217,14 +227,6 @@ body {
     flex-wrap: wrap;
 }
 
-.drinks-menu h2 {
-    font-size: 2.8rem;
-    font-weight: bold;
-    margin-bottom: 40px;
-    color: #9CAF6C;
-    text-align: center;
-}
-
 /*motto*/
 .motto {
     text-align: center;
@@ -233,7 +235,7 @@ body {
 }
 
 .motto h3 {
-    font-size: 2.1rem;
+    font-size: 30px;
     font-weight: bold;
     color: #9CAF6C;
     margin-bottom: 8px;
@@ -241,7 +243,7 @@ body {
 }
 
 .motto p {
-    font-size: 1.8rem;
+    font-size: 20px;
     color: #5C3D2E;
     font-style: italic;
     margin: 0;
@@ -251,6 +253,7 @@ body {
 .story-section {
     background-color: #e8f0e0;  
     padding: 80px 20px;
+    min-height: 100vh;
 }
 
 .story-container {
@@ -266,8 +269,9 @@ body {
 }
 
 .story-content h2 {
-    font-size: 3.2rem;
+    font-size: 25px;
     color: #5C3D2E;
+    margin-top: 60px;
     margin-bottom: 25px;
     position: relative;
 }
@@ -283,7 +287,7 @@ body {
 }
 
 .story-content p {
-    font-size: 1.6rem;
+    font-size: 18px;
     color: #444;
     line-height: 1.8;
     margin-bottom: 20px;

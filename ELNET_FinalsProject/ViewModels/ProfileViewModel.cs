@@ -1,4 +1,6 @@
-﻿namespace ELNET_FinalsProject.ViewModels
+﻿using ELNET_FinalsProject.Models;
+
+namespace ELNET_FinalsProject.ViewModels
 {
     public class ProfileViewModel
     {
@@ -6,8 +8,9 @@
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? ProfileImagePath { get; set; }
-        public IFormFile? ProfileImage { get; set; }
         public int CartCount { get; set; }
+        public IFormFile? ProfileImage { get; set; }
         public decimal Balance { get; set; }
+        public List<TopUpHistory> TopUpHistory { get; set; } = new();
     }   
 }
