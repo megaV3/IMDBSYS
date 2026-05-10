@@ -20,7 +20,8 @@ namespace ELNET_FinalsProject.Models
         public decimal TotalAmount { get; set; }
 
         public bool IsCompleted { get; set; }
-
+        
+        //links to OrderItem
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
