@@ -41,6 +41,11 @@ namespace ELNET_FinalsProject.Controllers
                     ModelState.AddModelError("Username", "Username already exists.");
                     return View(register);
                 }
+                else if (_context.Users.Any(r => r.Email == register.Email))
+                {
+                    ModelState.AddModelError("Email", "Email already exists.");
+                    return View(register);
+                }
                 _context.Users.Add(register);
                 _context.SaveChanges();
                 return RedirectToAction("Login");

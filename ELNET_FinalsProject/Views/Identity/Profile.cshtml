@@ -22,8 +22,12 @@
     </div>
 
     <div class="nav-right">
-        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
-            🛒
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon" style="position:relative; display:inline-block;">
+            <!-- Wrap only the images in the circular div -->
+            <div class="cart-wrapper">
+                <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
+                <img class="cart-img hover-img" src="~/images/cart-green.png" alt="Cart Hover" />
+            </div>
             <span id="cart-count" style="
                 position: absolute;
                 top: 0;
