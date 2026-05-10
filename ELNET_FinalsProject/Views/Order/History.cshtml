@@ -58,46 +58,61 @@
         </a>
 </div>
 
-    @foreach (var order in Model.OrderHistory) {
+    @if (Model.OrderHistory != null && Model.OrderHistory.Any())
+    {
+        @foreach (var order in Model.OrderHistory)
+        {
 
-        <div class="history-card">
+            <div class="history-card">
 
-            <div class="history-top">
-                <div>
-                    <h3>Order #@order.OrderId</h3>
-                    <span class="date">@order.OrderDate</span>
+                <div class="history-top">
+                    <div>
+                        <h3>Order #@order.OrderId</h3>
+                        <span class="date">@order.OrderDate</span>
+                    </div>
+
+                    <span class="status completed">
+                        @if (order.IsCompleted)
+                        {
+                            <span class="">Completed</span>
+                        }
+                        else
+                        {
+                            <span class="text-bg-secondary">Not Completed</span>
+                        }
+                    </span>
+
                 </div>
 
-                <span class="status completed">
-                    @if (order.IsCompleted)
-                    {
-                        <span class="">Completed</span>
-                    } else
-                    {
-                        <span class="text-bg-secondary">Not Completed</span>
-                    }
-                </span>
+                <div class="history-middle">
+                    <p><bold>Customer</bold>: @order.CustomerName</p>
+                    <div></div>
+                    <p>
+                        Orders:
+                        @foreach (var orderItem in order.OrderItems)
+                        {
+                            <p>x @orderItem.Quantity - @orderItem.Menu.Name (Note: @orderItem.Notes) <small></small></p>
+                        }
+                    </p>
+                </div>
+
+                <div class="history-bottom">
+                    <h2>₱ @order.TotalAmount</h2>
+                </div>
 
             </div>
-
-            <div class="history-middle">
-                <p><bold>Customer</bold>: @order.CustomerName</p>
-                <div></div>
-                <p>Orders:
-                @foreach (var orderItem in order.OrderItems)
-                {
-                    <p>x @orderItem.Quantity - @orderItem.Menu.Name (Note: @orderItem.Notes) <small></small></p>
-                }
-                </p>
-            </div>
-
-            <div class="history-bottom">
-                <h2>₱ @order.TotalAmount</h2>
-            </div>
-
+        }
+        
+    } else
+    {
+        
+        <div style="text-align:center; padding:40px 0; color:#aaa;">
+            <div style="font-size:40px; margin-bottom:10px;">🧾</div>
+            <p style="margin:0; font-size:14px;">No orders yet.</p>
         </div>
     }
     <!-- SAMPLE CARD -->
+    @*
     <div class="history-card">
 
         <div class="history-top">
@@ -120,5 +135,7 @@
         </div>
 
     </div>
+
+    *@
 
 </div>
