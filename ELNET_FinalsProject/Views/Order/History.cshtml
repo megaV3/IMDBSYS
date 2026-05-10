@@ -1,0 +1,124 @@
+﻿@model ELNET_FinalsProject.ViewModels.OrderHistoryViewModel
+
+@{
+    ViewData["Title"] = "Order History";
+}
+<!--  For Profile.cshtml designs  -->
+@*
+    
+*@
+<link href="~/css/history.css" rel="stylesheet" />
+
+<div class="navbar">
+    <div class="nav-left">
+        <h2>PICKOUT COFFEE</h2>
+    </div>
+    <div class="nav-center">
+        <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
+    </div>
+    <div class="nav-right">
+        <a asp-controller="Order" asp-action="Cart" class="nav-icon">
+            🛒
+            <span id="cart-count" style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 10px;
+                background: #3e4e2c;
+                color: white;
+                border-radius: 50%;
+                padding: 2px 5px;
+                line-height: 1;
+                transform: translate(25%, -25%);">
+                @Model.CartCount
+            </span>
+        </a>
+        <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
+            <img class="nav-icon active-profile" src="@Url.Content(Model.ProfileImagePath)" />
+        </a>
+    </div>
+</div>
+
+
+<div class="history-page">
+
+    <div class="history-topbar">
+
+        <div class="history-header">
+            <h1>Your Orders</h1>
+            <p>Review your previous coffee orders.</p>
+        </div>
+
+        <a asp-controller="Identity"
+           asp-action="Profile"
+           class="back-btn">
+
+            ← Back
+
+        </a>
+</div>
+
+    @foreach (var order in Model.OrderHistory) {
+
+        <div class="history-card">
+
+            <div class="history-top">
+                <div>
+                    <h3>Order #@order.OrderId</h3>
+                    <span class="date">@order.OrderDate</span>
+                </div>
+
+                <span class="status completed">
+                    @if (order.IsCompleted)
+                    {
+                        <span class="">Completed</span>
+                    } else
+                    {
+                        <span class="text-bg-secondary">Not Completed</span>
+                    }
+                </span>
+
+            </div>
+
+            <div class="history-middle">
+                <p><bold>Customer</bold>: @order.CustomerName</p>
+                <div></div>
+                <p>Orders:
+                @foreach (var orderItem in order.OrderItems)
+                {
+                    <p>x @orderItem.Quantity - @orderItem.Menu.Name (Note: @orderItem.Notes) <small></small></p>
+                }
+                </p>
+            </div>
+
+            <div class="history-bottom">
+                <h2>₱ @order.TotalAmount</h2>
+            </div>
+
+        </div>
+    }
+    <!-- SAMPLE CARD -->
+    <div class="history-card">
+
+        <div class="history-top">
+            <div>
+                <h3>Order #1024</h3>
+                <span class="date">May 10, 2026</span>
+            </div>
+
+            <span class="status completed">
+                Completed
+            </span>
+        </div>
+
+        <div class="history-middle">
+            <p><bold>Customer</bold>: John Wayne Yabao</p>
+        </div>
+
+        <div class="history-bottom">
+            <h2>₱183.68</h2>
+        </div>
+
+    </div>
+
+</div>
