@@ -76,7 +76,7 @@
                                         @if (!string.IsNullOrEmpty(item.Temperature))
                                         {
                                             <span class="item-tag">
-                                                @(item.Temperature == "Hot" ? "🔥" : "🧊") @item.Temperature
+                                                @item.Temperature
                                             </span>
                                         }
                                         @if (!string.IsNullOrEmpty(item.Notes))
