@@ -67,7 +67,7 @@
 
                 <div class="history-top">
                     <div>
-                        <h3>Order #@order.OrderId</h3>
+                        <h3>Order ID: @order.OrderId</h3>
                         <span class="date">@order.OrderDate</span>
                     </div>
 
@@ -84,20 +84,37 @@
 
                 </div>
 
-                <div class="history-middle">
+                <div class="history-middle mb-4">
                     <p><bold>Customer</bold>: @order.CustomerName</p>
-                    <div></div>
-                    <p>
-                        Orders:
-                        @foreach (var orderItem in order.OrderItems)
-                        {
-                            <p>x @orderItem.Quantity - @orderItem.Menu.Name (Note: @orderItem.Notes) <small></small></p>
-                        }
-                    </p>
+                    <hr />
+                    
+                    Orders:
+                    @foreach (var orderItem in order.OrderItems)
+                    {
+                        <div class="row">
+                            <div class="col-5">
+                                <span>
+                                    x @orderItem.Quantity - <strong> @orderItem.Menu.Name</strong> <small> <br />
+                                    (Note: @orderItem.Notes
+                                    @if (orderItem.Notes != null)
+                                    {
+                                        @orderItem.Notes
+                                    } else {
+                                        <span>None</span>
+                                    }
+                                    ) </small>
+                                
+                                </span>
+                            </div>
+                            <div class="col-2">
+                                <small class="fst-italic">@orderItem.Quantity x @orderItem.Price -  ₱ @(orderItem.Price * orderItem.Quantity)</small>
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <div class="history-bottom">
-                    <h2>₱ @order.TotalAmount</h2>
+                    <h2>Total: ₱ @order.TotalAmount</h2>
                 </div>
 
             </div>
