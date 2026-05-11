@@ -90,22 +90,23 @@
             </div>
         </div>
 
-        <div class="payment-method">
+        <div class="payment-method" style="color:grey; font-size:13px;">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
             </svg>
+            via Coffee Wallet
         </div>
 
-        <a asp-action="DownloadReceipt" asp-route-id="@Model.OrderId" class="btn-save">
+        @* <a asp-action="DownloadReceipt" asp-route-id="@Model.OrderId" class="btn-save">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
             </svg>
             Save Receipt
-        </a>
+        </a> *@
 
         <a asp-action="Index" asp-controller="Store" class="btn-back">
             Back to Home
