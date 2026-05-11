@@ -5,6 +5,10 @@
 <div class="navbar">
     <div class="nav-left">
         <h2>PICKOUT COFFEE</h2>
+        <div class="search-container">
+            <input type="text" id="menuSearch" placeholder="Search for coffee..." autocomplete="off">
+            <div id="searchResults" class="search-results-dropdown"></div>
+        </div>
     </div>
     <div class="nav-center">
         <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
@@ -50,6 +54,47 @@
 </div>
 
 <style>
+    .search-container {
+        display: flex;
+        align-items: center; /* Centers the input box vertically */
+        height: 100%;
+    }
+    #menuSearch {
+        width: 200px;
+        height: 38px; /* Slightly smaller than 40px often feels more balanced */
+        padding: 0 15px;
+        border-radius: 20px;
+        border: 1.5px solid #9caf6c;
+        outline: none;
+        /* This ensures the input itself doesn't have weird margins */
+        margin: 0;
+
+    }
+    #menuSearch:focus {
+        border-color: #3e4e2c;
+        box-shadow: 0 0 8px rgba(156, 175, 108, 0.3);
+    }
+    .search-results-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 200px;            /* This will now be 300px automatically */
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 1001;
+        display: none;
+    }
+    .search-item {
+        padding: 8px 12px; 
+        cursor: pointer; 
+        border-bottom: 1px solid #eee;
+        font-size: 14px; 
+        color: #333;
+    }
+    .search-item:hover { 
+        background-color: #f3f8ea; 
+    }
     body {
         scroll-behavior: smooth;
     }
@@ -93,11 +138,21 @@
         .nav-link.active {
             border: 2px solid #9caf6c;
         }
-
+    .nav-left {
+        display: flex;
+        align-items: center;    /* Vertically centers children */
+        justify-content: flex-start;
+        gap: 20px;
+        height: 100%;           /* Fill the navbar height */
+        flex: 1;
+    }
     .nav-left h2 {
-        margin: 0;
-        font-weight: bold;
+        margin: 0; /* Remove default browser margins */
+        padding: 0;
         font-size: 25px;
+        display: flex;
+        align-items: center; /* Extra insurance for text centering */
+        height: 100%;
     }
 
     .nav-right {
@@ -590,6 +645,13 @@
         flex-wrap: wrap;
         gap: 18px;
         margin-bottom: 50px;
+
+        /* FIX: Position it exactly below the 70px navbar */
+        position: sticky;
+        top: 70px; /* Matches your .navbar height */
+        z-index: 999; /* Just below the main navbar z-index */
+        background-color: #f5f5f5;
+        padding: 7px 10px; /* Added padding to give the buttons breathing room */
     }
 
     .quick-btn {
@@ -663,7 +725,7 @@
         <h1>OUR MENU</h1>
     </div>
 
-    <div class="quick-menu" style="z-index:200; position:sticky; top:59px; background-color: #f5f5f5; padding:10px;">
+    <div class="quick-menu">
 
         <a href="#signatures" class="quick-btn active-menu">
             SIGNATURES
@@ -991,7 +1053,7 @@
 
         const observerOptions = {
         root: null,
-        rootMargin: '-20% 0px -70% 0px', // Adjusts the "trigger" area in the viewport
+        rootMargin: '-15% 0px -75% 0px', // Adjusts the "trigger" area in the viewport
         threshold: 0
     };
 
@@ -1017,5 +1079,60 @@
     // Track all sections that have an ID corresponding to a menu link
     document.querySelectorAll('section[id], div[id]').forEach((section) => {
         observer.observe(section);
+    });
+</script>
+
+<script>
+    // for search bar
+        document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById('menuSearch');
+        const resultsDiv = document.getElementById('searchResults');
+    
+        // Get all product titles from your cards
+        const cards = document.querySelectorAll('.card');
+
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            resultsDiv.innerHTML = ''; // Clear previous results
+
+            if (query.length < 1) {
+                resultsDiv.style.display = 'none';
+                return;
+            }
+
+            let foundMatch = false;
+
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').innerText;
+            
+                if (title.toLowerCase().includes(query)) {
+                    foundMatch = true;
+                    const item = document.createElement('div');
+                    item.className = 'search-item';
+                    item.innerText = title;
+
+                    // When clicked, scroll to that specific card
+                    item.onclick = function () {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                        // Optional: Brief highlight effect so the user sees which one it is
+                        card.style.transition = "0.5s";
+                        card.style.boxShadow = "0 0 20px #9caf6c";
+                        setTimeout(() => { card.style.boxShadow = ""; }, 2000);
+
+                        resultsDiv.style.display = 'none';
+                        searchInput.value = '';
+                    };
+                    resultsDiv.appendChild(item);
+                }
+            });
+
+            resultsDiv.style.display = foundMatch ? 'block' : 'none';
+        });
+
+        // Close dropdown if user clicks away
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target)) resultsDiv.style.display = 'none';
+        });
     });
 </script>
