@@ -230,6 +230,8 @@
         border-radius: 50%;
         object-fit: cover;
         border: 4px solid white;
+
+        box-shadow: 0 10px 25px rgba(0,0,0,0.18), 0 4px 10px rgba(255,255,255,0.2);
     }
 
     .edit-icon {
@@ -448,142 +450,216 @@
 
 <div class="profile-page">
     <div class="profile-card">
-        
-        <!--form-->
-        <form asp-action="Profile"
-              asp-controller="Identity"
-              method="post"
-              enctype="multipart/form-data">
 
+        <!-- Profile Image -->
+        <div class="profile-image-section">
+            <img id="previewImage" src="@Url.Content(Model.ProfileImagePath)" class="profile-image" />
+        </div>
 
-            <!--prof image-->
-            <div class="profile-image-section">
-            
-                <!--
-                <img id="previewImage" src="~(string.IsNullOrEmpty(Model.ProfileImagePath) ? "/images/default-avatar.png" : Model.ProfileImagePath)"
-                     class="profile-image" />
-                -->
+        <!-- Title -->
+        <h2>Your Profile</h2>
 
-                <img id="previewImage" src="@Url.Content(Model.ProfileImagePath)"
-                     class="profile-image" />
+        <!-- Edit Button (Triggers Modal) -->
+        <button type="button" onclick="openEditProfileModal()"
+                style="background:white; color:#5f7338; border:none; padding:8px 20px;
+               border-radius:20px; font-size:13px; font-weight:bold;
+               cursor:pointer; margin-bottom:10px; transition:0.3s ease;"
+                onmouseover="this.style.background='#f0f0f0'"
+                onmouseout="this.style.background='white'">
+            ✎ Edit Profile
+        </button>
 
-                <label for="profileUpload" class="edit-icon">
-                    ✎
-                </label>
+        <p class="profile-subtitle">
+            Update your details for a personalized brew experience.
+        </p>
 
-                <input type="file"
-                       id="profileUpload"
-                       name="profileImage"
-                       accept="image/*"
-                       hidden
-                       onchange="previewProfileImage(event)" />
-
+        <!-- Wallet Box -->
+        <div class="wallet-box">
+            <div class="wallet-left">
+                <p>My Coffee Wallet</p>
+                <h2>₱@Model.Balance</h2>
             </div>
 
-            <!--title-->
-            <h2>Your Profile</h2>
-
-            <p class="profile-subtitle">
-                Update your details for a personalized brew experience.
-            </p>
-
-            <div class="wallet-box">
-
-                <div class="wallet-left">
-
-                    <p>My Coffee Wallet</p>
-
-                    <h2>₱@Model.Balance</h2>
-
-                </div>
-
-                @* <a asp-action="TopUp" class="topup-btn">
+            <div class="wallet-right">
+                <button type="button" class="topup-btn" onclick="openTopUpModal()">
                     + Top Up Balance
-                </a> *@
-                @* <button type="button"
-                        class="topup-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#topUpModal">
-                    + Top Up Balance
-                </button> *@
-                @* <button type="button"
-                        class="topup-btn"
-                        data-toggle="modal"
-                        data-target="#topUpModal">
-                    + Top Up Balance
-                </button> *@
-                <div class="wallet-right">
-                    <button type="button" class="topup-btn" onclick="openTopUpModal()">
-                        + Top Up Balance
-                    </button>
-                    <button type="button" class="history-link-btn" onclick="openHistoryModal()">
-                        View History
-                    </button>
-                </div>
+                </button>
+                <button type="button" class="history-link-btn" onclick="openHistoryModal()">
+                    View History
+                </button>
             </div>
+        </div>
 
-            <a asp-controller="Order" asp-action="History" class="history-btn">
-                <i class="fa-regular fa-file-lines"></i>
-                View Order History
-            </a>
+        <!-- Order History Link -->
+        <a asp-controller="Order" asp-action="History" class="history-btn" style="text-decoration:none; color:white; display:block; margin-bottom:20px;">
+            <i class="fa-regular fa-file-lines"></i>
+            View Order History
+        </a>
 
-             <!--first name-->
-            <div class="input-group">
-                <label>First Name</label>
-
-                <input type="text"
-                       name="FirstName"
-                       value="@Model.FirstName" />
+        <!-- DISPLAY FIELDS (Original UI look, but non-editable) -->
+        <div class="input-group">
+            <label>First Name</label>
+            <div style="width: 100%; padding: 20px 22px; background: rgba(255,255,255,0.1); border-radius: 20px; color: white; font-size: 16px; text-align: left;">
+                @Model.FirstName
             </div>
+        </div>
 
-            <!--last name-->
-            <div class="input-group">
-                <label>Last Name</label>
-
-                <input type="text"
-                       name="LastName"
-                       value="@Model.LastName" />
+        <div class="input-group">
+            <label>Last Name</label>
+            <div style="width: 100%; padding: 20px 22px; background: rgba(255,255,255,0.1); border-radius: 20px; color: white; font-size: 16px; text-align: left;">
+                @Model.LastName
             </div>
+        </div>
 
-            <!-- EMAIL -->
-            <div class="input-group">
-                <label>Email Address</label>
-
-                <input type="email"
-                       value="@Model.Email"
-                       readonly
-                       class="readonly-input" />
+        <div class="input-group">
+            <label>Email Address</label>
+            <div style="width: 100%; padding: 20px 22px; background: rgba(255,255,255,0.1); border-radius: 20px; color: white; font-size: 16px; text-align: left;">
+                @Model.Email
             </div>
+        </div>
 
-            <!-- SAVE CHANGES -->
-            <button type="submit" class="save-btn">
-                Save Changes
-            </button>
-            
-            @if (ViewBag.IsProfileUpdated != null && ViewBag.IsProfileUpdated)
-            {
-                <div class="badge bg-success">
-                    Profile updated successfully!
-                </div>
-            }
-            else if (ViewBag.IsNameSame != null && ViewBag.IsNameSame)
-            {
-                <div class="badge bg-danger">
-                    Name is still the same!
-                </div>
-            }
-
-            <div asp-validation-summary="All"></div>
-
-            
-        </form>
         <!-- SIGN OUT -->
-        <form asp-controller="Identity"
-              asp-action="Logout" method="post">
-            <button type="submit" class="logout-btn" style="background:none; cursor:pointer; border:none;">
-                Sign Out
+        <form asp-controller="Identity" asp-action="Logout" method="post" style="margin-top: 20px;">
+            <button type="submit"
+                    style="
+                        background: #ff6b6b;
+                        color: white;
+                        border: none;
+                        padding: 10px 22px;
+                        border-radius: 20px;
+                        font-size: 13px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: background 0.3s ease;
+                        box-shadow: 0 6px 16px rgba(255,107,107,0.25);
+                    "
+                                onmouseover="
+                        this.style.background='#e25555';
+                    "
+                                onmouseout="
+                        this.style.background='#ff6b6b';
+                    ">
+                            ⎋ Sign Out
             </button>
         </form>
+    </div>
+</div>
+
+@if (ViewBag.IsProfileUpdated == true)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            showToast("Updated successfully!", "success");
+        });
+    </script>
+}
+
+@if (ViewBag.IsNameSame == true)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            showToast("No changes were made.", "info");
+        });
+    </script>
+}
+
+<!-- EDIT PROFILE MODAL -->
+<div id="editProfileOverlay" style="display:none; position:fixed; inset:0;
+     background:rgba(62,78,44,0.55); z-index:9999; align-items:center;
+     justify-content:center;" onclick="handleEditProfileOverlayClick(event)">
+    <div style="background:#fff; border-radius:24px; width:92%; max-width:420px;
+                overflow:hidden; box-shadow:0 24px 60px rgba(62,78,44,0.25);
+                animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;">
+
+        <!-- Modal Header -->
+        <div style="background:#9caf6c; padding:18px 24px; display:flex;
+                    justify-content:space-between; align-items:center;">
+            <span style="color:white; font-size:18px; font-weight:bold;">
+                Edit Profile
+            </span>
+            <button onclick="closeEditProfileModal()" style="background:none; border:none;
+                    color:white; font-size:28px; cursor:pointer; line-height:1;">
+                ×
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div style="padding:24px 28px;">
+
+            <form asp-action="Profile" asp-controller="Identity"
+                  method="post" enctype="multipart/form-data">
+
+                <!-- Profile Picture -->
+                <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:24px;">
+                    <div style="position:relative; width:fit-content;">
+                        <img id="modalPreviewImage"
+                             src="@Url.Content(Model.ProfileImagePath)"
+                             style="width:88px; height:88px; border-radius:50%;
+                                    object-fit:cover; border:3px solid #9caf6c;" />
+                        <label for="modalProfileUpload"
+                               style="position:absolute; bottom:0; right:0;
+                                      background:#9caf6c; color:white;
+                                      width:26px; height:26px; border-radius:50%;
+                                      display:flex; align-items:center; justify-content:center;
+                                      cursor:pointer; border:2px solid white; font-size:14px;">
+                            ✎
+                        </label>
+                        <input type="file" id="modalProfileUpload" name="profileImage"
+                               accept="image/*" hidden
+                               onchange="previewModalProfileImage(event)" />
+                    </div>
+                    <span style="font-size:12px; color:#aaa; margin-top:8px;">tap pencil to change photo</span>
+                </div>
+
+                <!-- First Name -->
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:12px; color:#9caf6c; display:block;
+                                  margin-bottom:5px; font-weight:bold;">First Name</label>
+                    <input type="text" name="FirstName" value="@Model.FirstName"
+                           style="width:100%; padding:11px 16px; border:1.5px solid #dde8c5;
+                                  border-radius:14px; font-size:15px; box-sizing:border-box; outline:none;" />
+                </div>
+
+                <!-- Last Name -->
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:12px; color:#9caf6c; display:block;
+                                  margin-bottom:5px; font-weight:bold;">Last Name</label>
+                    <input type="text" name="LastName" value="@Model.LastName"
+                           style="width:100%; padding:11px 16px; border:1.5px solid #dde8c5;
+                                  border-radius:14px; font-size:15px; box-sizing:border-box; outline:none;" />
+                </div>
+
+                <!-- Email (readonly) -->
+                <div style="margin-bottom:6px;">
+                    <label style="font-size:12px; color:#9caf6c; display:block;
+                                  margin-bottom:5px; font-weight:bold;">Email Address</label>
+                    <input type="email" value="@Model.Email" readonly
+                           style="width:100%; padding:11px 16px; border:1.5px solid #ebebeb;
+                                  border-radius:14px; font-size:15px; box-sizing:border-box;
+                                  background:#f5f5f5; color:#aaa; cursor:not-allowed;" />
+                    <span style="font-size:11px; color:#aaa; margin-left:4px;">email cannot be changed</span>
+                </div>
+
+           
+
+                <!-- Buttons -->
+                <div style="display:flex; gap:10px; margin-top:22px;">
+                    <button type="button" onclick="closeEditProfileModal()"
+                            style="flex:1; padding:12px; border-radius:14px;
+                                   border:1.5px solid #dde8c5; background:white;
+                                   font-size:14px; cursor:pointer;">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            style="flex:1; padding:12px; border-radius:14px;
+                                   border:none; background:#9caf6c; color:white;
+                                   font-size:14px; font-weight:bold; cursor:pointer;">
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
 
@@ -599,7 +675,7 @@
         <div style="background:#9caf6c; padding:18px 24px; display:flex;
                     justify-content:space-between; align-items:center;">
             <span style="color:white; font-size:18px; font-weight:bold;">
-                📋 Top Up History
+               Top Up History
             </span>
             <button onclick="closeHistoryModal()" style="background:none; border:none;
                     color:white; font-size:28px; cursor:pointer; line-height:1;">
@@ -649,6 +725,8 @@
     </div>
 </div>
 
+
+
 @* @await Html.PartialAsync("_TopUpModal", new ELNET_FinalsProject.ViewModels.TopUpViewModel()) *@
 <script>
 
@@ -697,6 +775,98 @@
         }
     }
 </script>
+
+<script>
+        function previewModalProfileImage(event) {
+        const image = document.getElementById("modalPreviewImage");
+        const navImage = document.getElementById("previewImage"); // syncs navbar pic too
+        const url = URL.createObjectURL(event.target.files[0]);
+        image.src = url;
+        if (navImage) navImage.src = url;
+    }
+
+    function openEditProfileModal() {
+        document.getElementById('editProfileOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditProfileModal() {
+        document.getElementById('editProfileOverlay').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function handleEditProfileOverlayClick(e) {
+        if (e.target === document.getElementById('editProfileOverlay')) {
+            closeEditProfileModal();
+        }
+    }
+
+          @if (ViewBag.IsNameSame == true)
+    {
+            <text>
+                document.addEventListener('DOMContentLoaded', openEditProfileModal);
+            </text>
+    }
+
+</script>
+
+<script>
+    function showToast(message, type) {
+
+        const existingToast = document.querySelector('.custom-toast');
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+
+        toast.textContent = message;
+
+        // DEFAULT POSITION (you can override per type)
+        let top = '30px';
+        let right = '445px';
+
+
+        if (type === 'success') {
+            top = '80px';
+            right = '690px';
+            toast.style.background = '#1D8C47';
+        } else {
+            top = '35px';
+            right = '690px';
+            toast.style.background = '#D6132B';
+        }
+
+        toast.style.position = 'fixed';
+        toast.style.top = top;
+        toast.style.right = right;
+
+        toast.style.color = 'white';
+        toast.style.padding = '12px 20px';
+        toast.style.borderRadius = '14px';
+        toast.style.fontSize = '13px';
+        toast.style.fontWeight = '600';
+        toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+        toast.style.zIndex = '100000';
+
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        toast.style.transition = '0.3s ease';
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+        }, 10);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+</script>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
