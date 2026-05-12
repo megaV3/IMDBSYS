@@ -8,12 +8,11 @@
 
 /* ===== ROOT VARIABLES ===== */
 :root {
-    --primary: #9CAF6C;
-    --primary-hover: #7a9050;
-    --dark: #5C3D2E;
-    --light: #f7f9f2;
-    --muted: #8a9e74;
-    --border: #c8d9a0;
+    --primary: #3E4885;
+    --dark: #1E1E2F;
+    --light: #F5F7FF;
+    --muted: #7B88B5;
+    --border: #D6DCFA;
 }
 
 /* ===== BASE ===== */
@@ -181,7 +180,8 @@ html, body {
 }
 
     .field input::placeholder {
-        color: #b5c79a;
+        color: #7B88B5;
+        opacity: 45%;
     }
 
     .field input:focus {

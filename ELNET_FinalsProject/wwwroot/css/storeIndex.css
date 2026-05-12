@@ -11,7 +11,7 @@ body {
     z-index: 100;
     background-color: #f5f5f5;
     padding: 10px 30px;
-    color: #9caf6c;
+    color: #3E4885;
 }
 
 .nav-center {
@@ -22,7 +22,7 @@ body {
 
 .nav-link {
     text-decoration: none;
-    background-color: #9caf6c;
+    background-color: #3E4885;
     color: white;
     padding: 5px 20px;
     border-radius: 30px;
@@ -39,13 +39,14 @@ body {
     }
 
     .nav-link.active {
-        border: 2px solid #9caf6c;
+        border: 2px solid #3E4885;
     }
 
 .nav-left h2 {
     margin: 0;
     font-weight: bold;
     font-size: 25px;
+    color: #3E4885;
 }
 
 .nav-right {
@@ -69,7 +70,7 @@ body {
 
     .nav-icon:hover {
         text-decoration: none;
-        background: #9caf6c;
+        background: #3E4885;
     }
 
     .nav-icon img {
@@ -84,11 +85,11 @@ body {
     align-items: center;
     gap: 4px;
     background-color: #fff;
-    border: 2px solid #9caf6c;
+    border: 2px solid #3E4885;
     border-radius: 20px;
     padding: 5px 14px;
     font-weight: bold;
-    color: #3e4e2c;
+    color: #1E1E2F;
     font-size: 14px;
     cursor: default;
     white-space: nowrap;
@@ -114,16 +115,17 @@ body {
 .header {
     text-align: center;
     margin-bottom: 70px;
-    color: #9caf6c;
+    color: #3E4885;
 }
 
     .header h2 {
         font-size: 26px;
+        color: #3E4885;
     }
 
 .signatures-header h2,
 .espresso-header h2 {
-    color: #3e4e2c;
+    color: #3E4885;
 }
 
 .big-title {
@@ -134,7 +136,7 @@ body {
     .big-title h1 {
         font-size: 100px;
         font-weight: 900;
-        color: #9caf6c;
+        color: #3E4885;
         letter-spacing: 5px;
         text-shadow: 4px 4px 10px rgba(0,0,0,0.2);
     }
@@ -161,13 +163,13 @@ body {
 }
 
     .card:hover {
-        background-color: #9caf6c;
+        background-color: #3E4885;
         color: white;
     }
 
         .card:hover .btn-cart {
             background-color: #f5f5f5;
-            color: #9caf6c;
+            color: #3E4885;
         }
 
     .card img {
@@ -208,7 +210,7 @@ body {
 
 .btn-cart {
     font-weight: bold;
-    background-color: #9caf6c;
+    background-color: #3E4885;
     color: white;
     border: none;
     padding: 6px 10px;
@@ -257,7 +259,7 @@ body {
 #bModalImgWrap {
     width: 100%;
     height: 180px;
-    background: linear-gradient(135deg, #d4e2b0, #9caf6c);
+    background: linear-gradient(135deg, #d4e2b0, #3E4885);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -292,7 +294,7 @@ body {
 #bModalPrice {
     font-size: 18px;
     font-weight: 600;
-    color: #9caf6c;
+    color: #3E4885;
     margin-left: 12px;
     white-space: nowrap;
 }
@@ -309,7 +311,7 @@ body {
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #9caf6c;
+    color: #3E4885;
     margin-bottom: 8px;
 }
 
@@ -335,12 +337,12 @@ body {
 
     .temp-btn:hover {
         background: #f3f8ea;
-        border-color: #9caf6c;
+        border-color: #3E4885;
     }
 
     .temp-btn.active {
-        background: #9caf6c;
-        border-color: #9caf6c;
+        background: #3E4885;
+        border-color: #3E4885;
         color: #fff;
     }
 
@@ -421,7 +423,7 @@ body {
 }
 
     .allergy-chip:hover {
-        border-color: #9caf6c;
+        border-color: #3E4885;
         background: #f3f8ea;
     }
 
@@ -447,7 +449,7 @@ body {
 }
 
     #bNotes:focus {
-        border-color: #9caf6c;
+        border-color: #3E4885;
     }
 
 .modal-footer {
@@ -477,7 +479,7 @@ body {
     padding: 12px;
     border-radius: 12px;
     border: none;
-    background: #9caf6c;
+    background: #3E4885;
     font-size: 14px;
     font-weight: 600;
     color: #fff;
@@ -524,7 +526,7 @@ body {
 .quick-btn {
     text-decoration: none;
     color: #3e4e2c;
-    border: 2px solid #9caf6c;
+    border: 2px solid #3E4885;
     padding: 12px 28px;
     border-radius: 18px;
     font-weight: bold;
@@ -533,12 +535,12 @@ body {
 
     .quick-btn:hover {
         text-decoration: none;
-        background: #9caf6c;
+        background: #3E4885;
         color: white;
         transform: translateY(-2px);
     }
 
 .active-menu {
-    background: #9caf6c;
+    background: #3E4885;
     color: white;
 }
