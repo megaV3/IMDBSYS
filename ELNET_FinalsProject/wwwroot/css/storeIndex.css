@@ -183,7 +183,8 @@ body {
     flex-grow: 1;
 }
 
-@* gi add *@ .card-title {
+/*<!----> gi add *@ */
+.card-title {
     font-size: 18px;
     font-weight: bold;
     color: #3e4e2c;
