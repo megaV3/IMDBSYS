@@ -1,6 +1,6 @@
-﻿using ELNET_FinalsProject.Models;
+﻿using IMDBSYS.Models;
 
-namespace ELNET_FinalsProject.ViewModels
+namespace IMDBSYS.ViewModels
 {
     public class StoreViewModel
     {

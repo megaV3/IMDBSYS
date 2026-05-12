@@ -1,6 +1,6 @@
-﻿using ELNET_FinalsProject.Models;
+﻿using IMDBSYS.Models;
 
-namespace ELNET_FinalsProject.Data.Repositories
+namespace IMDBSYS.Data.Repositories
 {
     public interface IStoreRepository
     {

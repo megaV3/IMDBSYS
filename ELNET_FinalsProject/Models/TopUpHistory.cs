@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ELNET_FinalsProject.Models
+namespace IMDBSYS.Models
 {
     public class TopUpHistory
     {

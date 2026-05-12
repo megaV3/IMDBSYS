@@ -1,6 +1,6 @@
 
-using ELNET_FinalsProject.Data;
-using ELNET_FinalsProject.Data.Repositories;
+using IMDBSYS.Data;
+using IMDBSYS.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 

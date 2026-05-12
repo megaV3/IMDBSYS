@@ -1,7 +1,7 @@
-﻿using ELNET_FinalsProject.Models;
+﻿using IMDBSYS.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ELNET_FinalsProject.Data
+namespace IMDBSYS.Data
 {
     public static class SeedData
     {

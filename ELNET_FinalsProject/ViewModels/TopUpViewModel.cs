@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ELNET_FinalsProject.ViewModels
+namespace IMDBSYS.ViewModels
 {
     public class TopUpViewModel
     {

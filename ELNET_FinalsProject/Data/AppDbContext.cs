@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using ELNET_FinalsProject.Models;
+using IMDBSYS.Models;
 
-namespace ELNET_FinalsProject.Data
+namespace IMDBSYS.Data
 {
     public class AppDbContext : DbContext
     {

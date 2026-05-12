@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ELNET_FinalsProject.Models
+namespace IMDBSYS.Models
 {
     public class OrderItem
     {
