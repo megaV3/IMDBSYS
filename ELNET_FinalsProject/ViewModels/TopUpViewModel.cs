@@ -6,7 +6,7 @@ namespace ELNET_FinalsProject.ViewModels
     {
         [Required(ErrorMessage = "Please enter an amount.")]
         [Range(1, 10000, ErrorMessage = "You can only top up between ₱1 and ₱10,000.")]
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
         // You can add PaymentMethod, etc. here
         public string Email { get; set; }
 

@@ -123,7 +123,7 @@
         <form asp-action="ProcessTopUp" asp-controller="Identity" method="post" style="margin: 0;">
             <div class="modal-body-custom">
                 <label style="color: #333; font-weight: bold; display: block; margin-bottom: 10px;">Amount to Add</label>
-                <input asp-for="Amount" class="modal-input" placeholder="₱0.00" required />
+                <input asp-for="Amount" type="number" class="modal-input" placeholder="₱0.00" value="" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
 

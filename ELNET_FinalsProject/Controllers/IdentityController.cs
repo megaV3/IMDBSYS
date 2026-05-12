@@ -287,7 +287,7 @@ namespace ELNET_FinalsProject.Controllers
 
             // 1. Update the User's Wallet Balance
             var user = await _context.Users.FindAsync(int.Parse(userIdClaim));
-            user.Balance += model.Amount;
+            user.Balance += (decimal)model.Amount;
 
             // 2. Create the History Record
             var history = new TopUpHistory
@@ -295,7 +295,7 @@ namespace ELNET_FinalsProject.Controllers
                 UserId = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Amount = model.Amount,
+                Amount = (decimal)model.Amount,
                 TransactionDate = DateTime.Now,
                 Email = user.Email,
                 PaymentMethod = model.PaymentMethod, // This can be dynamic based on user input
