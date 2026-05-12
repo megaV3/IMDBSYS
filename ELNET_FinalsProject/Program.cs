@@ -22,7 +22,7 @@ builder.Services.AddSession();
 
 builder.Services.AddDbContext<AppDbContext>(opts =>
 {
-    opts.UseSqlServer(builder.Configuration["ConnectionStrings:CoffeeStoreConnection"]);
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:IMDBSYSConnection"]);
 });
 
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDBSYS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260512135901_Update")]
-    partial class Update
+    [Migration("20260512163017_Initial1")]
+    partial class Initial1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
