@@ -36,7 +36,7 @@ body {
 
 /* top section */
 .top-section {
-    background-color: #9CAF6C;
+    background-color: #3E4885;
     padding-bottom: 80px;
     width: 100%;
     position: relative;
@@ -168,11 +168,11 @@ body {
 }
 
 /* hover effect that turns green and enlarges */
-.drink-card:hover {
-    background-color: #9CAF6C;
-    transform: scale(1.08);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
+    .drink-card:hover {
+        background-color: #3E4885;
+        transform: scale(1.08);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
 
 /* our sig pngs */
 .drink-image {
@@ -192,7 +192,7 @@ body {
     font-weight: bold;
     margin-top: 40px;
     margin-bottom: 40px;
-    color: #9CAF6C;
+    color: #3E4885;
     text-align: center;
 }
 
@@ -201,7 +201,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     margin: 0;
-    color: #5C3D2E;
+    color: #3E4885;
     transition: color 0.3s ease;
 }
 
@@ -235,13 +235,13 @@ body {
     padding: 30px 20px;
 }
 
-.motto h3 {
-    font-size: 30px;
-    font-weight: bold;
-    color: #9CAF6C;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-}
+    .motto h3 {
+        font-size: 30px;
+        font-weight: bold;
+        color: #3E4885;
+        margin-bottom: 8px;
+        letter-spacing: 1px;
+    }
 
 .motto p {
     font-size: 20px;
@@ -252,7 +252,7 @@ body {
 
 /* our story */
 .story-section {
-    background-color: #e8f0e0;  
+    background-color: #AFB5D9;
     padding: 80px 20px;
     min-height: 100vh;
 }
@@ -277,15 +277,15 @@ body {
     position: relative;
 }
 
-.story-content h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background-color: #9CAF6C;
-}
+    .story-content h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: #3E4885;
+    }
 
 .story-content p {
     font-size: 18px;
@@ -301,7 +301,7 @@ body {
     font-style: italic;
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 2px solid #d0e0c0;
+    border-top: 2px solid #3E4885;
 }
 
 .story-ending strong {
