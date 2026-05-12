@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ELNET_FinalsProject.Data;
-using ELNET_FinalsProject.Models;
+using IMDBSYS.Data;
+using IMDBSYS.Models;
 using System.Security.Claims;
 using System.Text.Json;
-using ELNET_FinalsProject.ViewModels;
+using IMDBSYS.ViewModels;
 
-namespace ELNET_FinalsProject.Controllers
+namespace IMDBSYS.Controllers
 {
     [Authorize]
     public class OrderController : Controller

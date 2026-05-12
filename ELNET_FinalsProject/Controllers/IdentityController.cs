@@ -1,13 +1,13 @@
-﻿using ELNET_FinalsProject.Data;
-using ELNET_FinalsProject.Models;
-using ELNET_FinalsProject.ViewModels;
+﻿using IMDBSYS.Data;
+using IMDBSYS.Models;
+using IMDBSYS.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace ELNET_FinalsProject.Controllers
+namespace IMDBSYS.Controllers
 {
     public class IdentityController : Controller
     {

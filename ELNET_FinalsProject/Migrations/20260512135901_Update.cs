@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ELNET_FinalsProject.Migrations
+namespace IMDBSYS.Migrations
 {
     /// <inheritdoc />
     public partial class Update : Migration
