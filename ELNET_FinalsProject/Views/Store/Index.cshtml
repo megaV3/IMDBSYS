@@ -787,7 +787,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
                             Order Now
                         </button>
                     </div>
@@ -810,7 +810,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
                             Order Now
                         </button>
                     </div>
@@ -833,7 +833,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
                             Order Now
                         </button>
                     </div>
@@ -856,7 +856,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
                                 Order Now
                         </button>
                     </div>
@@ -879,7 +879,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
                             Order Now
                         </button>
                     </div>
@@ -904,12 +904,14 @@
             </div>
             <p id="bModalDesc"></p>
 
-            <div class="modal-section-label">Temperature</div>
-            <div class="temp-row">
-                <button id="btnHot" class="temp-btn" onclick="selectTemp('Hot')">Hot</button>
-                <button id="btnIced" class="temp-btn" onclick="selectTemp('Iced')">Iced</button>
+            <div id="variationLabel" class="modal-section-label">Variation</div>
+            <div id="variationContainer" class="temp-row">
             </div>
 
+            <div style="display:none;">
+                <button id="btnHot"></button>
+                <button id="btnIced"></button>
+            </div>
             <div class="modal-section-label">Quantity</div>
             <div class="qty-wrapper">
                 <div class="qty-row">
@@ -920,15 +922,6 @@
                 <span id="bSubtotal"></span>
             </div>
 
-            <div class="modal-section-label">Allergy / Dietary</div>
-            <div class="allergy-chips">
-                <span class="allergy-chip" onclick="toggleChip(this)">Dairy-free milk</span>
-                <span class="allergy-chip" onclick="toggleChip(this)">No sugar</span>
-                <span class="allergy-chip" onclick="toggleChip(this)">Less sweet</span>
-                <span class="allergy-chip" onclick="toggleChip(this)">Nut allergy</span>
-                <span class="allergy-chip" onclick="toggleChip(this)">Oat milk</span>
-                <span class="allergy-chip" onclick="toggleChip(this)">Soy allergy</span>
-            </div>
 
             <div class="modal-section-label">Special Instructions</div>
             <textarea id="bNotes" rows="2" placeholder="e.g. extra shot, no ice, less sweet…"></textarea>
@@ -947,8 +940,98 @@
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
 <script>
-     var _menuId, _price, _qty = 1, _temp = 'Iced';
+    const variationsMap = {
+        "StorageDevices": ["256GB", "512GB", "1TB", "2TB"],
+        "RAM": ["8GB 3200MHz", "16GB 3200MHz", "32GB 3600MHz"],
+        "PSU": ["550W", "650W", "750W", "850W"],
+        "inputDevices": ["Wired", "Wireless", "RGB Edition"],
+        "outputDevices": ["Standard", "Pro Display"]
+    };
+    var _selectedVariation = ""; // Replace _temp
 
+    var _menuId, _price, _qty = 1, _temp = 'Iced';
+    function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold, category) {
+        _menuId = menuId;
+        _price = price;
+        _qty = 1;
+
+        // Reset Modal content
+        document.getElementById('bModalName').textContent = name;
+        document.getElementById('bModalPrice').textContent = 'PHP ' + price;
+        document.getElementById('bModalDesc').textContent = desc;
+    
+        // Handle Variations dynamically
+        const container = document.getElementById('variationContainer');
+        container.innerHTML = ""; // Clear old buttons
+    
+        const options = variationsMap[category] || ["Standard"];
+        _selectedVariation = options[0]; // Default to first option
+
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'temp-btn' + (opt === _selectedVariation ? ' active' : '');
+            btn.textContent = opt;
+            btn.onclick = function() {
+                _selectedVariation = opt;
+                // Remove active class from siblings and add to this
+                container.querySelectorAll('.temp-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            };
+            container.appendChild(btn);
+        });
+
+        // --- Image Handling ---
+        var wrap = document.getElementById('bModalImgWrap');
+        if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
+            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:cover; border-radius:12px;" />';
+        } else {
+            // Default icon for hardware if no image is found
+            wrap.innerHTML = '<span style="font-size: 50px;">🖥️</span>';
+        }
+
+        // --- Quantity & Price Reset ---
+        document.getElementById('bQtyVal').textContent = _qty;
+        document.getElementById('bSubtotal').textContent = '= PHP ' + price.toLocaleString();
+
+        // --- Reset Notes and Chips ---
+        document.getElementById('bNotes').value = '';
+        document.querySelectorAll('.allergy-chip').forEach(function(c) {
+            c.classList.remove('active');
+        });
+
+        // --- Final Display Logic ---
+        document.getElementById('basketOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevents background scrolling
+    }
+
+    function submitBasket() {
+        var chips = [];
+        document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
+            chips.push(c.textContent);
+        });
+        var freeText = document.getElementById('bNotes').value.trim();
+        var parts = chips.join(', ');
+        var notes = (parts && freeText) ? (parts + ' | ' + freeText) : (parts || freeText);
+
+        fetch('/Order/AddToCart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'menuId='       + encodeURIComponent(_menuId)
+                + '&quantity='    + encodeURIComponent(_qty)
+                + '&variation='   + encodeURIComponent(_selectedVariation) // CHANGED FROM TEMPERATURE
+                + '&notes='       + encodeURIComponent(notes)
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                closeBasketModal();
+                updateCartCount(_qty);
+                showToast('Added ' + _qty + ' to basket!');
+            }
+        });
+    }
+
+    @*
     function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold) {
         _menuId = menuId;
         _price  = price;
@@ -984,6 +1067,7 @@
         document.getElementById('basketOverlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
+    *@
 
     function closeBasketModal() {
         document.getElementById('basketOverlay').style.display = 'none';
@@ -1012,6 +1096,7 @@
         el.classList.toggle('active');
     }
 
+    @*
     function submitBasket() {
         var chips = [];
         document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
@@ -1041,6 +1126,7 @@
             showToast('Something went wrong. Please try again.');
         });
     }
+    *@
 
     function updateCartCount(added) {
         var el = document.getElementById('cart-count');
