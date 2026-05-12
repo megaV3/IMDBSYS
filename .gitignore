@@ -364,3 +364,12 @@ FodyWeavers.xsd
 /ELNET_FinalsProject/Migrations/20260507154332_Initial1.Designer.cs
 /ELNET_FinalsProject/Migrations/20260507154332_Initial1.cs
 /ELNET_FinalsProject/Migrations/AppDbContextModelSnapshot.cs
+.dockerignore
+.gitignore
+compose.yaml
+.vscode/launch.json
+.vscode/tasks.json
+ELNET_FinalsProject/appsettings.Development.json
+ELNET_FinalsProject/Dockerfile
+ELNET_FinalsProject/Program.cs
+compose.debug.yaml
