@@ -446,6 +446,19 @@
         cursor: pointer;
     }
 
+    .toast-success {
+        position: fixed; /* Stay in place relative to the screen */
+        top: 20px; /* Distance from the top */
+        left: 50%; /* Move to the horizontal middle */
+        transform: translateX(-50%); /* Offset it by half its own width to perfectly center */
+        z-index: 10001; /* Ensure it's above the navbar and modal */
+        /* Styling to match your screenshot */
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+
 </style>
 
 <div class="profile-page">
@@ -811,6 +824,8 @@
 </script>
 
 <script>
+    @*
+    
     function showToast(message, type) {
 
         const existingToast = document.querySelector('.custom-toast');
@@ -862,6 +877,56 @@
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateY(-10px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+    *@
+        function showToast(message, type) {
+        const existingToast = document.querySelector('.custom-toast');
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.textContent = message;
+
+        // 1. SET HORIZONTAL CENTERING
+        toast.style.position = 'fixed';
+        toast.style.left = '50%';        // Move the left edge to the middle of the screen
+        toast.style.right = 'auto';      // Reset the right property
+    
+        // 2. SET VERTICAL POSITION
+        let top = (type === 'success') ? '80px' : '35px';
+        toast.style.top = top;
+
+        // 3. APPLY COLOR BASED ON TYPE
+        toast.style.background = (type === 'success') ? '#1D8C47' : '#D6132B';
+
+        // 4. STYLING
+        toast.style.color = 'white';
+        toast.style.padding = '12px 20px';
+        toast.style.borderRadius = '14px';
+        toast.style.fontSize = '13px';
+        toast.style.fontWeight = '600';
+        toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+        toast.style.zIndex = '100000';
+
+        // 5. ANIMATION & OFFSETS
+        toast.style.opacity = '0';
+        // Use translateX(-50%) to perfectly center the element
+        toast.style.transform = 'translateX(-50%) translateY(-10px)';
+        toast.style.transition = '0.3s ease';
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            // Keep the -50% horizontal offset during the animation
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+        }, 10);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(-10px)';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
