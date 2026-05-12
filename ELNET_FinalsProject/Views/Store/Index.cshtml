@@ -131,6 +131,7 @@
         padding-left: 30px;
         padding-right: calc(30px + (100vw - 100%));
         color: #9caf6c;
+        /* box-shadow: none; */
     }
 
     .nav-center {
@@ -197,14 +198,14 @@
 
     .cart-wrapper, .profile-wrapper {
         position: relative;
-    display: flex; /* Changed from inline-block to flex for centering */
-    align-items: center;
-    justify-content: center;
-    width: 40px; 
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0; /* Let the parent gap handle spacing */
+        display: flex; /* Changed from inline-block to flex for centering */
+        align-items: center;
+        justify-content: center;
+        width: 40px; 
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0; /* Let the parent gap handle spacing */
     }
 
     .cart-img, .profile-img {
@@ -659,19 +660,22 @@
     }
 
     .quick-menu {
+        position: sticky; /* FIX: Position it exactly below the 70px navbar */
+        top: 70px; /* Matches your .navbar height */
+        z-index: 1001; /* Just below the main navbar z-index */
+        background-color: #f5f5f5;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
         gap: 18px;
-        margin-bottom: 50px;
-
-        /* FIX: Position it exactly below the 70px navbar */
-        position: sticky;
-        top: 70px; /* Matches your .navbar height */
-        z-index: 999; /* Just below the main navbar z-index */
-        background-color: #f5f5f5;
-        padding: 7px 10px; /* Added padding to give the buttons breathing room */
+        padding: 7px 80px; /* Added padding to give the buttons breathing room */
+        margin-bottom: 30px;
+        transition: box-shadow 0.3s ease;
     }
+
+        /* .quick-menu.scrolled {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        } */
 
     .quick-btn {
         text-decoration: none;
@@ -1199,5 +1203,20 @@
                 resultsDiv.style.display = 'none';
             }
         });
+    });
+</script>
+
+<script>
+    const quickMenu = document.querySelector('.quick-menu');
+
+    window.addEventListener('scroll', () => {
+
+        if (window.scrollY > 10) {
+            quickMenu.classList.add('scrolled');
+        }
+
+        else {
+            quickMenu.classList.remove('scrolled');
+        }
     });
 </script>
