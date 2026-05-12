@@ -6,7 +6,7 @@
     <div class="nav-left">
         <h2>PICKOUT HARDWARE</h2>
         <div class="search-container">
-            <input type="text" id="menuSearch" placeholder="Search for coffee..." autocomplete="off">
+            <input type="text" id="menuSearch" placeholder="Search for hardware..." autocomplete="off">
             <div id="searchResults" class="search-results-dropdown"></div>
         </div>
     </div>
@@ -23,7 +23,6 @@
             <!-- Wrap only the images in the circular div -->
             <div class="cart-wrapper">
                 <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
-                <img class="cart-img hover-img" src="~/images/cart-green.png" alt="Cart Hover" />
             </div>
 
             <!-- Badge stays outside the circular clip -->
@@ -72,7 +71,7 @@
 
     }
     #menuSearch:focus {
-        border-color: #3e4e2c;
+            border-color: #1E1E2F;
         box-shadow: 0 0 8px rgba(156, 175, 108, 0.3);
     }
     .search-results-dropdown {
@@ -113,7 +112,7 @@
 
     .footer {
         background-color: #f5f5f5 !important;
-        color: #9caf6c;
+        color: #3E4885;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         text-align: center;
     }
@@ -130,7 +129,7 @@
         /*(100vw - 100%) calculates the exact width of the scrollbar dynamically. */
         padding-left: 30px;
         padding-right: calc(30px + (100vw - 100%));
-        color: #9caf6c;
+        color: #3E4885;
         /* box-shadow: none; */
     }
 
@@ -142,7 +141,7 @@
 
     .nav-link {
         text-decoration: none;
-        background-color: #9caf6c;
+        background-color: #3E4885;
         color: white;
         padding: 5px 20px;
         border-radius: 30px;
@@ -156,7 +155,7 @@
         }
 
         .nav-link.active {
-            border: 2px solid #9caf6c;
+            border: 2px solid #3E4885;
         }
     .nav-left {
         display: flex;
@@ -231,14 +230,10 @@
     }
 
     /* Hover States */
-    .cart-wrapper:hover .hover-img,
-    .profile-wrapper:hover .hover-img {
-        opacity: 1;
-    }
-
-    .cart-wrapper:hover .default-img,
-    .profile-wrapper:hover .default-img {
-        opacity: 0;
+    .cart-wrapper:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease;
+        background-color: #3E4885;
     }
 
     /* Keep the cart badge outside the 'overflow:hidden' of the wrapper
@@ -256,7 +251,7 @@
     .header {
         text-align: center;
         margin-bottom: 20px;
-        color: #9caf6c;
+        color: #3E4885;
     }
 
         .header h2 {
@@ -266,7 +261,7 @@
 
     .signatures-header h2,
     .espresso-header h2 {
-        color: #9caf6c;
+        color: #3E4885;
         font-weight: 800;
         /* #3e4e2c */
     }
@@ -279,7 +274,7 @@
         .big-title h1 {
             font-size: 100px;
             font-weight: 900;
-            color: #9caf6c;
+            color: #3E4885;
             letter-spacing: 5px;
             text-shadow: 4px 4px 10px rgba(0,0,0,0.2);
         }
@@ -306,13 +301,18 @@
     }
 
         .card:hover {
-            background-color: #9caf6c;
+            background-color: #3E4885;
             color: white;
         }
 
             .card:hover .btn-cart {
                 background-color: #f5f5f5;
-                color: #9caf6c;
+                color: #3E4885;
+            }
+
+            .card:hover .card-subtitle {
+                font-weight: bold;
+                color: #f5f5f5;
             }
 
         .card img {
@@ -333,7 +333,7 @@
     .card-title {
         font-size: 18px;
         font-weight: bold;
-        color: #3e4e2c;
+        color: #1E1E2F;
         min-height: 55px;
         display: flex;
         align-items: center;
@@ -354,7 +354,7 @@
 
     .btn-cart {
         font-weight: bold;
-        background-color: #9caf6c;
+        background-color: #3E4885;
         color: white;
         border: none;
         padding: 6px 10px;
@@ -403,7 +403,7 @@
     #bModalImgWrap {
         width: 100%;
         height: 180px;
-        background: linear-gradient(135deg, #d4e2b0, #9caf6c);
+        background: linear-gradient(135deg, #d4e2b0, #3E4885);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -438,7 +438,7 @@
     #bModalPrice {
         font-size: 18px;
         font-weight: 600;
-        color: #9caf6c;
+        color: #3E4885;
         margin-left: 12px;
         white-space: nowrap;
     }
@@ -455,7 +455,7 @@
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #9caf6c;
+        color: #3E4885;
         margin-bottom: 8px;
     }
 
@@ -481,12 +481,12 @@
 
         .temp-btn:hover {
             background: #f3f8ea;
-            border-color: #9caf6c;
+            border-color: #3E4885;
         }
 
         .temp-btn.active {
-            background: #9caf6c;
-            border-color: #9caf6c;
+            background: #3E4885;
+            border-color: #3E4885;
             color: #fff;
         }
 
@@ -517,7 +517,7 @@
         background: #fff;
         font-size: 18px;
         font-weight: 500;
-        color: #3e4e2c;
+        color: #1E1E2F;
         cursor: pointer;
         box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         transition: background 0.15s;
@@ -567,7 +567,7 @@
     }
 
         .allergy-chip:hover {
-            border-color: #9caf6c;
+            border-color: #3E4885;
             background: #f3f8ea;
         }
 
@@ -623,7 +623,7 @@
         padding: 12px;
         border-radius: 12px;
         border: none;
-        background: #9caf6c;
+        background: #3E4885;
         font-size: 14px;
         font-weight: 600;
         color: #fff;
@@ -633,7 +633,7 @@
     }
 
         .btn-add-confirm:hover {
-            background: #7a9050;
+            background: #5865B3;
             transform: translateY(-1px);
         }
 
@@ -679,8 +679,8 @@
 
     .quick-btn {
         text-decoration: none;
-        color: #9caf6c;
-        border: 2px solid #9caf6c;
+        color: #3E4885;
+        border: 2px solid #3E4885;
         padding: 12px 28px;
         border-radius: 20px;
         font-weight: bold;
@@ -690,13 +690,13 @@
 
         .quick-btn:hover {
             text-decoration: none;
-            background: #9caf6c;
+            background: #3E4885;
             color: white;
             transform: translateY(-2px);
         }
 
     .active-menu {
-        background: #9caf6c;
+        background: #3E4885;
         color: white;
     }
 
@@ -724,7 +724,7 @@
 
     /* Visual feedback for the active button */
     .active-menu {
-        background-color: #9caf6c; /* Example: highlight color */
+        background-color: #3E4885; /* Example: highlight color */
         color: #fff !important;
         font-weight: bold;
     }
@@ -737,15 +737,15 @@
 }
 
 <div class="header">
-    <h2>Welcome to the Pickout Coffee store page!</h2>
+    <h2>Welcome to the Pickout Hardware Store!</h2>
     @* <h5>Enjoy your shopping experience, <b>@User.Identity.Name!</b></h5> *@
-    <h5>Enjoy your shopping experience, <b>@Model.UserProfile.FirstName!</b></h5>
+    <h5>Explore premium computer hardware and accessories, <b>@Model.UserProfile.FirstName!</b></h5>
 </div>
 
 <div class="menu pb-5">
 
     <div class="menu-header big-title">
-        <h1>OUR MENU</h1>
+        <h1>PRODUCT CATALOG</h1>
     </div>
 
     <div class="quick-menu">
@@ -774,7 +774,7 @@
 
     @* ⋆.𐙚 ̊  SIGNATURES ̊  𐙚.⋆ *@
     <div class="signatures-header" id="signatures">
-        <h2 class="mt-4">SIGNATURES</h2>
+        <h2 class="mt-4">STORAGE DEVICES</h2>
     </div>
     <div class="row-fluid">
         @foreach (var item in Model.Menus)
@@ -797,7 +797,7 @@
     </div>
 
     <div class="espresso-header" id="espresso">
-        <h2 class="mt-5">ESPRESSO-BASED</h2>
+        <h2 class="mt-5">RAM</h2>
     </div>
     <div class="row-fluid">
         @foreach (var item in Model.Menus)
@@ -820,7 +820,7 @@
     </div>
 
     <div class="espresso-header" id="pistachio">
-        <h2 class="mt-5">PISTACHIO</h2>
+        <h2 class="mt-5">PSU</h2>
     </div>
     <div class="row-fluid">
         @foreach (var item in Model.Menus)
@@ -843,7 +843,7 @@
     </div>
 
     <div class="espresso-header" id="milk-based">
-        <h2 class="mt-5">MILK-BASED</h2>
+        <h2 class="mt-5">INPUT DEVICES</h2>
     </div>
     <div class="row-fluid">
         @foreach (var item in Model.Menus)
@@ -866,7 +866,7 @@
     </div>
 
     <div class="espresso-header" id="frappes">
-        <h2 class="mt-5">FRAPPES</h2>
+        <h2 class="mt-5">OUTPUT DEVICES</h2>
     </div>
     <div class="row-fluid" style="margin-bottom:3rem;">
         @foreach (var item in Model.Menus)
@@ -1140,7 +1140,7 @@
                     
                         // Optional: Brief highlight effect so the user sees which one it is
                         card.style.transition = "0.5s";
-                        card.style.boxShadow = "0 0 20px #9caf6c";
+                        card.style.boxShadow = "0 0 20px #3E4885";
                         setTimeout(() => { card.style.boxShadow = ""; }, 2000);
 
                         resultsDiv.style.display = 'none';
@@ -1181,7 +1181,7 @@
                     });
 
                     card.style.transition = "0.5s";
-                    card.style.boxShadow = "0 0 20px #9caf6c";
+                    card.style.boxShadow = "0 0 20px #3E4885";
 
                     setTimeout(() => {
                         card.style.boxShadow = "";
