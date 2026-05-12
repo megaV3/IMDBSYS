@@ -183,14 +183,25 @@
                             <div class="col-5">
                                 <span>
                                     x @orderItem.Quantity - <strong> @orderItem.Menu.Name</strong> <small> <br />
+                                    (Variation:
+                                    @if (orderItem.Variation != null)
+                                    {
+                                        @orderItem.Variation
+                                    }
+                                    else
+                                    {
+                                        <span>None</span>
+                                    })
+                                    </small>
+                                    <small>
+                                    )
                                     (Note:
                                     @if (orderItem.Notes != null)
                                     {
                                         @orderItem.Notes
                                     } else {
                                         <span>None</span>
-                                    }
-                                    ) </small>
+                                    }) </small>
                                 
                                 </span>
                             </div>
