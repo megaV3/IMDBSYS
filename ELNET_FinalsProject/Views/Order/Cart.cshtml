@@ -30,7 +30,7 @@
         }
         <a asp-controller="Order" asp-action="Cart">
             <div class="cart-wrapper">
-                <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
+                <img class="cart-img default-img" src="~/images/cart-green.png" alt="Cart" />
                 <img class="cart-img hover-img" src="~/images/cart-green.png" alt="Cart Hover" />
             </div>
         </a> 
@@ -42,6 +42,13 @@
 
 </div>
 <style>
+    .footer {
+        background-color: #f5f5f5 !important;
+        color: #9caf6c;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
     .navbar {
         display: flex;
         justify-content: space-between;
@@ -68,6 +75,8 @@
         color: #9caf6c;
         padding: 5px 20px;
         border-radius: 30px;
+        margin-left: 65px;
+        margin-right: 85px;
         transition: 0.3s ease;
     }
 
@@ -75,11 +84,11 @@
             background: #9caf6c;
             text-decoration: none;
             color: white;
-        }
+        } 
 
-        .nav-link.active {
+        /* .nav-link.active {
             border: 2px solid #9caf6c;
-        }
+        } */
 
     .active-cart {
         background: #9caf6c;
@@ -98,6 +107,8 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        margin-right: 39px;
+        margin-left: 39px;
         gap: 12px;
     }
 

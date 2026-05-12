@@ -58,6 +58,7 @@
         display: flex;
         align-items: center; /* Centers the input box vertically */
         height: 100%;
+        position: relative;
     }
     #menuSearch {
         width: 200px;
@@ -95,8 +96,26 @@
     .search-item:hover { 
         background-color: #f3f8ea; 
     }
+
+    .no-result {
+        cursor: default;
+        color: #999;
+    }
+
+    .no-result:hover {
+        background-color: white;
+    }
+
     body {
         scroll-behavior: smooth;
+    }
+
+
+    .footer {
+        background-color: #f5f5f5 !important;
+        color: #9caf6c;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
     }
 
     .navbar {
@@ -241,7 +260,7 @@
 
         .header h2 {
             font-size: 26px;
-            margin-top: 70px;
+            margin-top: 40px;
         }
 
     .signatures-header h2,
@@ -1121,18 +1140,64 @@
                         setTimeout(() => { card.style.boxShadow = ""; }, 2000);
 
                         resultsDiv.style.display = 'none';
-                        searchInput.value = '';
+                        searchInput.value = title;
                     };
                     resultsDiv.appendChild(item);
                 }
             });
 
-            resultsDiv.style.display = foundMatch ? 'block' : 'none';
+            if (!foundMatch) {
+                const noResult = document.createElement('div');
+                noResult.className = 'search-item no-result';
+                noResult.innerText = 'No match found';
+                noResult.style.color = '#999';
+                noResult.style.cursor = 'default';
+
+                resultsDiv.appendChild(noResult);
+            }
+
+            resultsDiv.style.display = 'block';
         });
+
+        searchInput.addEventListener('keypress', function (e) {
+
+        if (e.key === 'Enter') {
+
+            const query = this.value.toLowerCase();
+
+            cards.forEach(card => {
+
+                const title = card.querySelector('.card-title').innerText;
+
+                if (title.toLowerCase() === query) {
+
+                    card.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                    card.style.transition = "0.5s";
+                    card.style.boxShadow = "0 0 20px #9caf6c";
+
+                    setTimeout(() => {
+                        card.style.boxShadow = "";
+                    }, 2000);
+
+                    resultsDiv.style.display = 'none';
+                }
+            });
+        }
+    });
+
 
         // Close dropdown if user clicks away
         document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target)) resultsDiv.style.display = 'none';
+            if (
+                !searchInput.contains(e.target) &&
+                !resultsDiv.contains(e.target)
+            ) {
+                resultsDiv.style.display = 'none';
+            }
         });
     });
 </script>
