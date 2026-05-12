@@ -42,6 +42,7 @@ namespace IMDBSYS.Data
                         Description = "Boost your PC's speed and reliability with this 512GB SATA 3 SSD, designed for lightning-fast boot times and seamless multitasking.",
                         CanBeHot = true,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/storageDevices/Kingston 512G SSD Sata 3.webp"
                     },
                     new Menu
@@ -52,6 +53,7 @@ namespace IMDBSYS.Data
                         Description = "Experience peak performance with the Samsung 990 PRO, a PCIe 4.0 NVMe SSD offering unrivaled speeds and power efficiency for elite gaming and intensive creative workflows.",
                         CanBeHot = true,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/storageDevices/Samsung 990 PRO NVMe SSD.webp"
                     },
                     new Menu
@@ -62,6 +64,7 @@ namespace IMDBSYS.Data
                         Description = "Optimized for 24/7 surveillance, this 2TB Seagate SkyHawk HDD provides reliable, high-capacity storage for multi-bay DVR and NVR systems with ImagePerfect™ firmware to ensure smooth video streaming.",
                         CanBeHot = true,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/storageDevices/Seagate SkyHawk 2TB HDD.webp"
                     },
                     new Menu
@@ -72,6 +75,7 @@ namespace IMDBSYS.Data
                         Description = "The WD Blue 1TB HDD is a dependable, high-capacity hard drive designed for reliable everyday performance and bulk storage in desktop PCs and external enclosures.",
                         CanBeHot = false,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/storageDevices/WD Blue 1TB HDD.webp"
                     },
                     //new Menu
@@ -92,6 +96,7 @@ namespace IMDBSYS.Data
                         Description = "This 4GB 2666MHz DDR4 memory module provides a fast, efficient performance boost for multitasking and system responsiveness in modern computing environments.",
                         CanBeHot = false,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/RAM/Crucial 4GB 2666MHz DDR4.webp"
                     },
                     new Menu
@@ -102,6 +107,7 @@ namespace IMDBSYS.Data
                         Description = "Featuring plug-and-play overclocking and a sleek heat spreader, this high-performance 16GB 3200MHz DDR4 RAM module delivers boosted gaming speeds and enhanced system reliability.",
                         CanBeHot = false,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/RAM/Kingston HyperX Fury 16GB 3200MHz DDR4.webp"
                     },
                     new Menu
@@ -112,6 +118,7 @@ namespace IMDBSYS.Data
                         Description = "This high-performance 16GB 3200MHz DDR4 memory module delivers reliable speed and efficient multitasking capabilities to optimize stability for modern desktop and laptop systems.",
                         CanBeHot = false,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/RAM/Samsung 16GB 3200Hz DDR4.webp"
                     },
                     new Menu
@@ -122,6 +129,7 @@ namespace IMDBSYS.Data
                         Description = "The Corsair CV650 Bronze ATX power supply delivers steady, reliable power with 80 PLUS Bronze efficiency, making it a solid choice for budget-friendly PC builds and home office systems.",
                         CanBeHot = false,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/PSU/Corsair CV650 Bronze ATX.webp"
                     },
                     new Menu
@@ -132,6 +140,7 @@ namespace IMDBSYS.Data
                         Description = "The Corsair CX550 Bronze ATX power supply provides 550 watts of reliable power with 80 PLUS Bronze efficiency, offering a quiet and dependable solution for entry-level and mid-range PC builds.",
                         CanBeHot = true,
                         CanBeCold = false,
+                        HasVariation = true,
                         ImagePath = "/images/PSU/Corsair CX550 Bronze ATX.webp"
                     },
                     new Menu
@@ -142,6 +151,7 @@ namespace IMDBSYS.Data
                         Description = "The Corsair CX750 Bronze ATX power supply unit offers 750 watts of consistent power with 80 PLUS Bronze efficiency, ensuring a reliable and quiet performance for high-demand PC builds.",
                         CanBeHot = true,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/PSU/Corsair CX750 Bronze ATX.webp"
                     },
                     new Menu
@@ -152,6 +162,7 @@ namespace IMDBSYS.Data
                         Description = "The Corsair CX750m Bronze m-ATX power supply combines a compact form factor with semi-modular cables for easier cable management, delivering 750 watts of reliable 80 PLUS Bronze power to your system.",
                         CanBeHot = false,
                         CanBeCold = true,
+                        HasVariation = true,
                         ImagePath = "/images/PSU/Corsair CX750m Bronze m-ATX.webp"
                     },
                     new Menu

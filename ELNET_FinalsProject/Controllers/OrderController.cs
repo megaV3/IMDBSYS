@@ -78,7 +78,7 @@ namespace IMDBSYS.Controllers
 
         // ADD TO CART
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int menuId, int quantity, string? temperature, string? notes)
+        public async Task<IActionResult> AddToCart(int menuId, int quantity, string? variation, string? notes)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -96,7 +96,7 @@ namespace IMDBSYS.Controllers
                 .FirstOrDefaultAsync(oi =>
                     oi.OrderId == order.OrderId &&
                     oi.MenuId == menuId &&
-                    oi.Temperature == temperature &&
+                    oi.Variation == variation &&
                     oi.Notes == notes);
 
             if (existingItem != null)
@@ -112,7 +112,7 @@ namespace IMDBSYS.Controllers
                     MenuId = menuId,
                     Quantity = quantity,
                     Price = menu.Price,
-                    Temperature = temperature,
+                    Variation = variation,
                     Notes = notes
                 });
             }
