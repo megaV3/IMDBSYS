@@ -9,7 +9,7 @@
     z-index: 100;
     background-color: #f5f5f5;
     padding: 10px 30px;
-    color: #9caf6c;
+    color: #3E4885;
 }
 
 .nav-center {
@@ -20,24 +20,24 @@
 
 .nav-link {
     text-decoration: none;
-    color: #9caf6c;
+    color: #3E4885;
     padding: 5px 20px;
     border-radius: 30px;
     transition: 0.3s ease;
 }
 
     .nav-link:hover {
-        background: #9caf6c;
+        background: #3E4885;
         text-decoration: none;
         color: white;
     }
 
     .nav-link.active {
-        border: 2px solid #9caf6c;
+        border: 2px solid #3E4885;
     }
 
 .active-profile {
-    border: 1px solid #9caf6c;
+    border: 1px solid #3E4885;
 }
 
 .nav-left h2 {
@@ -66,7 +66,7 @@
 
     .nav-icon:hover {
         text-decoration: none;
-        background: #9caf6c;
+        background: #3E4885;
     }
 
     .nav-icon img {
@@ -93,7 +93,7 @@ body {
 
 .profile-card {
     width: 500px;
-    background: #9caf6c;
+    background: #3E4885;
     border-radius: 30px;
     padding: 40px 35px;
     text-align: center;
@@ -121,7 +121,7 @@ body {
     bottom: 0;
     right: 0;
     background: white;
-    color: #9caf6c;
+    color: #3E4885;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -368,7 +368,7 @@ body {
     padding: 12px;
     border-radius: 12px;
     border: none;
-    background: #9caf6c;
+    background: #3E4885;
     color: white;
     font-weight: bold;
     cursor: pointer;

@@ -9,7 +9,7 @@
     z-index: 100; /*ensures that it stays above other content*/
     background-color: #f5f5f5;
     padding: 10px 30px;
-    color: #9caf6c;
+    color: #3E4885;
 }
 
 .nav-center {
@@ -20,20 +20,20 @@
 
 .nav-link {
     text-decoration: none;
-    color: #9caf6c;
+    color: #3E4885;
     padding: 5px 20px;
     border-radius: 30px;
     transition: 0.3s ease;
 }
 
     .nav-link:hover {
-        background: #9caf6c;
+        background: #3E4885;
         text-decoration: none;
         color: white;
     }
 
     .nav-link.active {
-        border: 2px solid #9caf6c;
+        border: 2px solid #3E4885;
     }
 
 .nav-balance {
@@ -41,7 +41,7 @@
     align-items: center;
     gap: 4px;
     background-color: #fff;
-    border: 2px solid #9caf6c;
+    border: 2px solid #3E4885;
     border-radius: 20px;
     padding: 5px 14px;
     font-weight: bold;
@@ -65,8 +65,8 @@
 }
 
 .active-cart {
-    background: #9caf6c;
-    border: 2px solid #9caf6c;
+    background: #3E4885;
+    border: 2px solid #3E4885;
     transition: 0.3s ease;
 }
 
@@ -98,7 +98,7 @@
 
     .nav-icon:hover {
         text-decoration: none;
-        background: #9caf6c;
+        background: #3E4885;
     }
 
     .nav-icon img {
@@ -348,7 +348,7 @@
 .browse-btn {
     margin-top: 24px;
     display: inline-block;
-    background: #9caf6c;
+    background: #3E4885;
     color: #fff;
     padding: 13px 30px;
     border-radius: 12px;
@@ -376,7 +376,7 @@
 }
 
 .summary-header {
-    background: #9caf6c;
+    background: #3E4885;
     padding: 20px 22px;
 }
 
@@ -469,7 +469,7 @@
     width: 100%;
     padding: 13px;
     margin-top: 18px;
-    background: #9caf6c;
+    background: #3E4885;
     color: #fff;
     border: none;
     border-radius: 12px;
@@ -514,6 +514,6 @@
 
     .keep-shopping-btn:hover {
         background: #f3f8ea;
-        border-color: #9caf6c;
+        border-color: #3E4885;
         text-decoration: none;
     }
