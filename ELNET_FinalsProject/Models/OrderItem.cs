@@ -13,6 +13,7 @@ namespace IMDBSYS.Models
         public decimal Price { get; set; }
 
         public string? Temperature { get; set; }   // "Hot" or "Iced"
+        public string? Variation { get; set; }       // e.g., "512G, 2GB RAM, 256GB Storage, etc."
         public string? Notes { get; set; }          // allergy/special instructions
 
         public Order Order { get; set; }
