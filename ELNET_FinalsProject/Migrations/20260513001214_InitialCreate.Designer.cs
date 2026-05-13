@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDBSYS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260512231034_Profilechanges")]
-    partial class Profilechanges
+    [Migration("20260513001214_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace IMDBSYS.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("HasVariation")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -115,6 +118,9 @@ namespace IMDBSYS.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Temperature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Variation")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderItemId");

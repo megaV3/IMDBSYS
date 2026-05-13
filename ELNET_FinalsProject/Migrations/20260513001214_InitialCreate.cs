@@ -23,6 +23,7 @@ namespace IMDBSYS.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CanBeHot = table.Column<bool>(type: "bit", nullable: false),
                     CanBeCold = table.Column<bool>(type: "bit", nullable: false),
+                    HasVariation = table.Column<bool>(type: "bit", nullable: true),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -97,6 +98,7 @@ namespace IMDBSYS.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     Temperature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Variation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
