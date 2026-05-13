@@ -924,8 +924,7 @@
 
 
             <div class="modal-section-label">Special Instructions</div>
-            <textarea id="bNotes" rows="2" placeholder="e.g. extra shot, no ice, less sweet…"></textarea>
-
+            <textarea id="bNotes" rows="2" placeholder="e.g. Partitioning requests, gift wrapping, etc..."></textarea>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeBasketModal()">Cancel</button>
                 <button class="btn-add-confirm" onclick="submitBasket()">Add to Basket</button>
@@ -941,41 +940,64 @@
 
 <script>
     const variationsMap = {
-        "StorageDevices": ["256GB", "512GB", "1TB", "2TB"],
-        "RAM": ["8GB 3200MHz", "16GB 3200MHz", "32GB 3600MHz"],
-        "PSU": ["550W", "650W", "750W", "850W"],
-        "inputDevices": ["Wired", "Wireless", "RGB Edition"],
-        "outputDevices": ["Standard", "Pro Display"]
+        "StorageDevices": [
+            { spec: "256GB", add: 0 },
+            { spec: "512GB", add: 500 },
+            { spec: "1TB", add: 1500 },
+            { spec: "2TB", add: 3500 }
+        ],
+        "RAM": [
+            { spec: "8GB", add: 0 },
+            { spec: "16GB", add: 1200 },
+            { spec: "32GB", add: 2500 }
+        ]
     };
     var _selectedVariation = ""; // Replace _temp
+    var _basePrice = 0;
+    var _currentAddon = 0;
 
     var _menuId, _price, _qty = 1, _temp = 'Iced';
     function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold, category) {
         _menuId = menuId;
-        _price = price;
+        _basePrice = price;
         _qty = 1;
+        _currentAddon = 0;
 
         // Reset Modal content
         document.getElementById('bModalName').textContent = name;
         document.getElementById('bModalPrice').textContent = 'PHP ' + price;
         document.getElementById('bModalDesc').textContent = desc;
-    
+
         // Handle Variations dynamically
         const container = document.getElementById('variationContainer');
-        container.innerHTML = ""; // Clear old buttons
-    
-        const options = variationsMap[category] || ["Standard"];
-        _selectedVariation = options[0]; // Default to first option
+        if (!container) {
+            console.error("variationContainer not found!");
+            return;
+        }
+        container.innerHTML = "";
 
+        // Determine which options to show
+        let options = variationsMap[category] || [{ spec: "Standard", add: 0 }];
+
+        // Set initial selection
+        _selectedVariation = options[0].spec;
+        _currentAddon = options[0].add;
+
+        // Create buttons
         options.forEach(opt => {
             const btn = document.createElement('button');
-            btn.className = 'temp-btn' + (opt === _selectedVariation ? ' active' : '');
-            btn.textContent = opt;
+            btn.className = 'temp-btn' + (opt.spec === _selectedVariation ? ' active' : '');
+            btn.textContent = opt.spec + (opt.add > 0 ? " (+₱" + opt.add + ")" : "");
+    
             btn.onclick = function() {
-                _selectedVariation = opt;
-                // Remove active class from siblings and add to this
+                _selectedVariation = opt.spec;
+                _currentAddon = opt.add;
+        
+                // UI Toggle
                 container.querySelectorAll('.temp-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+        
+                updateSubtotal();
             };
             container.appendChild(btn);
         });
@@ -985,25 +1007,25 @@
         if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
             wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:cover; border-radius:12px;" />';
         } else {
-            // Default icon for hardware if no image is found
             wrap.innerHTML = '<span style="font-size: 50px;">🖥️</span>';
         }
 
-        // --- Quantity & Price Reset ---
+        // --- Quantity & UI Reset ---
         document.getElementById('bQtyVal').textContent = _qty;
-        document.getElementById('bSubtotal').textContent = '= PHP ' + price.toLocaleString();
-
-        // --- Reset Notes and Chips ---
         document.getElementById('bNotes').value = '';
         document.querySelectorAll('.allergy-chip').forEach(function(c) {
             c.classList.remove('active');
         });
 
-        // --- Final Display Logic ---
+        // --- Final Display ---
+        updateSubtotal();
         document.getElementById('basketOverlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Prevents background scrolling
+        document.body.style.overflow = 'hidden';
     }
-
+    function updateSubtotal() {
+        let totalUnit = _basePrice + _currentAddon;
+        document.getElementById('bSubtotal').textContent = '= PHP ' + (totalUnit * _qty).toLocaleString();
+    }
     function submitBasket() {
         var chips = [];
         document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
@@ -1020,6 +1042,7 @@
                 + '&quantity='    + encodeURIComponent(_qty)
                 + '&variation='   + encodeURIComponent(_selectedVariation) // CHANGED FROM TEMPERATURE
                 + '&notes='       + encodeURIComponent(notes)
+                + '&price=' + (_basePrice + _currentAddon)
         })
         .then(r => r.json())
         .then(data => {
@@ -1088,8 +1111,8 @@
 
     function changeQty(delta) {
         _qty = Math.max(1, _qty + delta);
-        document.getElementById('bQtyVal').textContent   = _qty;
-        document.getElementById('bSubtotal').textContent = '= PHP ' + (_price * _qty);
+        document.getElementById('bQtyVal').textContent = _qty;
+        updateSubtotal(); // This ensures (Base + Addon) * Qty is calculated
     }
 
     function toggleChip(el) {
