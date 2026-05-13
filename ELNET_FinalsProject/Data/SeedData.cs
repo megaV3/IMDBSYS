@@ -36,9 +36,9 @@ namespace IMDBSYS.Data
                 context.Menus.AddRange(
                     new Menu
                     {
-                        Name = "Kingston 512 SSD Sata 3",
+                        Name = "Kingston KC600 SSD Sata 3",
                         Category = "StorageDevices",
-                        Price = 75m,
+                        Price = 2500m,
                         Description = "Boost your PC's speed and reliability with this 512GB SATA 3 SSD, designed for lightning-fast boot times and seamless multitasking.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -49,7 +49,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Samsung 990 PRO NVMe SSD",
                         Category = "StorageDevices",
-                        Price = 89m,
+                        Price = 8000m,
                         Description = "Experience peak performance with the Samsung 990 PRO, a PCIe 4.0 NVMe SSD offering unrivaled speeds and power efficiency for elite gaming and intensive creative workflows.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -58,9 +58,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Seagate SkyHawk 2TB HDD",
+                        Name = "Seagate SkyHawk HDD",
                         Category = "StorageDevices",
-                        Price = 89m,
+                        Price = 1250m,
                         Description = "Optimized for 24/7 surveillance, this 2TB Seagate SkyHawk HDD provides reliable, high-capacity storage for multi-bay DVR and NVR systems with ImagePerfect™ firmware to ensure smooth video streaming.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -69,9 +69,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "WD Blue 1TB HDD",
+                        Name = "WD Blue HDD",
                         Category = "StorageDevices",
-                        Price = 95m,
+                        Price = 699m,
                         Description = "The WD Blue 1TB HDD is a dependable, high-capacity hard drive designed for reliable everyday performance and bulk storage in desktop PCs and external enclosures.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -90,9 +90,9 @@ namespace IMDBSYS.Data
                     //},
                     new Menu
                     {
-                        Name = "Crucial 4GB 2666MHz DDR4",
+                        Name = "Crucial DDR4",
                         Category = "RAM",
-                        Price = 95m,
+                        Price = 1250m,
                         Description = "This 4GB 2666MHz DDR4 memory module provides a fast, efficient performance boost for multitasking and system responsiveness in modern computing environments.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -101,9 +101,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Kingston HyperX Fury 16GB 3200MHz DDR4",
+                        Name = "Kingston HyperX Fury DDR4",
                         Category = "RAM",
-                        Price = 115m,
+                        Price = 3500m,
                         Description = "Featuring plug-and-play overclocking and a sleek heat spreader, this high-performance 16GB 3200MHz DDR4 RAM module delivers boosted gaming speeds and enhanced system reliability.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -112,9 +112,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Samsung 16GB 3200Hz DDR4",
+                        Name = "Samsung DDR4",
                         Category = "RAM",
-                        Price = 85m,
+                        Price = 3400m,
                         Description = "This high-performance 16GB 3200MHz DDR4 memory module delivers reliable speed and efficient multitasking capabilities to optimize stability for modern desktop and laptop systems.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -125,7 +125,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Corsair CV650 Bronze ATX",
                         Category = "PSU",
-                        Price = 79m,
+                        Price = 3650m,
                         Description = "The Corsair CV650 Bronze ATX power supply delivers steady, reliable power with 80 PLUS Bronze efficiency, making it a solid choice for budget-friendly PC builds and home office systems.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -136,7 +136,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Corsair CX550 Bronze ATX",
                         Category = "PSU",
-                        Price = 75m,
+                        Price = 3100m,
                         Description = "The Corsair CX550 Bronze ATX power supply provides 550 watts of reliable power with 80 PLUS Bronze efficiency, offering a quiet and dependable solution for entry-level and mid-range PC builds.",
                         CanBeHot = true,
                         CanBeCold = false,
@@ -147,7 +147,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Corsair CX750 Bronze ATX",
                         Category = "PSU",
-                        Price = 79m,
+                        Price = 4550m,
                         Description = "The Corsair CX750 Bronze ATX power supply unit offers 750 watts of consistent power with 80 PLUS Bronze efficiency, ensuring a reliable and quiet performance for high-demand PC builds.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -158,7 +158,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Corsair CX750m Bronze m-ATX",
                         Category = "PSU",
-                        Price = 115m,
+                        Price = 4000m,
                         Description = "The Corsair CX750m Bronze m-ATX power supply combines a compact form factor with semi-modular cables for easier cable management, delivering 750 watts of reliable 80 PLUS Bronze power to your system.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -167,9 +167,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Accuratus 201 keyboard 1.8k",
+                        Name = "Accuratus 201 keyboard",
                         Category = "inputDevices",
-                        Price = 89m,
+                        Price = 1890m,
                         Description = "The Accuratus 201 keyboard features a high-contrast design with large print keys, offering enhanced visibility and a durable 1.8-meter cable for reliable desktop connectivity.",
                         CanBeHot = false,
                         CanBeCold = true,
@@ -177,9 +177,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Dell KB813 1K",
+                        Name = "Dell KB813",
                         Category = "inputDevices",
-                        Price = 79m,
+                        Price = 1450m,
                         Description = "The Dell KB813 keyboard features an integrated smart card reader for secure data access and a spill-resistant design, providing a comfortable and reliable typing experience for professional environments.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -189,7 +189,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Dell MS116 Optical Mouse",
                         Category = "inputDevices",
-                        Price = 85m,
+                        Price = 545m,
                         Description = "The Dell MS116 Optical Mouse features high-precision LED tracking and a comfortable, ergonomic design, providing reliable performance for everyday office tasks and home use.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -199,7 +199,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Logictech m185 Wireless Mouse",
                         Category = "inputDevices",
-                        Price = 50m,
+                        Price = 999m,
                         Description = "The Logitech M185 Wireless Mouse provides a plug-and-forget nano receiver and reliable 2.4 GHz connectivity, ensuring a clutter-free workspace with a comfortable, contoured design for both left and right-handed users.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -207,9 +207,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Logitech keyboard 1k",
+                        Name = "Logitech keyboard",
                         Category = "inputDevices",
-                        Price = 85m,
+                        Price = 1350m,
                         Description = "The Logitech K120 keyboard features a low-profile, spill-resistant design and a plug-and-play USB connection, offering a durable and quiet typing experience for any standard workspace.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -219,7 +219,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Vention KTBBO Wireless Mouse",
                         Category = "inputDevices",
-                        Price = 75m,
+                        Price = 999m,
                         Description = "The Vention KTBBO Wireless Mouse offers a slim, ergonomic profile with silent clicking and adjustable DPI settings, providing a smooth and quiet navigation experience for both office and travel use.",
                         CanBeHot = true,
                         CanBeCold = false,
@@ -229,7 +229,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Allan Speaker Mini Portable",
                         Category = "outputDevices",
-                        Price = 75m,
+                        Price = 500m,
                         Description = "The Allan Mini Portable Speaker features a compact, two-channel design with 6W output power, offering a budget-friendly audio solution for laptops, PCs, and smartphones via a 3.5mm stereo jack and USB power.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -237,9 +237,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "Kensington Hi-Fi headset 1.4",
+                        Name = "Kensington Hi-Fi headset",
                         Category = "outputDevices",
-                        Price = 30m,
+                        Price = 760m,
                         Description = "The Kensington Hi-Fi Headset features high-quality stereo sound and a generous 1.4-meter cable, providing a comfortable and adjustable fit for students and professionals during long listening sessions or calls.",
                         CanBeHot = true,
                         CanBeCold = false,
@@ -249,7 +249,7 @@ namespace IMDBSYS.Data
                     {
                         Name = "Logitech Z150 Multimedia Speakers",
                         Category = "outputDevices",
-                        Price = 95m,
+                        Price = 850m,
                         Description = "The Logitech Z150 Multimedia Speakers deliver 6 watts of peak power and clear stereo sound, featuring a compact design with a convenient headphone jack and auxiliary input for versatile audio connectivity.",
                         CanBeHot = true,
                         CanBeCold = true,
@@ -257,9 +257,9 @@ namespace IMDBSYS.Data
                     },
                     new Menu
                     {
-                        Name = "RAPOO H100 3.5mm headset 430",
+                        Name = "RAPOO H100 3.5mm headset",
                         Category = "outputDevices",
-                        Price = 119m,
+                        Price = 430m,
                         Description = "The Rapoo H100 Wired Stereo Headset features a lightweight design and clear audio output, utilizing a 3.5mm jack for easy compatibility with a variety of devices while offering a comfortable fit for daily use.",
                         CanBeHot = false,
                         CanBeCold = true,
