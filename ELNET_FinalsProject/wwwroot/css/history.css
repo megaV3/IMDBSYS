@@ -35,8 +35,9 @@ body {
     }
 
     .nav-link.active {
-        border: 2px solid ##3E4885;
+        border: 2px solid #3E4885;
     }
+
 
 .active-profile {
     border: 1px solid #3E4885;
