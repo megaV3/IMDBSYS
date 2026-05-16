@@ -13,11 +13,11 @@ namespace IMDBSYS.Models
         public decimal Price { get; set; }
 
         public string Description { get; set; } = string.Empty;
-        public bool CanBeHot { get; set; }
-        public bool CanBeCold { get; set; }
-        public bool? HasVariation { get; set; } = false; // e.g., different sizes, flavors, etc.
 
         public string? ImagePath { get; set; }
+
+        // Navigation property
+        public List<MenuVariation> Variations { get; set; } = new();
     }
 }
 
