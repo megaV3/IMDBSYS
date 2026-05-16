@@ -3,34 +3,32 @@
 @{
     ViewData["Title"] = "Order History";
 }
-<!--  For Profile.cshtml designs  -->
-@*
-    
-*@
+
 <link href="~/css/history.css" rel="stylesheet" />
 
 <div class="navbar">
     <div class="nav-left">
-        <h2>PICKOUT COFFEE</h2>
+        <h2>PICKOUT HARDWARE</h2>
     </div>
     <div class="nav-center">
         <a asp-controller="Store" asp-action="Index" class="nav-link active">Home</a>
     </div>
     <div class="nav-right">
+        <div class="nav-balance">
+            <span class="balance-label">₱</span>
+            <span class="balance-amount">@Model.UserBalance.ToString("N2")</span>
+        </div>
+
         <a asp-controller="Order" asp-action="Cart" style="position:relative; display:inline-block;">
-            <!-- Wrap only the images in the circular div -->
             <div class="cart-wrapper">
                 <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
-                <img class="cart-img hover-img" src="~/images/cart-green.png" alt="Cart Hover" />
             </div>
-
-            <!-- Badge stays outside the circular clip -->
             <span id="cart-count" style="
                 position: absolute;
                 top: 0;
                 right: 0;
                 font-size: 10px;
-                background: #3e4e2c;
+                background: #3E4885;
                 color: white;
                 border-radius: 50%;
                 padding: 2px 5px;
@@ -40,91 +38,88 @@
                 @Model.CartCount
             </span>
         </a>
-        <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
-            <img class="nav-icon active-profile" src="@Url.Content(Model.ProfileImagePath)" />
+        <a asp-controller="Identity" asp-action="Profile" class="nav-icon-container">
+            <div class="profile-wrapper">
+                <img class="profile-img" src="@Url.Content(Model.ProfileImagePath)" />
+            </div>
         </a>
     </div>
 </div>
 
 <style>
-    .footer {
-        background-color: #f5f5f5 !important;
-        color: #3E4885;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        text-align: center;
+    /* Container link settings */
+    .profile-link-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Base image profile ring configuration */
+    .nav-icon.active-profile {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        border: 2px solid #3E4885 !important; /* Perfect single border matching Home view */
+        transition: transform 0.3s ease !important; /* Smooth animation timing controller */
+    }
+
+    /* FIXED ANIMATION: Triggers scale when mouse enters the wrapper area */
+    .profile-link-wrapper:hover .active-profile {
+        transform: scale(1.05) !important;
     }
 
     .navbar {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: center; /* Ensures header blocks remain perfectly centered */
         position: sticky;
         top: 0;
         z-index: 1000;
-        background-color: #f5f5f5;
-        height: 70px;
-        /*(100vw - 100%) calculates the exact width of the scrollbar dynamically. */
+        background-color: #ffffff;
+        height: 70px; /* Forces both pages to lock at exactly 70px tall */
         padding-left: 30px;
         padding-right: calc(30px + (100vw - 100%));
         color: #3E4885;
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
     }
 
-    .nav-right {
-        flex: 1; /* Takes up 1/3 of space */
+    .nav-left {
         display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .cart-wrapper, .profile-wrapper {
-        position: relative;
-        display: flex; /* Changed from inline-block to flex for centering */
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin: 0; /* Let the parent gap handle spacing */
-    }
-
-    .cart-img, .profile-img {
-        width: 100%;
+        align-items: center; /* This forces the text block to center inside the 70px container */
+        justify-content: flex-start;
+        gap: 20px;
         height: 100%;
-        object-fit: cover; /* 'cover' is better for rounded icons to ensure they fill the circle */
-        border-radius: 50%; /* Double-ensure the images are rounded */
-        transition: opacity 0.3s ease;
     }
 
-    .hover-img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        z-index: 2;
-    }
+        .nav-left h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 25px; /* FIXED: Increased from 22px to match your main header style exactly */
+            font-weight: 900; /* FIXED: Bumped up to ultra-bold to create that thick tech font thickness */
+            letter-spacing: -1px; /* FIXED: Compresses the characters to remove the gaps between letters */
+            font-family: Arial, sans-serif; /* Make sure this font matches whatever string is in your home view CSS! */
+        }
 
-    .default-img {
+    /* Hardware Search Bar Input Alignment Mockup */
+    .search-container {
+        display: flex;
+        align-items: center;
+        height: 100%;
         position: relative;
-        opacity: 1;
-        z-index: 1;
     }
 
-    /* Hover States */
-    .cart-wrapper:hover .hover-img,
-    .profile-wrapper:hover .hover-img {
-        opacity: 1;
-    }
-
-    .cart-wrapper:hover .default-img,
-    .profile-wrapper:hover .default-img {
-        opacity: 0;
-    }
-
-    #cart-count {
-        z-index: 10;
-        /* Ensure this stays visible even if the wrapper clips images */
+    #menuSearch {
+        width: 220px;
+        height: 38px;
+        padding: 0 16px;
+        border-radius: 20px;
+        border: 1.5px solid #dcdfe6;
+        background-color: #f4f5f8;
+        outline: none;
+        font-size: 13px;
     }
 
     .nav-center {
@@ -132,133 +127,243 @@
         left: 50%;
         transform: translateX(-50%);
     }
-</style>
 
+    .nav-link {
+        text-decoration: none;
+        color: #3E4885;
+        padding: 5px 20px;
+        border-radius: 30px;
+        transition: 0.3s ease;
+        border: 2px solid #3E4885;
+        font-weight: bold;
+    }
+
+        .nav-link:hover {
+            background: #3E4885;
+            color: white;
+            text-decoration: none;
+        }
+
+    .nav-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .nav-balance {
+        border: 1.5px solid #3E4885; /* Thinned the border line slightly */
+        padding: 5px 16px;
+        border-radius: 30px;
+        color: #3E4885;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+        .nav-balance .balance-amount {
+            font-weight: 600; /* Adjusted from 700 down to 600 to prevent blocky text look */
+            font-size: 14px;
+        }
+
+    .cart-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #f0f2fa;
+        transition: all 0.2s;
+    }
+
+        .cart-wrapper:hover {
+            transform: scale(1.05);
+            background-color: #3E4885;
+        }
+
+            .cart-wrapper:hover .cart-img {
+                filter: brightness(0) invert(1);
+            }
+
+    .cart-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .nav-icon.active-profile img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #3E4885;
+    }
+
+    /* ── STICKY FOOTER MECHANICS ── */
+    main, body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f5f5f7;
+    }
+
+    .history-page {
+        flex: 1 0 auto;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 36px 28px 80px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .footer {
+        flex-shrink: 0;
+        margin-top: auto;
+        background-color: #ffffff !important;
+        color: #3E4885;
+        border-top: 1px solid #e4e7ed;
+        text-align: center;
+        padding: 15px 0;
+    }
+
+    /* ── HISTORY CONTENT CARD STYLES ── */
+    .history-card {
+        background: #fff;
+        border: 1px solid #e4e7ed !important;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+
+    .history-top h3 {
+        color: #1E1E2F !important;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .history-card .status.completed {
+        background-color: #eaf3f8 !important;
+        color: #3E4885 !important;
+        border: 1px solid #7B88B5 !important;
+        padding: 6px 14px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+    }
+
+    .history-bottom h2 {
+        color: #3E4885 !important;
+        font-weight: 800 !important;
+        font-size: 24px !important;
+        margin: 0;
+    }
+    /* Inline anchor alignment block */
+    .nav-icon-container {
+        display: inline-block;
+        text-decoration: none;
+        vertical-align: middle;
+    }
+
+    /* Perfect single-bordered rounded wrapper bubble matching Index style sheets */
+    .profile-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0;
+        background-color: #fafbfc;
+        border: 2px solid #3E4885 !important; /* Single outer boundary ring */
+        box-sizing: border-box;
+        transition: transform 0.3s ease !important; /* Smooth scaling transition physics tracker */
+    }
+
+    /* Clean unbordered image filling the wrapper interior bounds */
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    /* MATCHED ANIMATION FROM INDEX: Scales the entire single-bordered container wrapper bubble block */
+    .nav-icon-container:hover .profile-wrapper {
+        transform: scale(1.05) !important;
+        background-color: #f0f2fa;
+    }
+</style>
 
 <div class="history-page">
 
-    <div class="history-topbar">
-
-        <div class="history-header">
-            <h1>Your Orders</h1>
-            <p>Review your previous coffee orders.</p>
+    <div class="history-topbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
+        <div class="history-header" style="text-align:left;">
+            <h1 style="font-size:36px; font-weight:800; color:#3E4885; margin:0 0 4px 0;">Your Orders</h1>
+            <p style="margin:0; color:#606266; font-size:14px;">Review your previous hardware component orders.</p>
         </div>
-
-        <a asp-controller="Identity"
-           asp-action="Profile"
-           class="back-btn">
-
+        <a asp-controller="Identity" asp-action="Profile" class="back-btn" style="text-decoration:none; background:#3E4885; color:#fff; padding:8px 16px; border-radius:20px; font-weight:600; font-size:13px; transition:0.2s;">
             ← Back
-
         </a>
-</div>
+    </div>
 
     @if (Model.OrderHistory != null && Model.OrderHistory.Any())
     {
         @foreach (var order in Model.OrderHistory)
         {
-
             <div class="history-card">
-
-                <div class="history-top">
+                <div class="history-top" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f0f2fa; padding-bottom:12px;">
                     <div>
                         <h3>Order ID: @order.OrderId</h3>
-                        <span class="date">@order.OrderDate</span>
+                        <span class="date" style="color:#909399; font-size:13px; display:inline-block; margin-top:4px;">@order.OrderDate.ToString("MM/dd/yyyy hh:mm tt")</span>
                     </div>
-
-                    <span class="status completed">
-                        @if (order.IsCompleted)
-                        {
-                            <span class="">Completed</span>
-                        }
-                        else
-                        {
-                            <span class="text-bg-secondary">Not Completed</span>
-                        }
-                    </span>
-
+                    <div class="status completed">Completed</div>
                 </div>
 
-                <div class="history-middle mb-4">
-                    <p><bold>Customer</bold>: @order.CustomerName</p>
-                    <hr />
+                <div class="history-middle" style="margin-top:16px; padding-bottom:16px;">
+                    <p style="margin:0 0 12px 0; font-size:15px; text-align:left;"><strong>Customer:</strong> @order.CustomerName</p>
+                    <div class="items-label" style="font-size:11px; font-weight:700; letter-spacing:0.05em; color:#909399; text-transform:uppercase; margin-bottom:12px; text-align:left;">Items Purchased:</div>
                     
-                    Orders:
                     @foreach (var orderItem in order.OrderItems)
                     {
-                        <div class="row">
-                            <div class="col-5">
+                        <div class="row" style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; align-items:center;">
+                            <div class="col-7" style="text-align:left; color:#1c1d21;">
                                 <span>
-                                    x @orderItem.Quantity - <strong> @orderItem.Menu.Name</strong> <small> <br />
-                                    (Variation:
-                                    @if (orderItem.Variation != null)
-                                    {
-                                        @orderItem.Variation
-                                    }
-                                    else
-                                    {
-                                        <span>None</span>
-                                    })
+                                    x @orderItem.Quantity - <strong>@orderItem.Menu?.Name</strong>
+                                    <br />
+                                    <small style="color:#909399; margin-left:22px; font-size:12px;">
+                                        (Variation: @(orderItem.Variation ?? "Standard"))
+                                        @if (!string.IsNullOrEmpty(orderItem.Notes))
+                                        {
+                                            <span> | (Note: @orderItem.Notes)</span>
+                                        }
                                     </small>
-                                    <small>
-                                    )
-                                    (Note:
-                                    @if (orderItem.Notes != null)
-                                    {
-                                        @orderItem.Notes
-                                    } else {
-                                        <span>None</span>
-                                    }) </small>
-                                
                                 </span>
                             </div>
-                            <div class="col-2">
-                                <small class="fst-italic">@orderItem.Quantity x @orderItem.Price -  ₱ @(orderItem.Price * orderItem.Quantity)</small>
+                            <div class="col-4" style="text-align:right; font-style:italic; color:#606266;">
+                                <small>@orderItem.Quantity x ₱@orderItem.Price.ToString("N2") = <strong>₱@((orderItem.Price * orderItem.Quantity).ToString("N2"))</strong></small>
                             </div>
                         </div>
                     }
                 </div>
 
-                <div class="history-bottom">
-                    <h2>Total: ₱ @order.TotalAmount</h2>
+                <div class="history-bottom" style="text-align:right; border-top:1px solid #f0f2fa; padding-top:16px; margin-top:4px;">
+                    <h2>Total: ₱@order.TotalAmount.ToString("N2")</h2>
                 </div>
-
             </div>
         }
-        
-    } else
+    }
+    else
     {
-        
-        <div style="text-align:center; padding:40px 0; color:#aaa;">
+        <div style="text-align:center; padding:60px 0; color:#909399;">
             <div style="font-size:40px; margin-bottom:10px;">🧾</div>
-            <p style="margin:0; font-size:14px;">No orders yet.</p>
+            <p style="margin:0; font-size:15px; font-weight:600;">No previous orders found.</p>
         </div>
     }
-    <!-- SAMPLE CARD -->
-    @*
-    <div class="history-card">
-
-        <div class="history-top">
-            <div>
-                <h3>Order #1024</h3>
-                <span class="date">May 10, 2026</span>
-            </div>
-
-            <span class="status completed">
-                Completed
-            </span>
-        </div>
-
-        <div class="history-middle">
-            <p><bold>Customer</bold>: John Wayne Yabao</p>
-        </div>
-
-        <div class="history-bottom">
-            <h2>₱183.68</h2>
-        </div>
-
-    </div>
-
-    *@
-
 </div>
