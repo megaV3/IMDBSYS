@@ -8,5 +8,6 @@ namespace IMDBSYS.ViewModels
         public string? ProfileImagePath { get; set; }
         public int CartCount { get; set; }
         public List<Order> OrderHistory { get; set; }
+        public decimal UserBalance { get; set; }
     }
 }
