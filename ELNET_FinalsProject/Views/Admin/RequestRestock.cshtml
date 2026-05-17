@@ -1,26 +1,166 @@
-﻿@model IEnumerable<IMDBSYS.Models.MenuVariation>
+﻿@using System.Linq
+@model IEnumerable<IMDBSYS.Models.MenuVariation>
 
 @{
-    ViewData["Title"] = "Request Product Restock";
+    ViewData["Title"] = "Item Restock";
 }
 
 <div class="page-header">
     <div>
-        <h1>Log Product Delivery</h1>
-        <p>Record incoming supplier shipments and update inventory stock levels</p>
+        <h1>Item Restock</h1>
+        <p>
+            Update inventory quantities and record incoming stock deliveries
+        </p>
     </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-xl-8 col-xxl-7">
-        <div class="pkcard">
-            <div class="card-body" style="padding: 28px 30px;">
-                <form asp-action="RequestRestock" method="post">
 
-                    <div class="mb-4">
-                        <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.6px;">Select Incoming Item Variant</label>
-                        <select id="variantSelect" name="MenuVariationId" class="pk-input form-select" required>
-                            <option value="" disabled selected>-- Choose a Variant SKU --</option>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successAlert"
+         class="alert alert-success alert-dismissible fade show mt-3"
+         role="alert"
+         style="
+                border-radius:14px;
+                border:none;
+                background:#DCFCE7;
+                color:#166534;
+                font-weight:600;">
+
+        @TempData["SuccessMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
+    <script>
+
+        setTimeout(function () {
+
+            const alert =
+                document.getElementById('successAlert');
+
+            if (alert) {
+
+                alert.classList.remove('show');
+
+                alert.classList.add('hide');
+
+                setTimeout(() => {
+
+                    alert.remove();
+
+                }, 300);
+            }
+
+        }, 2500);
+
+    </script>
+}
+<div class="row justify-content-center">
+
+    <div class="col-xl-8 col-xxl-7">
+
+        <div class="pkcard">
+
+            <div class="card-body"
+                 style="padding:24px 26px;">
+
+                <form asp-action="RequestRestock"
+                      method="post">
+
+                    <!-- SEARCH + FILTER -->
+                    <div class="mb-3">
+
+                        <div class="row g-2 mb-2">
+
+                            <!-- SEARCH -->
+                            <div class="col-md-8">
+
+                                <div style="position:relative;">
+
+                                    <input type="text"
+                                           id="variantSearch"
+                                           class="form-control"
+                                           placeholder="Search item..."
+                                           style="
+                                                height:44px;
+                                                border-radius:12px;
+                                                padding-right:36px;" />
+
+                                    <span onclick="clearVariantSearch()"
+                                          style="
+                                            position:absolute;
+                                            right:12px;
+                                            top:50%;
+                                            transform:translateY(-50%);
+                                            cursor:pointer;
+                                            color:#94a3b8;
+                                            font-size:17px;
+                                            font-weight:700;">
+
+                                        ×
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FILTER -->
+                            <div class="col-md-4">
+
+                                <select id="categoryFilter"
+                                        class="form-select"
+                                        style="
+                                            height:44px;
+                                            border-radius:12px;">
+
+                                    <option value="">
+                                        All Categories
+                                    </option>
+
+                                    @foreach (var cat in Model
+                                                                        .Select(v => v.Menu?.Category)
+                                                                        .Distinct()
+                                                                        .OrderBy(c => c))
+                                    {
+                                        <option value="@cat">
+                                            @cat
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <!-- SELECT -->
+                        <label class="form-label"
+                               style="
+                                    font-size:11px;
+                                    font-weight:700;
+                                    color:#64748b;
+                                    text-transform:uppercase;
+                                    letter-spacing:0.6px;">
+
+                            Select Item Variant
+
+                        </label>
+
+                        <select id="variantSelect"
+                                name="MenuVariationId"
+                                class="pk-input form-select"
+                                size="8"
+                                required
+                                style="
+                                    border-radius:14px;
+                                    padding:8px;">
+
                             @foreach (var item in Model)
                             {
                                 <option value="@item.MenuVariationId"
@@ -29,127 +169,403 @@
                                         data-category="@item.Menu?.Category"
                                         data-currentstock="@item.StockQuantity"
                                         data-retailprice="@item.Price.ToString("F2")"
-                                        data-suppliercost="@item.SupplierCost.ToString("F2")">
-                                    #@item.MenuVariationId — @item.Menu?.Name (@item.VariantName)
+                                        data-suppliercost="@item.SupplierCost.ToString("F2")"
+                                        style="padding:10px;">
+
+                                    #@item.MenuVariationId —
+                                    @item.Menu?.Name
+                                    (@item.VariantName)
+
                                 </option>
                             }
+
                         </select>
+
                     </div>
 
-                    <!-- Auto-filled info grid -->
-                    <div style="background:#f8f9ff; border-radius:14px; border:1.5px solid #e2e8f0; padding:18px 20px; margin-bottom:24px;">
-                        <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:14px;">Item Details (Auto-filled)</div>
+                    <!-- ITEM DETAILS -->
+                    <div style="
+                            background:#f8fafc;
+                            border-radius:18px;
+                            border:1px solid #E2E8F0;
+                            padding:18px 20px;
+                            margin-bottom:22px;">
+
+                        <div style="
+                                font-size:11px;
+                                font-weight:700;
+                                color:#94a3b8;
+                                text-transform:uppercase;
+                                letter-spacing:0.8px;
+                                margin-bottom:14px;">
+
+                            Item Details
+
+                        </div>
+
                         <div class="row g-3">
+
+                            <!-- PRODUCT -->
                             <div class="col-6">
-                                <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Product Name</label>
-                                <input type="text" id="displayProductName" class="pk-input form-control" readonly />
+
+                                <label class="form-label">
+                                    Product Name
+                                </label>
+
+                                <input type="text"
+                                       id="displayProductName"
+                                       class="pk-input form-control"
+                                       readonly />
+
                             </div>
+
+                            <!-- VARIANT -->
                             <div class="col-6">
-                                <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Configuration</label>
-                                <input type="text" id="displayVariantName" class="pk-input form-control" readonly />
+
+                                <label class="form-label">
+                                    Configuration
+                                </label>
+
+                                <input type="text"
+                                       id="displayVariantName"
+                                       class="pk-input form-control"
+                                       readonly />
+
                             </div>
+
+                            <!-- CATEGORY -->
                             <div class="col-6">
-                                <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Category</label>
-                                <input type="text" id="displayCategory" class="pk-input form-control" readonly />
+
+                                <label class="form-label">
+                                    Category
+                                </label>
+
+                                <input type="text"
+                                       id="displayCategory"
+                                       class="pk-input form-control"
+                                       readonly />
+
                             </div>
+
+                            <!-- STOCK -->
                             <div class="col-6">
-                                <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Current Stock</label>
-                                <input type="text" id="displayCurrentStock" class="pk-input form-control" readonly />
+
+                                <label class="form-label">
+                                    Current Stock
+                                </label>
+
+                                <input type="text"
+                                       id="displayCurrentStock"
+                                       class="pk-input form-control fw-bold"
+                                       readonly />
+
                             </div>
-                            <div class="col-6">
-                                <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Retail Price</label>
+
+                            <!-- RETAIL -->
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Retail Price
+                                </label>
+
                                 <div class="input-group">
-                                    <span class="input-group-text" style="background:#e0e4f8; border-color:#c7cde8; color:#2D3A8C; font-weight:700; border-radius:12px 0 0 12px !important;">₱</span>
-                                    <input type="text" id="displayRetailPrice" class="pk-input form-control" style="border-radius:0 12px 12px 0 !important;" readonly />
+
+                                    <span class="input-group-text"
+                                          style="
+                                            background:#eef2ff;
+                                            border-color:#c7cde8;
+                                            color:#2D3A8C;
+                                            font-weight:700;
+                                            border-radius:12px 0 0 12px !important;">
+
+                                        ₱
+
+                                    </span>
+
+                                    <input type="text"
+                                           id="displayRetailPrice"
+                                           class="pk-input form-control fw-bold"
+                                           style="
+                                                border-radius:0 12px 12px 0 !important;"
+                                           readonly />
+
                                 </div>
+
                             </div>
-                            <div class="col-6">
-                                <label class="form-label" style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Supplier Cost</label>
-                                <div class="input-group">
-                                    <span class="input-group-text" style="background:#e0e4f8; border-color:#c7cde8; color:#2D3A8C; font-weight:700; border-radius:12px 0 0 12px !important;">₱</span>
-                                    <input type="text" id="displaySupplierCost" class="pk-input form-control" style="border-radius:0 12px 12px 0 !important; color:#2D3A8C; font-weight:700;" readonly />
-                                </div>
-                            </div>
+
                         </div>
+
                     </div>
 
-                    <hr style="border-color:#eef0f7; margin: 0 0 24px;">
+                    <!-- RESTOCK -->
+                    <div style="
+                            background:#fff;
+                            border:1px solid #E2E8F0;
+                            border-radius:18px;
+                            padding:18px 20px;
+                            margin-bottom:24px;">
 
-                    <!-- Delivery quantity + total -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-6">
-                            <label class="form-label" style="font-size:11px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:0.6px;">Incoming Quantity (+)</label>
-                            <div class="input-group">
-                                <input type="number" id="quantityInput" name="QuantityReceived"
-                                       class="pk-input form-control"
-                                       style="font-size:18px !important; font-weight:800 !important; border-radius:12px 0 0 12px !important;"
-                                       min="1" placeholder="0" required />
-                                <span class="input-group-text" style="background:#dcfce7; border-color:#86efac; color:#15803d; font-weight:700; border-radius:0 12px 12px 0 !important;">units</span>
-                            </div>
+                        <div style="
+                                font-size:11px;
+                                font-weight:700;
+                                color:#94a3b8;
+                                text-transform:uppercase;
+                                letter-spacing:0.8px;
+                                margin-bottom:14px;">
+
+                            Restock Quantity
+
                         </div>
-                        <div class="col-6">
-                            <label class="form-label" style="font-size:11px; font-weight:700; color:#2D3A8C; text-transform:uppercase; letter-spacing:0.6px;">Estimated Delivery Cost</label>
-                            <div class="input-group">
-                                <span class="input-group-text" style="background:#e0e4f8; border-color:#c7cde8; color:#2D3A8C; font-weight:800; font-size:15px; border-radius:12px 0 0 12px !important;">₱</span>
-                                <input type="text" id="displayTotalSupplierCost"
-                                       class="pk-input form-control"
-                                       style="font-size:18px !important; font-weight:800 !important; color:#2D3A8C !important; border-radius:0 12px 12px 0 !important;"
-                                       readonly value="0.00" />
+
+                        <div class="row align-items-end g-3">
+
+                            <!-- QUANTITY -->
+                            <div class="col-md-7">
+
+                                <label class="form-label"
+                                       style="
+                                            font-size:11px;
+                                            font-weight:700;
+                                            color:#15803d;
+                                            text-transform:uppercase;
+                                            letter-spacing:0.6px;">
+
+                                    Incoming Quantity
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <input type="number"
+                                           id="quantityInput"
+                                           name="QuantityReceived"
+                                           class="pk-input form-control"
+                                           style="
+                                                font-size:18px !important;
+                                                font-weight:800 !important;
+                                                border-radius:12px 0 0 12px !important;"
+                                           min="1"
+                                           placeholder="0"
+                                           required />
+
+                                    <span class="input-group-text"
+                                          style="
+                                            background:#DCFCE7;
+                                            border-color:#86EFAC;
+                                            color:#15803D;
+                                            font-weight:700;
+                                            border-radius:0 12px 12px 0 !important;">
+
+                                        units
+
+                                    </span>
+
+                                </div>
+
                             </div>
-                            <input type="hidden" id="rawTotalAmount" name="TotalAmount" value="0.00" />
+
+                            <!-- PREVIEW -->
+                            <div class="col-md-5">
+
+                                <label class="form-label">
+                                    Inventory Update
+                                </label>
+
+                                <div style="
+                                        background:#EEF2FF;
+                                        border:1px solid #C7CDE8;
+                                        border-radius:14px;
+                                        padding:13px 16px;
+                                        font-weight:700;
+                                        color:#2D3A8C;
+                                        min-height:48px;
+                                        display:flex;
+                                        align-items:center;">
+
+                                    Stock levels will update after submission
+
+                                </div>
+
+                            </div>
+
                         </div>
+
                     </div>
 
+                    <!-- HIDDEN -->
+                    <input type="hidden"
+                           id="rawTotalAmount"
+                           name="TotalAmount"
+                           value="0.00" />
+
+                    <!-- ACTIONS -->
                     <div class="d-flex justify-content-end gap-2">
-                        <a asp-action="MenuIndex" class="pk-btn pk-btn-outline pk-btn-sm">Cancel</a>
-                        <button type="submit" class="pk-btn pk-btn-teal pk-btn-sm">
+
+
+                        <button type="submit"
+                                class="pk-btn pk-btn-primary pk-btn-sm"
+                                style="background:#1E2963;">
+
                             Verify & Add to Stock
+
                         </button>
+
                     </div>
+
                 </form>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
 <script>
-    /* All logic preserved — only variables renamed for clarity */
+
     let currentUnitSupplierCost = 0;
 
-    const variantSelect = document.getElementById('variantSelect');
-    const quantityInput = document.getElementById('quantityInput');
-    const totalCostDisplay = document.getElementById('displayTotalSupplierCost');
-    const hiddenTotalInput = document.getElementById('rawTotalAmount');
+    const variantSelect =
+        document.getElementById('variantSelect');
+
+    const quantityInput =
+        document.getElementById('quantityInput');
+
+    const hiddenTotalInput =
+        document.getElementById('rawTotalAmount');
+
+    /* ORIGINAL LOGIC */
 
     variantSelect.addEventListener('change', function () {
-        const opt = this.options[this.selectedIndex];
-        currentUnitSupplierCost = parseFloat(opt.getAttribute('data-suppliercost')) || 0;
 
-        document.getElementById('displayProductName').value = opt.getAttribute('data-productname') || '';
-        document.getElementById('displayVariantName').value = opt.getAttribute('data-variantname') || '';
-        document.getElementById('displayCategory').value = opt.getAttribute('data-category') || '';
-        document.getElementById('displayCurrentStock').value = (opt.getAttribute('data-currentstock') || '0') + ' units currently';
+        const opt =
+            this.options[this.selectedIndex];
+
+        currentUnitSupplierCost =
+            parseFloat(
+                opt.getAttribute('data-suppliercost')
+            ) || 0;
+
+        document.getElementById('displayProductName').value =
+            opt.getAttribute('data-productname') || '';
+
+        document.getElementById('displayVariantName').value =
+            opt.getAttribute('data-variantname') || '';
+
+        document.getElementById('displayCategory').value =
+            opt.getAttribute('data-category') || '';
+
+        document.getElementById('displayCurrentStock').value =
+            (opt.getAttribute('data-currentstock') || '0')
+            + ' units currently';
 
         document.getElementById('displayRetailPrice').value =
-            parseFloat(opt.getAttribute('data-retailprice') || '0').toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-        document.getElementById('displaySupplierCost').value =
-            currentUnitSupplierCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            parseFloat(
+                opt.getAttribute('data-retailprice') || '0'
+            ).toLocaleString(
+                'en-US',
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
 
         calculateTotalCost();
     });
 
-    quantityInput.addEventListener('input', calculateTotalCost);
+    quantityInput.addEventListener(
+        'input',
+        calculateTotalCost
+    );
 
     function calculateTotalCost() {
-        const quantity = parseInt(quantityInput.value) || 0;
-        if (quantity > 0 && currentUnitSupplierCost > 0) {
-            const totalSum = quantity * currentUnitSupplierCost;
-            totalCostDisplay.value = totalSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            hiddenTotalInput.value = totalSum.toFixed(2);
+
+        const quantity =
+            parseInt(quantityInput.value) || 0;
+
+        if (quantity > 0 &&
+            currentUnitSupplierCost > 0) {
+
+            const totalSum =
+                quantity *
+                currentUnitSupplierCost;
+
+            hiddenTotalInput.value =
+                totalSum.toFixed(2);
+
         } else {
-            totalCostDisplay.value = '0.00';
-            hiddenTotalInput.value = '0.00';
+
+            hiddenTotalInput.value =
+                '0.00';
         }
     }
+
+    /* SEARCH + FILTER */
+
+    const searchInput =
+        document.getElementById('variantSearch');
+
+    const categoryFilter =
+        document.getElementById('categoryFilter');
+
+    const allOptions =
+        Array.from(variantSelect.options);
+
+    searchInput.addEventListener(
+        'input',
+        filterVariants
+    );
+
+    categoryFilter.addEventListener(
+        'change',
+        filterVariants
+    );
+
+    function filterVariants() {
+
+        const search =
+            searchInput.value.toLowerCase();
+
+        const category =
+            categoryFilter.value.toLowerCase();
+
+        variantSelect.innerHTML = '';
+
+        allOptions.forEach(opt => {
+
+            const text =
+                opt.textContent.toLowerCase();
+
+            const optCategory =
+                (
+                    opt.getAttribute('data-category')
+                    || ''
+                ).toLowerCase();
+
+            const matchesSearch =
+                text.includes(search);
+
+            const matchesCategory =
+                category === ''
+                || optCategory === category;
+
+            if (matchesSearch && matchesCategory) {
+
+                variantSelect.appendChild(opt);
+
+            }
+
+        });
+
+    }
+
+    function clearVariantSearch() {
+
+        searchInput.value = '';
+
+        filterVariants();
+
+    }
+
 </script>

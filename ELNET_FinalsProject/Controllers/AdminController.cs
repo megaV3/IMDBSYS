@@ -231,8 +231,13 @@ namespace IMDBSYS.Controllers
                     _context.ProductDeliveryLogs.Add(historyLog);
 
                     // 3. Save as single database transaction block
+                    // 3. Save as single database transaction block
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Dashboard));
+
+                    TempData["SuccessMessage"] =
+                        "Stock added successfully.";
+
+                    return RedirectToAction(nameof(RequestRestock));
                 }
                 catch (Exception)
                 {
