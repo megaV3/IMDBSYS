@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white py-3 border-bottom">
                 <h5 class="m-0 fw-bold text-dark h6">Recent Top-Up Transactions</h5>
             </div>
@@ -146,6 +146,55 @@
                             {
                                 <tr>
                                     <td colspan="5" class="text-center py-4 text-muted">No recent top-up requests.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="m-0 fw-bold text-dark h6">🚚 Recent Product Stock Receipts</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 text-center">
+                        <thead class="table-light small">
+                            <tr>
+                                <th>Log ID</th>
+                                <th class="text-start">Product Item Config</th>
+                                <th>Intake Qty</th>
+                                <th>Timestamp Logged</th>
+                                <th>Operator Scope</th>
+                            </tr>
+                        </thead>
+                        <tbody class="small">
+                            @if (Model.RecentStockChanges != null && Model.RecentStockChanges.Any())
+                            {
+                                foreach (var change in Model.RecentStockChanges)
+                                {
+                                    <tr>
+                                        <td><code>#@change.DeliveryLogId</code></td>
+                                        <td class="text-start">
+                                            <span class="fw-bold text-dark">@(change.MenuVariation?.Menu?.Name ?? "Unknown Item")</span>
+                                            <span class="text-muted d-block" style="font-size: 11px;">Config: @(change.MenuVariation?.VariantName ?? "N/A")</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-success border border-success fw-bold p-1">
+                                                +@change.QuantityAdded units
+                                            </span>
+                                        </td>
+                                        <td class="text-muted">@change.DeliveryDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td><span class="badge bg-secondary opacity-75">@change.ProcessedBy</span></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No recent stock replenishment batches recorded.</td>
                                 </tr>
                             }
                         </tbody>

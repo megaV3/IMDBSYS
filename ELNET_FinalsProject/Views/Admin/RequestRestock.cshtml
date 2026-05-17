@@ -1,0 +1,128 @@
+﻿@model IEnumerable<IMDBSYS.Models.MenuVariation>
+
+@{
+    ViewData["Title"] = "Request Product Restock";
+}
+
+<style>
+    /* ========================================================
+           RequestRestock View - Standalone Isolation Matrix
+           ======================================================== */
+
+    /* 1. FORCE VIEW COMPONENT ISOLATION CONTROLS */
+    .restock-isolated-wrapper {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        contain: inline-size !important; /* Blocks any internal element mutations from shifting outer panels */
+        box-sizing: border-box !important;
+    }
+
+        /* 2. Lock down Bootstrap grid structures to prevent negative margin bleeding */
+        .restock-isolated-wrapper .row {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+
+        /* 3. Freeze absolute boundaries of the centered layout card */
+        .restock-isolated-wrapper .card {
+            box-sizing: border-box !important;
+            transform: none !important;
+            transition: none !important;
+        }
+</style>
+
+<div class="restock-isolated-wrapper">
+    <div class="row">
+        <div class="col-12">
+            
+            <div class="card shadow-sm border-0 mt-3 max-w-2xl mx-auto">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="m-0 fw-bold text-dark">🚚 Log Product Delivery Receive</h5>
+                    <p class="text-muted small mb-0">Increase warehouse stock profiles via verified supplier manifests</p>
+                </div>
+                <div class="card-body">
+                    <form asp-action="RequestRestock" method="post">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">Select Incoming Component Item</label>
+                            <select id="variantSelect" name="MenuVariationId" class="form-select" required>
+                                <option value="" disabled selected>-- Choose Variant SKU from Inventory --</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.MenuVariationId"
+                                            data-productname="@item.Menu?.Name"
+                                            data-variantname="@item.VariantName"
+                                            data-category="@item.Menu?.Category"
+                                            data-currentstock="@item.StockQuantity">
+                                        #@item.MenuVariationId - @item.Menu?.Name (@item.VariantName)
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Parent Product Name</label>
+                                <input type="text" id="displayProductName" class="form-control bg-light" readonly />
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Configuration Type</label>
+                                <input type="text" id="displayVariantName" class="form-control bg-light" readonly />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Inventory Category</label>
+                                <input type="text" id="displayCategory" class="form-control bg-light" readonly />
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Current Stock Level</label>
+                                <input type="text" id="displayCurrentStock" class="form-control bg-light" readonly />
+                            </div>
+                        </div>
+
+                        <hr class="text-muted opacity-25" />
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-primary small">Incoming Delivery Quantity (+)</label>
+                            <div class="input-group">
+                                <input type="number" name="QuantityReceived" class="form-control form-control-lg fw-bold" min="1" placeholder="Enter amount delivered..." required />
+                                <span class="input-group-text bg-primary text-white">units</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="MenuIndex" class="btn btn-secondary btn-sm px-3">Cancel</a>
+                            <button type="submit" class="btn btn-success btn-sm px-4">Verify & Add to Stock</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('variantSelect').addEventListener('change', function () {
+        // Get the selected option element
+        const selectedOption = this.options[this.selectedIndex];
+
+        // Extract data-attributes mapped out inside the C# loop
+        const productName = selectedOption.getAttribute('data-productname') || '';
+        const variantName = selectedOption.getAttribute('data-variantname') || '';
+        const category = selectedOption.getAttribute('data-category') || '';
+        const currentStock = selectedOption.getAttribute('data-currentstock') || '0';
+
+        // Direct injection straight into the text input value buffers
+        document.getElementById('displayProductName').value = productName;
+        document.getElementById('displayVariantName').value = variantName;
+        document.getElementById('displayCategory').value = category;
+        document.getElementById('displayCurrentStock').value = currentStock + " units currently";
+    });
+</script>
