@@ -77,5 +77,71 @@ namespace IMDBSYS.Controllers
 
             return View(viewModel);
         }
+
+        // ==========================================
+        // 2. PRODUCTS / MENU CATALOG
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> MenuIndex()
+        {
+            // .Include(m => m.Variations) ensures the View can count how many variations exist
+            var menus = await _context.Menus
+                .Include(m => m.Variations)
+                .OrderBy(m => m.Name)
+                .ToListAsync();
+
+            return View("MenuIndex", menus); // Explicitly naming the view if it doesn't match action name
+        }
+
+        // ==========================================
+        // 3. GLOBAL ORDER REGISTRY (Audit Logs)
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> OrderRegistry()
+        {
+            // .Include(o => o.OrderItems) pulls children so we can count items inside the order
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+
+            return View("OrderRegistry", orders);
+        }
+
+        // ==========================================
+        // 4. WALLET TOP-UPS LEDGER
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> TopUpLedger()
+        {
+            var topUps = await _context.TopUpHistories
+                .OrderByDescending(t => t.TransactionDate)
+                .ToListAsync();
+
+            return View("TopUpLedger", topUps);
+        }
+
+        // ==========================================
+        // 5. USER ACCESS MANAGEMENT
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> UserManagement()
+        {
+            // Fetching users from your database context
+            // Projecting them directly into a clear view model structure
+            var users = await _context.Users
+                .Select(u => new UserManagementViewModel
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    Role = u.Role // Assuming "Admin" or "User" strings are saved here
+                })
+                .OrderBy(u => u.LastName)
+                .ToListAsync();
+
+            return View("UserManagement", users);
+        }
     }
 }
