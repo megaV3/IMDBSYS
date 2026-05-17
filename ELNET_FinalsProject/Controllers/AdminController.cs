@@ -56,7 +56,7 @@ namespace IMDBSYS.Controllers
 
             // Calculate total successful wallet top-ups
             viewModel.TotalTopUpAmount = await _context.TopUpHistories
-                .Where(t => t.Status == "Completed" || t.Status == "Approved") // Adjust string based on your data
+                .Where(t => t.Status == "Success" || t.Status == "Approved") // Adjust string based on your data
                 .SumAsync(t => t.Amount);
 
             // 2. Inventory & Stock Monitoring
