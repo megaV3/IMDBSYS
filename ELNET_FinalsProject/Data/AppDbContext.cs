@@ -16,5 +16,6 @@ namespace IMDBSYS.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<TopUpHistory> TopUpHistories { get; set; }
+        public DbSet<ProductDeliveryLog> ProductDeliveryLogs { get; set; }
     }
 }
