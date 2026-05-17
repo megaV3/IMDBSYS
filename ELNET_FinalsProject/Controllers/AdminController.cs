@@ -75,6 +75,14 @@ namespace IMDBSYS.Controllers
                 .Take(5)
                 .ToListAsync();
 
+            // NEW QUERY: Fetch the latest 5 delivery intake records
+            viewModel.RecentStockChanges = await _context.ProductDeliveryLogs
+                .Include(l => l.MenuVariation)
+                .ThenInclude(v => v.Menu) // Multi-level include to jump from Log -> Variant -> Parent Product Name
+                .OrderByDescending(l => l.DeliveryDate)
+                .Take(5)
+                .ToListAsync();
+
             return View(viewModel);
         }
 
@@ -142,6 +150,76 @@ namespace IMDBSYS.Controllers
                 .ToListAsync();
 
             return View("UserManagement", users);
+        }
+
+        // ========================================================
+        // GET: Admin/RequestRestock
+        // ========================================================
+        [HttpGet]
+        public async Task<IActionResult> RequestRestock()
+        {
+            // Fetch all variants and include parent menu titles for dropdown assignment
+            var availableVariants = await _context.MenuVariations
+                .Include(v => v.Menu)
+                .OrderBy(v => v.Menu.Name)
+                .ThenBy(v => v.VariantName)
+                .ToListAsync();
+
+            // Pass the raw list directly down to the view!
+            return View(availableVariants);
+        }
+
+        // ========================================================
+        // POST: Admin/RequestRestock
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RequestRestock(int menuVariationId, int quantityReceived)
+        {
+            if (quantityReceived <= 0)
+            {
+                ModelState.AddModelError("", "Quantity must be at least 1 unit.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var variant = await _context.MenuVariations
+                        .FirstOrDefaultAsync(v => v.MenuVariationId == menuVariationId);
+
+                    if (variant == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Calculate the mechanical warehouse stock increment addition
+                    variant.StockQuantity += quantityReceived;
+                    _context.Update(variant);
+
+                    // Generate a traceable historical trace ledger record log
+                    var historyLog = new ProductDeliveryLog
+                    {
+                        MenuVariationId = menuVariationId,
+                        QuantityAdded = quantityReceived,
+                        DeliveryDate = DateTime.Now,
+                        ProcessedBy = "System Admin",
+                        Remarks = "Supplier Fulfillment Stream Intake"
+                    };
+                    _context.ProductDeliveryLogs.Add(historyLog);
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Dashboard));
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "A critical data error occurred while updating stock profiles.");
+                }
+            }
+
+            // FALLBACK OVERRIDE: If compilation data checks fail, pass the raw list back down
+            var fallbackList = await _context.MenuVariations.Include(v => v.Menu).ToListAsync();
+            return View(fallbackList);
         }
 
         [HttpPost]

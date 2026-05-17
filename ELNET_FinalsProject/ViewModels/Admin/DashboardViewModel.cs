@@ -18,5 +18,7 @@ namespace IMDBSYS.ViewModels.Admin
         // 3. Recent Activities / Tables
         public List<Order> RecentOrders { get; set; } = new();
         public List<TopUpHistory> RecentTopUps { get; set; } = new();
+
+        public List<ProductDeliveryLog> RecentStockChanges { get; set; } = new();
     }
 }
