@@ -25,6 +25,12 @@ body {
     /*background-color: darkolivegreen;*/
 }
 
+.footer {
+    background-color: #3E4885 !important;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
 
 /* transparent backgrounds on layout containers */
 .container, main, .container-fluid {
