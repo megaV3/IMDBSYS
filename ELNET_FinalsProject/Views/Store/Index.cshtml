@@ -1,5 +1,6 @@
-﻿@model IMDBSYS.ViewModels.StoreViewModel // Adjust this namespace line if yours is named differently
-
+﻿@{
+}
+<!-- For Store's Index.cshtml design -->
 <link href="~/css/storeIndex.css" rel="stylesheet" />
 <div class="navbar">
     <div class="nav-left">
@@ -19,10 +20,12 @@
         </div>
         
         <a asp-controller="Order" asp-action="Cart" style="position:relative; display:inline-block;">
+            <!-- Wrap only the images in the circular div -->
             <div class="cart-wrapper">
                 <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
             </div>
 
+            <!-- Badge stays outside the circular clip -->
             <span id="cart-count" style="
                 position: absolute;
                 top: 0;
@@ -39,56 +42,96 @@
             </span>
         </a>
 
+        @* <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile"> *@
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             <img class="nav-icon active-profile" src="@Url.Content(Model.ProfileImagePath)" />
         </a>
+
+
     </div>
+
 </div>
+
 <style>
-    /* ── CORE LOOK & SCROLLBAR COMPRESSION ── */
-    html {
-        scroll-behavior: smooth;
+    .search-container {
+        display: flex;
+        align-items: center; /* Centers the input box vertically */
+        height: 100%;
+        position: relative;
+    }
+    #menuSearch {
+        width: 200px;
+        height: 38px; /* Slightly smaller than 40px often feels more balanced */
+        padding: 0 15px;
+        border-radius: 20px;
+        border: 1.5px solid #3E4885;
+        outline: none;
+        /* This ensures the input itself doesn't have weird margins */
+        margin: 0;
+
+    }
+    #menuSearch:focus {
+            border-color: #1E1E2F;
+        box-shadow: 0 0 8px rgba(156, 175, 108, 0.3);
+    }
+    .search-results-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 200px;            /* This will now be 300px automatically */
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 2000;
+        display: none;
+    }
+    .search-item {
+        padding: 8px 12px; 
+        cursor: pointer; 
+        border-bottom: 1px solid #eee;
+        font-size: 14px; 
+        color: #333;
+    }
+    .search-item:hover { 
+        background-color: #f3f8ea; 
+    }
+
+    .no-result {
+        cursor: default;
+        color: #999;
+    }
+
+    .no-result:hover {
+        background-color: white;
     }
 
     body {
-        background-color: #f5f5f7;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-        margin: 0;
-        padding: 0;
+        scroll-behavior: smooth;
     }
-    
+
+
+    .footer {
+        background-color: #f5f5f5 !important;
+        color: #3E4885;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
     .navbar {
         display: flex;
         justify-content: space-between;
-        align-items: center; /* Ensures header blocks remain perfectly centered */
+        align-items: center;
         position: sticky;
         top: 0;
-        z-index: 1000;
-        background-color: #ffffff;
-        height: 70px; /* Forces both pages to lock at exactly 70px tall */
+        z-index: 998;
+        background-color: #f5f5f5;
+        height: 70px;
+        /*(100vw - 100%) calculates the exact width of the scrollbar dynamically. */
         padding-left: 30px;
         padding-right: calc(30px + (100vw - 100%));
         color: #3E4885;
-        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+        /* box-shadow: none; */
     }
-
-    .nav-left {
-        display: flex;
-        align-items: center; /* This forces the text block to center inside the 70px container */
-        justify-content: flex-start;
-        gap: 20px;
-        height: 100%;
-    }
-
-        .nav-left h2 {
-            margin: 0;
-            padding: 0;
-            font-size: 25px; /* FIXED: Increased from 22px to match your main header style exactly */
-            font-weight: 900; /* FIXED: Bumped up to ultra-bold to create that thick tech font thickness */
-            letter-spacing: -1px; /* FIXED: Compresses the characters to remove the gaps between letters */
-            font-family: Arial, sans-serif; /* Make sure this font matches whatever string is in your home view CSS! */
-        }
-
 
     .nav-center {
         position: absolute;
@@ -100,286 +143,183 @@
         text-decoration: none;
         background-color: #3E4885;
         color: white;
-        padding: 6px 22px;
+        padding: 5px 20px;
         border-radius: 30px;
-        font-weight: 600;
-        font-size: 14px;
-        transition: 0.25s ease;
+        transition: 0.3s ease;
     }
 
         .nav-link:hover {
             text-decoration: none;
-            padding: 6px 28px;
+            padding: 5px 30px;
             color: white;
-            background-color: #2e3766;
         }
 
         .nav-link.active {
             border: 2px solid #3E4885;
-            background-color: transparent;
-            color: #3E4885;
         }
+    .nav-left {
+        display: flex;
+        align-items: center;    /* Vertically centers children */
+        justify-content: flex-start;
+        gap: 20px;
+        height: 100%;           /* Fill the navbar height */
+        flex: 1;
+    }
+    .nav-left h2 {
+        margin: 0; /* Remove default browser margins */
+        padding: 0;
+        font-size: 25px;
+        display: flex;
+        align-items: center; /* Extra insurance for text centering */
+        height: 100%;
+    }
 
     .nav-right {
-        flex: 1;
+        flex: 1; /* Takes up 1/3 of space */
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        gap: 16px;
+        gap: 12px;
     }
 
-    
-    .nav-balance {
-        border: 1.5px solid #3E4885; /* Thinned the border line slightly */
-        padding: 5px 16px;
-        border-radius: 30px;
-        color: #3E4885;
-        display: flex;
-        align-items: center;
-        gap: 2px;
-    }
-
-        .nav-balance .balance-amount {
-            font-weight: 600; /* Adjusted from 700 down to 600 to prevent blocky text look */
-            font-size: 14px;
-        }
-
-
-    /* ── NAVIGATION PROFILE AND BASKET ICON WRAPPERS ── */
-    .cart-wrapper, .profile-wrapper {
-        position: relative;
-        display: flex;
+    /* .nav-icon {
+        text-decoration: none;
+        font-size: 25px;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
+        position: relative;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        transition: 0.3s ease;
+    } */
+
+    .cart-wrapper, .profile-wrapper {
+        position: relative;
+        display: flex; /* Changed from inline-block to flex for centering */
+        align-items: center;
+        justify-content: center;
+        width: 40px; 
         height: 40px;
         border-radius: 50%;
         overflow: hidden;
-        background: #f0f2fa;
-        transition: all 0.25s ease;
+        margin: 0; /* Let the parent gap handle spacing */
     }
 
     .cart-img, .profile-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: cover; /* 'cover' is better for rounded icons to ensure they fill the circle */
+        border-radius: 50%; /* Double-ensure the images are rounded */
+        transition: opacity 0.3s ease;
     }
 
+    .hover-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 2;
+    }
+
+    .default-img {
+        position: relative;
+        opacity: 1;
+        z-index: 1;
+    }
+
+    /* Hover States */
     .cart-wrapper:hover {
         transform: scale(1.05);
+        transition: 0.3s ease;
         background-color: #3E4885;
     }
 
-        .cart-wrapper:hover .cart-img {
-            filter: brightness(0) invert(1); /* Flips gray cart asset to clean white on button hover */
-        }
-
-    .nav-icon.active-profile img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #3E4885;
+    /* Keep the cart badge outside the 'overflow:hidden' of the wrapper
+               by moving it to the anchor tag instead */
+    #cart-count {
+        z-index: 10;
+        /* Ensure this stays visible even if the wrapper clips images */
     }
 
-    /* ── HARDWARE LIVE SEARCH BAR COMPONENT ── */
-    .search-container {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        position: relative;
+    body {
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
     }
 
-    #menuSearch {
-        width: 220px;
-        height: 38px;
-        padding: 0 16px;
-        border-radius: 20px;
-        border: 1.5px solid #dcdfe6;
-        background-color: #f4f5f8;
-        outline: none;
-        font-size: 13px;
-        transition: all 0.2s ease;
-    }
-
-        #menuSearch:focus {
-            border-color: #3E4885;
-            background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(62, 72, 133, 0.15);
-        }
-
-    .search-results-dropdown {
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        width: 260px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        z-index: 2000;
-        display: none;
-        max-height: 300px;
-        overflow-y: auto;
-        border: 1px solid #e4e7ed;
-    }
-
-    .search-item {
-        padding: 10px 14px;
-        cursor: pointer;
-        border-bottom: 1px solid #f2f6fc;
-        font-size: 13px;
-        color: #303133;
-        text-align: left;
-        transition: background 0.15s;
-    }
-
-        .search-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-item:hover {
-            background-color: #f0f2fa;
-            color: #3E4885;
-        }
-
-        .search-item.no-result {
-            cursor: default;
-            color: #909399;
-            text-align: center;
-            padding: 14px;
-        }
-
-            .search-item.no-result:hover {
-                background-color: #fff;
-            }
-
-    /* ── HEADER BANNER ── */
     .header {
         text-align: center;
         margin-bottom: 20px;
-        color: #1a1a2e;
+        color: #3E4885;
     }
 
         .header h2 {
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 26px;
             margin-top: 40px;
-            color: #3E4885;
         }
 
-        .header h5 {
-            font-size: 14px;
-            color: #606266;
-            font-weight: 400;
-        }
+    .signatures-header h2,
+    .espresso-header h2 {
+        color: #3E4885;
+        font-weight: 800;
+        /* #3e4e2c */
+    }
 
-    /* ── MAIN STORE LAYOUT HEADINGS ── */
     .big-title {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 30px;
     }
 
         .big-title h1 {
-            font-size: 72px;
+            font-size: 100px;
             font-weight: 900;
             color: #3E4885;
-            letter-spacing: -1px;
-            text-shadow: 2px 4px 8px rgba(62,72,133,0.1);
-            margin: 20px 0;
+            letter-spacing: 5px;
+            text-shadow: 4px 4px 10px rgba(0,0,0,0.2);
         }
 
-    .signatures-header h2, .espresso-header h2 {
-        color: #1E1E2F;
-        font-weight: 800;
-        font-size: 22px;
-        letter-spacing: 0.5px;
-        border-left: 5px solid #3E4885;
-        padding-left: 12px;
-        text-align: left;
-        max-width: 1170px;
-        margin: 40px auto 10px auto;
-    }
-
-    /* ── CATEGORY STICKY JUMP BAR ── */
-    .quick-menu {
-        position: sticky;
-        top: 70px;
-        z-index: 997;
-        background-color: rgba(245, 245, 247, 0.95);
-        backdrop-filter: blur(8px);
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 12px;
-        padding: 14px 20px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #e4e7ed;
-    }
-
-    .quick-btn {
-        text-decoration: none;
-        color: #606266;
-        background: #fff;
-        border: 1px solid #dcdfe6;
-        padding: 10px 24px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 13px;
-        transition: all 0.2s ease;
-    }
-
-        .quick-btn:hover {
-            text-decoration: none;
-            color: #3E4885;
-            border-color: #3E4885;
-            background: #f0f2fa;
-            transform: translateY(-1px);
-        }
-
-    .active-menu {
-        background: #3E4885 !important;
-        border-color: #3E4885 !important;
-        color: white !important;
-    }
-
-    /* ── CATALOG PRODUCT CARD LAYOUT GRID ── */
     .row-fluid {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 24px;
-        max-width: 1200px;
-        margin: 20px auto 40px auto;
-        padding: 0 15px;
+        gap: 30px;
+        margin-top: 30px;
     }
 
     .card {
-        width: 260px;
-        padding: 16px;
-        border-radius: 16px;
+        width: 270px;
+        padding: 15px;
+        border-radius: 15px;
         background: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-        border: 1px solid #e4e7ed;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        @* aligns the cards, its contents and pushes it evenly *@
     }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(62,72,133,0.12);
-            border-color: #cdd3f5;
+            background-color: #3E4885;
+            color: white;
         }
 
+            .card:hover .btn-cart {
+                background-color: #f5f5f5;
+                color: #3E4885;
+            }
+
+            .card:hover .card-subtitle {
+                font-weight: bold;
+                color: #f5f5f5;
+            }
+
         .card img {
-            height: 200px;
+            height: 280px;
             width: 100%;
-            object-fit: contain;
-            background-color: #fafbfc;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            object-fit: cover;
+            border-radius: 10px;
         }
 
     .card-body {
@@ -388,49 +328,63 @@
         flex-grow: 1;
     }
 
+    @* gi add *@
+
     .card-title {
-        font-size: 15px;
-        font-weight: 700;
-        color: #1c1d21;
-        line-height: 1.4;
-        margin: 6px 0;
-        min-height: 44px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #1E1E2F;
+        min-height: 55px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
+    .card-text h1 {
+        font-size: 15px;
+        flex-grow: 1;
+        min-height: 110px;
+        line-height: 1.5;
+    }
+
     .card-subtitle {
-        font-size: 16px;
-        font-weight: 800;
-        color: #3E4885;
-        margin: 8px 0;
+        font-weight: bold;
+        color: #6f4e37;
     }
 
     .btn-cart {
-        font-weight: 600;
-        font-size: 13px;
+        font-weight: bold;
         background-color: #3E4885;
         color: white;
         border: none;
-        padding: 10px 16px;
-        border-radius: 10px;
-        margin-top: auto;
+        padding: 6px 10px;
+        border-radius: 8px;
+        margin-top: 8px;
         cursor: pointer;
-        transition: background 0.2s;
     }
 
         .btn-cart:hover {
-            background-color: #2b3361;
+            background-color: #f5f5f5;
         }
 
-    /* ── SYSTEM POPUP MODAL OVERLAY ── */
+    @@keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ── BASKET MODAL ── */
     #basketOverlay {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(26, 26, 46, 0.45);
-        backdrop-filter: blur(4px);
+        background: rgba(62, 78, 44, 0.55);
         z-index: 9999;
         align-items: center;
         justify-content: center;
@@ -440,100 +394,94 @@
         background: #fff;
         border-radius: 24px;
         width: 92%;
-        max-width: 450px;
+        max-width: 440px;
         overflow: hidden;
-        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.15);
-        animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-        border: 1px solid #e4e7ed;
+        box-shadow: 0 24px 60px rgba(62, 78, 44, 0.25);
+        animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
 
     #bModalImgWrap {
         width: 100%;
-        height: 200px;
-        background: #fafbfc;
+        height: 180px;
+        background: linear-gradient(135deg, #d4e2b0, #3E4885);
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 60px;
         overflow: hidden;
-        border-bottom: 1px solid #f2f6fc;
     }
 
         #bModalImgWrap img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 0;
         }
 
     .modal-body {
-        padding: 24px;
+        padding: 20px 22px 24px;
     }
 
     .modal-row-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
 
     #bModalName {
-        font-size: 20px;
-        font-weight: 800;
-        color: #1c1d21;
-        text-align: left;
+        font-size: 22px;
+        font-weight: 700;
+        color: #3e4e2c;
     }
 
     #bModalPrice {
         font-size: 18px;
-        font-weight: 800;
+        font-weight: 600;
         color: #3E4885;
-        margin-left: 16px;
+        margin-left: 12px;
         white-space: nowrap;
     }
 
     #bModalDesc {
         font-size: 13px;
-        color: #606266;
-        margin: 0 0 20px 0;
+        color: #888;
+        margin: 0 0 16px;
         line-height: 1.5;
-        text-align: left;
     }
 
     .modal-section-label {
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
+        font-weight: 600;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #909399;
+        color: #3E4885;
         margin-bottom: 8px;
-        text-align: left;
     }
-    
-    /* ── VARIATION GRID SELECTION BUTTONS ── */
+
     .temp-row {
         display: flex;
-        flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
 
     .temp-btn {
         flex: 1;
-        min-width: 80px;
-        padding: 10px 12px;
+        padding: 9px 0;
         border-radius: 10px;
-        border: 1.5px solid #dcdfe6;
+        border: 1.5px solid #3E4885;
         background: #fff;
         font-size: 13px;
-        font-weight: 600;
-        color: #606266;
+        font-weight: 500;
+        color: #3E4885;
         cursor: pointer;
-        transition: all 0.15s;
+        transition: all 0.18s;
+        font-family: Arial, sans-serif;
     }
 
         .temp-btn:hover {
-            background: #f0f2fa;
+            background: #eaf3f8;
             border-color: #3E4885;
-            color: #3E4885;
         }
 
         .temp-btn.active {
@@ -542,101 +490,132 @@
             color: #fff;
         }
 
-    /* ── STEPPER CONTROLS ── */
+        .temp-btn.disabled {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
     .qty-wrapper {
         display: flex;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
 
     .qty-row {
         display: flex;
         align-items: center;
-        background: #f4f5f8;
+        background: #f5f5f5;
         border-radius: 12px;
         padding: 4px;
     }
 
     .qty-btn {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
         border: none;
         background: #fff;
-        font-size: 16px;
-        font-weight: 600;
-        color: #303133;
+        font-size: 18px;
+        font-weight: 500;
+        color: #1E1E2F;
         cursor: pointer;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        transition: all 0.1s;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        transition: background 0.15s;
+        line-height: 1;
     }
 
         .qty-btn:hover {
-            background: #f0f2fa;
-            color: #3E4885;
+            background: #eaf3f8;
         }
 
         .qty-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.93);
         }
 
     #bQtyVal {
-        min-width: 40px;
+        min-width: 44px;
         text-align: center;
-        font-size: 15px;
-        font-weight: 700;
-        color: #303133;
+        font-size: 16px;
+        font-weight: 600;
+        color: #3e4e2c;
     }
 
     #bSubtotal {
         font-size: 13px;
-        font-weight: 600;
-        color: #909399;
-        margin-left: 16px;
+        color: #aaa;
+        margin-left: 12px;
     }
 
-    /* ── SELECTION INSTRUCTIONS TEXTAREA ── */
+    .allergy-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-bottom: 16px;
+    }
+
+    .allergy-chip {
+        padding: 5px 12px;
+        border-radius: 20px;
+        border: 1.5px solid #dde8c5;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 500;
+        color: #5a7030;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.15s;
+    }
+
+        .allergy-chip:hover {
+            border-color: #3E4885;
+            background: #f3f8ea;
+        }
+
+        .allergy-chip.active {
+            background: #fff3cd;
+            border-color: #d4a017;
+            color: #7a5a00;
+        }
+
     #bNotes {
         width: 100%;
-        border: 1.5px solid #dcdfe6;
+        border: 1.5px solid #dde8c5;
         border-radius: 12px;
-        padding: 12px;
+        padding: 10px 12px;
+        font-family: Arial, sans-serif;
         font-size: 13px;
-        color: #303133;
+        color: #3e4e2c;
         resize: none;
         outline: none;
         box-sizing: border-box;
-        margin-bottom: 24px;
+        margin-bottom: 18px;
         transition: border-color 0.2s;
-        background-color: #fafbfc;
     }
 
         #bNotes:focus {
-            border-color: #3E4885;
-            background-color: #fff;
+            border-color: #9caf6c;
         }
 
-    /* ── ACTION INTERFACES FOOTER ── */
     .modal-footer {
         display: flex;
-        gap: 12px;
+        gap: 10px;
     }
 
     .btn-cancel {
-        padding: 12px 20px;
+        padding: 12px 18px;
         border-radius: 12px;
-        border: 1.5px solid #dcdfe6;
+        border: 1.5px solid #dde8c5;
         background: #fff;
         font-size: 14px;
-        font-weight: 600;
-        color: #606266;
+        font-weight: 500;
+        color: #888;
         cursor: pointer;
-        transition: background 0.15s;
+        font-family: Arial, sans-serif;
+        transition: background 0.18s;
     }
 
         .btn-cancel:hover {
-            background: #f5f7fa;
-            color: #303133;
+            background: #f5f5f5;
         }
 
     .btn-add-confirm {
@@ -649,54 +628,109 @@
         font-weight: 600;
         color: #fff;
         cursor: pointer;
-        transition: background 0.2s, transform 0.1s;
+        font-family: Arial, sans-serif;
+        transition: background 0.2s, transform 0.15s;
     }
 
         .btn-add-confirm:hover {
-            background: #2b3361;
+            background: #5865B3;
+            transform: translateY(-1px);
         }
 
         .btn-add-confirm:active {
             transform: scale(0.98);
         }
 
-    /* ── SYSTEM FEEDBACK APPLICATION TOAST ── */
     #bToast {
         position: fixed;
-        bottom: 30px;
+        bottom: 24px;
         left: 50%;
         transform: translateX(-50%) translateY(20px);
-        background: #1c1d21;
+        background: #3e4e2c;
         color: #fff;
-        padding: 12px 24px;
+        padding: 10px 22px;
         border-radius: 30px;
-        font-size: 13px;
-        font-weight: 600;
+        font-size: 14px;
+        font-weight: 500;
         opacity: 0;
         pointer-events: none;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        transition: all 0.3s ease;
         z-index: 10000;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        white-space: nowrap;
     }
 
-    /* ── TARGET SPECIFIC CATEGORY BOX JUMPS ── */
-    #storage, #ram, #psu, #input-devices, #output-devices {
-        scroll-margin-top: 150px;
+    .quick-menu {
+        position: sticky; /* FIX: Position it exactly below the 70px navbar */
+        top: 70px; /* Matches your .navbar height */
+        z-index: 997; /* Just below the main navbar z-index */
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        padding: 7px 80px; /* Added padding to give the buttons breathing room */
+        margin-bottom: 30px;
+        transition: box-shadow 0.3s ease;
     }
 
-    /* ── ANIMATION FRAMES ── */
-    @@keyframes modalIn {
-        from {
-            opacity: 0;
-            transform: translateY(15px) scale(0.98);
+        /* .quick-menu.scrolled {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        } */
+
+    .quick-btn {
+        text-decoration: none;
+        color: #3E4885;
+        border: 2px solid #3E4885;
+        padding: 12px 28px;
+        border-radius: 20px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        display: inline-block;
+    }
+
+        .quick-btn:hover {
+            text-decoration: none;
+            background: #3E4885;
+            color: white;
+            transform: translateY(-2px);
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+    .active-menu {
+        background: #3E4885;
+        color: white;
     }
+
+    /* ── spyscroll ── */
+    /* Smooth scrolling for the whole page */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Ensure sections have some height so they can be "observed" */
+
+    /* section {
+                min-height: 600px;
+                padding-top: 80px; Offset for your sticky header height
+                margin-top: -80px;  Prevents the header from covering section titles
+            } */
+
+    #signatures,
+    #espresso,
+    #pistachio,
+    #milk-based,
+    #frappes {
+        scroll-margin-top: 130px;
+    }
+
+    /* Visual feedback for the active button */
+    .active-menu {
+        background-color: #3E4885; /* Example: highlight color */
+        color: #fff !important;
+        font-weight: bold;
+    }
+
 </style>
+
 @if (!User.Identity.IsAuthenticated)
 {
     <a asp-controller="Auth" asp-action="Login">Login</a>
@@ -704,6 +738,7 @@
 
 <div class="header">
     <h2>Welcome to the Pickout Hardware Store!</h2>
+    @* <h5>Enjoy your shopping experience, <b>@User.Identity.Name!</b></h5> *@
     <h5>Explore premium computer hardware and accessories, <b>@Model.UserProfile.FirstName!</b></h5>
 </div>
 
@@ -714,79 +749,155 @@
     </div>
 
     <div class="quick-menu">
-        <a href="#storage" class="quick-btn active-menu">Storage Drives</a>
-        <a href="#ram" class="quick-btn">RAM</a>
-        <a href="#psu" class="quick-btn">PSU</a>
-        <a href="#input-devices" class="quick-btn">Input Devices</a>
-        <a href="#output-devices" class="quick-btn">Output Devices</a>
+
+        <a href="#signatures" class="quick-btn active-menu">
+            Storage Drives
+        </a>
+
+        <a href="#espresso" class="quick-btn">
+            RAM
+        </a>
+
+        <a href="#pistachio" class="quick-btn">
+            PSU
+        </a>
+
+        <a href="#milk-based" class="quick-btn">
+            Input Devices
+        </a>
+
+        <a href="#frappes" class="quick-btn">
+            Output Devices
+        </a>
+
     </div>
 
-    @{
-        // Helper function to render a product category group safely
-        void RenderCategorySection(string targetCategory, string sectionId, string sectionTitle)
+    @* ⋆.𐙚 ̊  SIGNATURES ̊  𐙚.⋆ *@
+    <div class="signatures-header" id="signatures">
+        <h2 class="mt-4">STORAGE DEVICES</h2>
+    </div>
+    <div class="row-fluid">
+        @foreach (var item in Model.Menus)
         {
-            <div class="signatures-header" id="@sectionId">
-                <h2 class="mt-4">@sectionTitle</h2>
-            </div>
-            <div class="row-fluid">
-                @foreach (var item in Model.Menus)
-                {
-                    if (string.Equals(item.Category, targetCategory, StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Safely pull variation info. If none exist, fall back to 0.
-                        var defaultVariant = item.Variations.OrderBy(v => v.Price).FirstOrDefault();
-                        decimal displayPrice = defaultVariant?.Price ?? 0m; // FIXED: Changed 0x00m to 0m
-
-                        // Serialize variants list to safely transition it to JavaScript modal triggers
-                        var jsonVariants = System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(m => new
-                        {
-                            id = m.MenuVariationId, // FIXED: Changed v to m
-                            spec = m.VariantName,   // FIXED: Changed v to m
-                            price = m.Price         // FIXED: Changed v to m
-                        }));
-
-                        <div class="card">
-                            <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:contain;" />
-                            <div class="card-body">
-                                <h5 class="card-title">@item.Name</h5>
-                                <p class="card-subtitle">PHP @displayPrice.ToString("N0")</p>
-                                <button type="button" class="btn-cart"
-                                        onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @jsonVariants)">
-                                    Order Now
-                                </button>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
+            if (item.Category == "StorageDevices")
+            {
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            }
         }
-    }
+    </div>
 
-    @* Render all main storage/hardware groups dynamically *@
-    @{
-        RenderCategorySection("StorageDevices", "storage", "STORAGE DEVICES");
-    }
-    @{
-        RenderCategorySection("RAM", "ram", "RAM");
-    }
-    @{
-        RenderCategorySection("PSU", "psu", "POWER SUPPLY UNITS (PSU)");
-    }
-    @{
-        RenderCategorySection("inputDevices", "input-devices", "INPUT DEVICES");
-    }
-    @{
-        RenderCategorySection("outputDevices", "output-devices", "OUTPUT DEVICES");
-    }
+    <div class="espresso-header" id="espresso">
+        <h2 class="mt-5">RAM</h2>
+    </div>
+    <div class="row-fluid">
+        @foreach (var item in Model.Menus)
+        {
+            if (item.Category == "RAM")
+            {
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="espresso-header" id="pistachio">
+        <h2 class="mt-5">PSU</h2>
+    </div>
+    <div class="row-fluid">
+        @foreach (var item in Model.Menus)
+        {
+            if (item.Category == "PSU")
+            {
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="espresso-header" id="milk-based">
+        <h2 class="mt-5">INPUT DEVICES</h2>
+    </div>
+    <div class="row-fluid">
+        @foreach (var item in Model.Menus)
+        {
+            if (item.Category == "inputDevices")
+            {
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
+                                Order Now
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="espresso-header" id="frappes">
+        <h2 class="mt-5">OUTPUT DEVICES</h2>
+    </div>
+    <div class="row-fluid" style="margin-bottom:3rem;">
+        @foreach (var item in Model.Menus)
+        {
+            if (item.Category == "outputDevices")
+            {
+                <div class="card">
+                    <img src="@item.ImagePath" alt="@item.Name" style="height:300px; width:300px; object-fit:contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
+                        <button type="button" class="btn-cart"
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @(item.CanBeHot ? "true" : "false"), @(item.CanBeCold ? "true" : "false"), '@item.Category')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 
 </div>
 
+<!-- BASKET MODAL — once, outside all loops -->
 <div id="basketOverlay" onclick="handleOverlayClick(event)">
     <div id="basketModal">
 
-        <div id="bModalImgWrap">🖥️</div>
+        <div id="bModalImgWrap">☕</div>
 
         <div class="modal-body">
+
             <div class="modal-row-header">
                 <div id="bModalName"></div>
                 <div id="bModalPrice"></div>
@@ -794,8 +905,13 @@
             <p id="bModalDesc"></p>
 
             <div id="variationLabel" class="modal-section-label">Variation</div>
-            <div id="variationContainer" class="temp-row"></div>
+            <div id="variationContainer" class="temp-row">
+            </div>
 
+            <div style="display:none;">
+                <button id="btnHot"></button>
+                <button id="btnIced"></button>
+            </div>
             <div class="modal-section-label">Quantity</div>
             <div class="qty-wrapper">
                 <div class="qty-row">
@@ -806,100 +922,175 @@
                 <span id="bSubtotal"></span>
             </div>
 
+
             <div class="modal-section-label">Special Instructions</div>
             <textarea id="bNotes" rows="2" placeholder="e.g. Partitioning requests, gift wrapping, etc..."></textarea>
-            
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeBasketModal()">Cancel</button>
                 <button class="btn-add-confirm" onclick="submitBasket()">Add to Basket</button>
             </div>
+
         </div>
     </div>
 </div>
 
 <div id="bToast"></div>
 
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 <script>
-    // System contextual global state
-    var _menuId = 0;
-    var _qty = 1;
-    var _activeVariantsList = [];
-    var _selectedVariantId = 0;
-    var _selectedVariantPrice = 0;
+    const variationsMap = {
+        "StorageDevices": [
+            { spec: "256GB", add: 0 },
+            { spec: "512GB", add: 500 },
+            { spec: "1TB", add: 1500 },
+            { spec: "2TB", add: 3500 }
+        ],
+        "RAM": [
+            { spec: "8GB", add: 0 },
+            { spec: "16GB", add: 1200 },
+            { spec: "32GB", add: 2500 }
+        ]
+    };
+    var _selectedVariation = ""; // Replace _temp
+    var _basePrice = 0;
+    var _currentAddon = 0;
 
-    function openBasketModal(menuId, name, desc, imgPath, variantsArray) {
+    var _menuId, _price, _qty = 1, _temp = 'Iced';
+    function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold, category) {
         _menuId = menuId;
+        _basePrice = price;
         _qty = 1;
-        _activeVariantsList = variantsArray || [];
+        _currentAddon = 0;
 
-        // UI Assignments
+        // Reset Modal content
         document.getElementById('bModalName').textContent = name;
+        document.getElementById('bModalPrice').textContent = 'PHP ' + price;
         document.getElementById('bModalDesc').textContent = desc;
 
-        // Process Variations DOM elements
+        // Handle Variations dynamically
         const container = document.getElementById('variationContainer');
-        const varLabel = document.getElementById('variationLabel');
+        if (!container) {
+            console.error("variationContainer not found!");
+            return;
+        }
         container.innerHTML = "";
 
-        if (_activeVariantsList.length > 0) {
-            // Hide selection text styling overhead if it's just a single "Standard" item
-            if (_activeVariantsList.length === 1 && _activeVariantsList[0].spec === "Standard") {
-                varLabel.style.display = 'none';
-                container.style.display = 'none';
-                selectVariant(_activeVariantsList[0].id, _activeVariantsList[0].price);
-            } else {
-                varLabel.style.display = 'block';
-                container.style.display = 'flex';
-                
-                _activeVariantsList.forEach((variant, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'temp-btn' + (index === 0 ? ' active' : '');
-                    btn.textContent = variant.spec;
-                    
-                    btn.onclick = function() {
-                        container.querySelectorAll('.temp-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        selectVariant(variant.id, variant.price);
-                    };
-                    container.appendChild(btn);
-                });
-                
-                // Initialize default choice tracking values
-                selectVariant(_activeVariantsList[0].id, _activeVariantsList[0].price);
-            }
-        }
+        // Determine which options to show
+        let options = variationsMap[category] || [{ spec: "Standard", add: 0 }];
 
-        // Modal Image Setup
+        // Set initial selection
+        _selectedVariation = options[0].spec;
+        _currentAddon = options[0].add;
+
+        // Create buttons
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'temp-btn' + (opt.spec === _selectedVariation ? ' active' : '');
+            btn.textContent = opt.spec + (opt.add > 0 ? " (+₱" + opt.add + ")" : "");
+    
+            btn.onclick = function() {
+                _selectedVariation = opt.spec;
+                _currentAddon = opt.add;
+        
+                // UI Toggle
+                container.querySelectorAll('.temp-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+        
+                updateSubtotal();
+            };
+            container.appendChild(btn);
+        });
+
+        // --- Image Handling ---
         var wrap = document.getElementById('bModalImgWrap');
         if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
-            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:contain; border-radius:12px;" />';
+            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:cover; border-radius:12px;" />';
         } else {
             wrap.innerHTML = '<span style="font-size: 50px;">🖥️</span>';
         }
 
+        // --- Quantity & UI Reset ---
         document.getElementById('bQtyVal').textContent = _qty;
         document.getElementById('bNotes').value = '';
-        
+        document.querySelectorAll('.allergy-chip').forEach(function(c) {
+            c.classList.remove('active');
+        });
+
+        // --- Final Display ---
+        updateSubtotal();
         document.getElementById('basketOverlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
-
-    function selectVariant(id, price) {
-        _selectedVariantId = id;
-        _selectedVariantPrice = price;
-        document.getElementById('bModalPrice').textContent = 'PHP ' + price.toLocaleString();
-        updateSubtotal();
-    }
-
     function updateSubtotal() {
-        document.getElementById('bSubtotal').textContent = '= PHP ' + (_selectedVariantPrice * _qty).toLocaleString();
+        let totalUnit = _basePrice + _currentAddon;
+        document.getElementById('bSubtotal').textContent = '= PHP ' + (totalUnit * _qty).toLocaleString();
+    }
+    function submitBasket() {
+        var chips = [];
+        document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
+            chips.push(c.textContent);
+        });
+        var freeText = document.getElementById('bNotes').value.trim();
+        var parts = chips.join(', ');
+        var notes = (parts && freeText) ? (parts + ' | ' + freeText) : (parts || freeText);
+
+        fetch('/Order/AddToCart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'menuId='       + encodeURIComponent(_menuId)
+                + '&quantity='    + encodeURIComponent(_qty)
+                + '&variation='   + encodeURIComponent(_selectedVariation) // CHANGED FROM TEMPERATURE
+                + '&notes='       + encodeURIComponent(notes)
+                + '&price=' + (_basePrice + _currentAddon)
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                closeBasketModal();
+                updateCartCount(_qty);
+                showToast('Added ' + _qty + ' to basket!');
+            }
+        });
     }
 
-    function changeQty(delta) {
-        _qty = Math.max(1, _qty + delta);
-        document.getElementById('bQtyVal').textContent = _qty;
-        updateSubtotal();
+    @*
+    function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold) {
+        _menuId = menuId;
+        _price  = price;
+        _qty    = 1;
+        _temp   = canBeCold ? 'Iced' : 'Hot';
+
+        document.getElementById('bModalName').textContent  = name;
+        document.getElementById('bModalPrice').textContent = 'PHP ' + price;
+        document.getElementById('bModalDesc').textContent  = desc;
+        document.getElementById('bQtyVal').textContent     = 1;
+        document.getElementById('bSubtotal').textContent   = '= PHP ' + price;
+        document.getElementById('bNotes').value            = '';
+
+        document.querySelectorAll('.allergy-chip').forEach(function(c) {
+            c.classList.remove('active');
+        });
+
+        var wrap = document.getElementById('bModalImgWrap');
+        if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
+            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" />';
+        } else {
+            wrap.innerHTML = '☕';
+        }
+
+        var btnHot  = document.getElementById('btnHot');
+        var btnIced = document.getElementById('btnIced');
+        btnHot.classList.remove('active', 'disabled');
+        btnIced.classList.remove('active', 'disabled');
+        if (!canBeHot)  btnHot.classList.add('disabled');
+        if (!canBeCold) btnIced.classList.add('disabled');
+        document.getElementById(_temp === 'Hot' ? 'btnHot' : 'btnIced').classList.add('active');
+
+        document.getElementById('basketOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
+    *@
 
     function closeBasketModal() {
         document.getElementById('basketOverlay').style.display = 'none';
@@ -912,34 +1103,53 @@
         }
     }
 
-    function submitBasket() {
-        var notes = document.getElementById('bNotes').value.trim();
+    function selectTemp(t) {
+        _temp = t;
+        document.getElementById('btnHot').classList.toggle('active',  t === 'Hot');
+        document.getElementById('btnIced').classList.toggle('active', t === 'Iced');
+    }
 
-        // Build URL parameters targeting the backend endpoint
-        var params = 'menuId=' + encodeURIComponent(_menuId)
-                   + '&quantity=' + encodeURIComponent(_qty)
-                   + '&menuVariationId=' + encodeURIComponent(_selectedVariantId)
-                   + '&notes=' + encodeURIComponent(notes);
+    function changeQty(delta) {
+        _qty = Math.max(1, _qty + delta);
+        document.getElementById('bQtyVal').textContent = _qty;
+        updateSubtotal(); // This ensures (Base + Addon) * Qty is calculated
+    }
+
+    function toggleChip(el) {
+        el.classList.toggle('active');
+    }
+
+    @*
+    function submitBasket() {
+        var chips = [];
+        document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
+            chips.push(c.textContent);
+        });
+        var freeText = document.getElementById('bNotes').value.trim();
+        var parts    = chips.join(', ');
+        var notes    = (parts && freeText) ? (parts + ' | ' + freeText) : (parts || freeText);
 
         fetch('/Order/AddToCart', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params
+            body: 'menuId='       + encodeURIComponent(_menuId)
+                + '&quantity='    + encodeURIComponent(_qty)
+                + '&temperature=' + encodeURIComponent(_temp)
+                + '&notes='       + encodeURIComponent(notes)
         })
-        .then(r => r.json())
-        .then(data => {
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
             if (data.success) {
                 closeBasketModal();
                 updateCartCount(_qty);
-                showToast('Added item package successfully to your cart! 🛒');
-            } else {
-                showToast(data.message || 'Error occurred while saving selection details.');
+                showToast('Added ' + _qty + ' item(s) to your basket! 🛒');
             }
         })
-        .catch(() => {
-            showToast('System validation error handling your dynamic cart request.');
+        .catch(function() {
+            showToast('Something went wrong. Please try again.');
         });
     }
+    *@
 
     function updateCartCount(added) {
         var el = document.getElementById('cart-count');
@@ -951,56 +1161,71 @@
     function showToast(msg) {
         var t = document.getElementById('bToast');
         t.textContent = msg;
-        t.style.opacity = '1';
+        t.style.opacity   = '1';
         t.style.transform = 'translateX(-50%) translateY(0)';
         setTimeout(function() {
-            t.style.opacity = '0';
+            t.style.opacity   = '0';
             t.style.transform = 'translateX(-50%) translateY(20px)';
         }, 2800);
     }
 </script>
 
-@* Scrollspy Navigation Management Logic Script *@
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const observerOptions = {
-            root: null,
-            rootMargin: '-15% 0px -75% 0px',
-            threshold: 0
-        };
+    document.querySelectorAll('.quick-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.quick-btn'). forEach(btn => btn.classList.remove('active-menu'));
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute('id');
-                    document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.remove('active-menu'));
-
-                    const activeLink = document.querySelector(`.quick-btn[href="#${id}"]`);
-                    if (activeLink) {
-                        activeLink.classList.add('active-menu');
-                    }
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.quick-menu a').forEach(link => {
-            const id = link.getAttribute('href').substring(1);
-            const targetSec = document.getElementById(id);
-            if (targetSec) observer.observe(targetSec);
+            this.classList.add('active-menu');
         });
     });
 </script>
 
-@* Realtime Dynamic Client Search Handler Component Logic *@
+@* scrollspy *@
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+
+        const observerOptions = {
+        root: null,
+        rootMargin: '-15% 0px -75% 0px', // Adjusts the "trigger" area in the viewport
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+
+                // Remove active class from all buttons
+                document.querySelectorAll('.quick-btn').forEach(btn => {
+                    btn.classList.remove('active-menu');
+                });
+
+                // Add active class to the matching link
+                const activeLink = document.querySelector(`.quick-btn[href="#${id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active-menu');
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Track all sections that have an ID corresponding to a menu link
+    document.querySelectorAll('section[id], div[id]').forEach((section) => {
+        observer.observe(section);
+    });
+</script>
+
+<script>
+    // for search bar
+        document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById('menuSearch');
         const resultsDiv = document.getElementById('searchResults');
+    
+        // Get all product titles from your cards
         const cards = document.querySelectorAll('.card');
 
         searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase();
-            resultsDiv.innerHTML = '';
+            resultsDiv.innerHTML = ''; // Clear previous results
 
             if (query.length < 1) {
                 resultsDiv.style.display = 'none';
@@ -1011,14 +1236,18 @@
 
             cards.forEach(card => {
                 const title = card.querySelector('.card-title').innerText;
+            
                 if (title.toLowerCase().includes(query)) {
                     foundMatch = true;
                     const item = document.createElement('div');
                     item.className = 'search-item';
                     item.innerText = title;
 
+                    // When clicked, scroll to that specific card
                     item.onclick = function () {
                         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                        // Optional: Brief highlight effect so the user sees which one it is
                         card.style.transition = "0.5s";
                         card.style.boxShadow = "0 0 20px #3E4885";
                         setTimeout(() => { card.style.boxShadow = ""; }, 2000);
@@ -1036,15 +1265,50 @@
                 noResult.innerText = 'No match found';
                 noResult.style.color = '#999';
                 noResult.style.cursor = 'default';
+
                 resultsDiv.appendChild(noResult);
             }
 
             resultsDiv.style.display = 'block';
         });
 
+        searchInput.addEventListener('keypress', function (e) {
+
+        if (e.key === 'Enter') {
+
+            const query = this.value.toLowerCase();
+
+            cards.forEach(card => {
+
+                const title = card.querySelector('.card-title').innerText;
+
+                if (title.toLowerCase() === query) {
+
+                    card.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                    card.style.transition = "0.5s";
+                    card.style.boxShadow = "0 0 20px #3E4885";
+
+                    setTimeout(() => {
+                        card.style.boxShadow = "";
+                    }, 2000);
+
+                    resultsDiv.style.display = 'none';
+                }
+            });
+        }
+    });
+
+
         // Close dropdown if user clicks away
         document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+            if (
+                !searchInput.contains(e.target) &&
+                !resultsDiv.contains(e.target)
+            ) {
                 resultsDiv.style.display = 'none';
             }
         });
@@ -1053,10 +1317,14 @@
 
 <script>
     const quickMenu = document.querySelector('.quick-menu');
+
     window.addEventListener('scroll', () => {
+
         if (window.scrollY > 10) {
             quickMenu.classList.add('scrolled');
-        } else {
+        }
+
+        else {
             quickMenu.classList.remove('scrolled');
         }
     });
