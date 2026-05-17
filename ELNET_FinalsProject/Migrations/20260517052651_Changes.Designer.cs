@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDBSYS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260517040222_Initial1")]
-    partial class Initial1
+    [Migration("20260517052651_Changes")]
+    partial class Changes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,9 @@ namespace IMDBSYS.Migrations
 
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("SupplierCost")
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<string>("VariantName")
                         .IsRequired()
@@ -178,6 +181,9 @@ namespace IMDBSYS.Migrations
                     b.Property<string>("Remarks")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("DeliveryLogId");
 
