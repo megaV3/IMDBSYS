@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDBSYS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260513003711_dropDB")]
-    partial class dropDB
+    [Migration("20260517040222_Initial1")]
+    partial class Initial1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,6 @@ namespace IMDBSYS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
 
-                    b.Property<bool>("CanBeCold")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanBeHot")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -46,9 +40,6 @@ namespace IMDBSYS.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("HasVariation")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -63,6 +54,37 @@ namespace IMDBSYS.Migrations
                     b.HasKey("MenuId");
 
                     b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("IMDBSYS.Models.MenuVariation", b =>
+                {
+                    b.Property<int>("MenuVariationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuVariationId"));
+
+                    b.Property<int>("LowStockThreshold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VariantName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MenuVariationId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("MenuVariations");
                 });
 
             modelBuilder.Entity("IMDBSYS.Models.Order", b =>
@@ -130,6 +152,38 @@ namespace IMDBSYS.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("IMDBSYS.Models.ProductDeliveryLog", b =>
+                {
+                    b.Property<int>("DeliveryLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryLogId"));
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MenuVariationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProcessedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuantityAdded")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("DeliveryLogId");
+
+                    b.HasIndex("MenuVariationId");
+
+                    b.ToTable("ProductDeliveryLogs");
                 });
 
             modelBuilder.Entity("IMDBSYS.Models.TopUpHistory", b =>
@@ -204,6 +258,9 @@ namespace IMDBSYS.Migrations
                     b.Property<string>("ProfileImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -211,6 +268,17 @@ namespace IMDBSYS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("IMDBSYS.Models.MenuVariation", b =>
+                {
+                    b.HasOne("IMDBSYS.Models.Menu", "Menu")
+                        .WithMany("Variations")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
                 });
 
             modelBuilder.Entity("IMDBSYS.Models.OrderItem", b =>
@@ -230,6 +298,22 @@ namespace IMDBSYS.Migrations
                     b.Navigation("Menu");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("IMDBSYS.Models.ProductDeliveryLog", b =>
+                {
+                    b.HasOne("IMDBSYS.Models.MenuVariation", "MenuVariation")
+                        .WithMany()
+                        .HasForeignKey("MenuVariationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuVariation");
+                });
+
+            modelBuilder.Entity("IMDBSYS.Models.Menu", b =>
+                {
+                    b.Navigation("Variations");
                 });
 
             modelBuilder.Entity("IMDBSYS.Models.Order", b =>

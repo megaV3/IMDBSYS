@@ -75,6 +75,14 @@ namespace IMDBSYS.Controllers
                 .Take(5)
                 .ToListAsync();
 
+            // NEW QUERY: Fetch the latest 5 delivery intake records
+            viewModel.RecentStockChanges = await _context.ProductDeliveryLogs
+                .Include(l => l.MenuVariation)
+                .ThenInclude(v => v.Menu) // Multi-level include to jump from Log -> Variant -> Parent Product Name
+                .OrderByDescending(l => l.DeliveryDate)
+                .Take(5)
+                .ToListAsync();
+
             return View(viewModel);
         }
 
@@ -87,7 +95,7 @@ namespace IMDBSYS.Controllers
             // .Include(m => m.Variations) ensures the View can count how many variations exist
             var menus = await _context.Menus
                 .Include(m => m.Variations)
-                .OrderBy(m => m.Name)
+                .OrderBy(m => m.MenuId)
                 .ToListAsync();
 
             return View("MenuIndex", menus); // Explicitly naming the view if it doesn't match action name
@@ -144,6 +152,132 @@ namespace IMDBSYS.Controllers
             return View("UserManagement", users);
         }
 
+        // ========================================================
+        // GET: Admin/RequestRestock
+        // ========================================================
+        [HttpGet]
+        public async Task<IActionResult> RequestRestock()
+        {
+            // Fetch all variants and include parent menu titles for dropdown assignment
+            var availableVariants = await _context.MenuVariations
+                .Include(v => v.Menu)
+                .OrderBy(v => v.Menu.Name)
+                .ThenBy(v => v.VariantName)
+                .ToListAsync();
+
+            // Pass the raw list directly down to the view!
+            return View(availableVariants);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RequestRestock(int menuVariationId, int quantityReceived, decimal totalAmount)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // 1. Fetch full user metadata safely
+            var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (userProfile == null) return NotFound();
+
+            if (quantityReceived <= 0)
+            {
+                ModelState.AddModelError("", "Quantity must be at least 1 unit.");
+            }
+            if (totalAmount <= 0)
+            {
+                ModelState.AddModelError("", "Calculated total delivery cost must be a positive value.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Pull the targeted configuration variant record from the data tables
+                    var variant = await _context.MenuVariations
+                        .FirstOrDefaultAsync(v => v.MenuVariationId == menuVariationId);
+
+                    if (variant == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // 1. Math modification step: Update warehouse physical inventory count
+                    variant.StockQuantity += quantityReceived;
+                    _context.Update(variant);
+
+                    // 2. Map metrics down safely into the updated strongly-typed database log entity columns
+                    var historyLog = new ProductDeliveryLog
+                    {
+                        MenuVariationId = menuVariationId,
+                        QuantityAdded = quantityReceived,
+                        TotalAmount = totalAmount, // SAVED AS STRONGLY-TYPED NUMERIC TIERS
+                        DeliveryDate = DateTime.Now,
+                        ProcessedBy = userProfile.Username,
+                        Remarks = "Verified Supplier Fulfillment Intake Batch Processing Run Pass"
+                    };
+                    _context.ProductDeliveryLogs.Add(historyLog);
+
+                    // 3. Save as single database transaction block
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Dashboard));
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "A critical data error occurred while updating stock profiles.");
+                }
+            }
+
+            // Fallback block if any model state rules trigger issues
+            var fallbackList = await _context.MenuVariations.Include(v => v.Menu).ToListAsync();
+            return View(fallbackList);
+        }
+
+        // ========================================================
+        // POST: Admin/EditUserRole
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserRole(int id, string role)
+        {
+            // 1. Target the designated user domain entry from the account context mapping layer
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // 2. Map down the updated security entitlement context string field
+            user.Role = role;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            // 3. Seamlessly kick back to refresh the active page listing state data 
+            return RedirectToAction(nameof(UserManagement));
+        }
+
+        // ========================================================
+        // POST: Admin/DeleteUser
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Perform an immediate destructive row removal drop execution sequence pass
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(UserManagement));
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Menu incomingMenu)
