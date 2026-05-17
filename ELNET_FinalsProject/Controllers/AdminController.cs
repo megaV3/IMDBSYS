@@ -472,6 +472,73 @@ namespace IMDBSYS.Controllers
             return RedirectToAction(nameof(ProfileDetails));
         }
 
+        // ========================================================
+        // POST: Admin/Create
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Menu newItem, IFormFile ImageFile)
+        {
+            if (ModelState.IsValid)
+            {
+                // 1. PROCESS AND SAVE THE UPLOADED PRODUCT THUMBNAIL IMAGE
+                if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    // Set up a secure path mapping to the wwwroot static images file directory
+                    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
+
+                    // Double-ensure that the destination directories are physically created on disk
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    // Generate a unique filename using a clean timestamp to prevent name collisions
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ImageFile.FileName);
+                    string filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+                    // Copy and stream the file upload down onto storage space
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    // Assign the publicly reachable virtual web asset path back to the object model column
+                    newItem.ImagePath = "/images/products/" + uniqueFileName;
+                }
+                else
+                {
+                    // Clean fallback default image if no custom file asset was provided by the operator
+                    newItem.ImagePath = "/images/profiles/default-picture.webp";
+                }
+
+                // 2. CLEAN AND SYNC THE INCOMING MULTIPART CHILD VARIANT ARRAYS
+                if (newItem.Variations != null && newItem.Variations.Any())
+                {
+                    foreach (var variant in newItem.Variations)
+                    {
+                        // Explicitly clear out tracking state properties to prevent foreign key errors during execution
+                        variant.MenuVariationId = 0;
+
+                        // Let Entity Framework know this variant explicitly belongs to our new Menu instance container
+                        variant.Menu = newItem;
+                    }
+                }
+
+                // 3. PERSIST THE ENTIRE OBJECT TREE TO THE DATABASE
+                // Because of the foreign key navigation properties, EF automatically saves the parent item,
+                // assigns its generated MenuId to the variants, and saves all variant configs in one batch transaction!
+                _context.Menus.Add(newItem);
+                await _context.SaveChangesAsync();
+
+                // Redirect back to refresh the primary view table log dashboard immediately
+                return RedirectToAction(nameof(MenuIndex));
+            }
+
+            // Fallback: If model errors occur during binding data filters, bounce back to reload the management loop view
+            return RedirectToAction(nameof(MenuIndex));
+        }
+
         // ==========================================
         // ADMIN LOGOUT
         // ==========================================
@@ -482,5 +549,6 @@ namespace IMDBSYS.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
+
     }
 }
