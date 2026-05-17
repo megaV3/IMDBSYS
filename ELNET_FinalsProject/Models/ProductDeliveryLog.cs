@@ -8,7 +8,6 @@ namespace IMDBSYS.Models
         [Key]
         public int DeliveryLogId { get; set; }
 
-        // Relational link to the exact variant that received stock
         [Required]
         public int MenuVariationId { get; set; }
 
@@ -18,13 +17,18 @@ namespace IMDBSYS.Models
         [Required]
         public int QuantityAdded { get; set; }
 
+        // NEW DESIGNATED COLUMN FIELD FOR TOTAL WHOLESALE SPENT
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal TotalAmount { get; set; }
+
         [Required]
         public DateTime DeliveryDate { get; set; } = DateTime.Now;
 
         [Required]
-        public string ProcessedBy { get; set; } = "System Admin"; // Expandable to actual user logins later
+        public string ProcessedBy { get; set; } = "System Admin";
 
         [StringLength(250)]
-        public string? Remarks { get; set; } // e.g., "Supplier Manifest #INV-9021"
+        public string? Remarks { get; set; }
     }
 }

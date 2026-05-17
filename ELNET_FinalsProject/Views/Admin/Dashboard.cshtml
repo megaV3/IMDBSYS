@@ -60,6 +60,7 @@
 </div>
 
 <div class="row g-4">
+    
     <div class="col-xl-8">
         
         <div class="card shadow-sm border-0 mb-4">
@@ -77,7 +78,7 @@
                                 <th>Total</th>
                                 <th>Status</th>
                             </tr>
-                        </thead>
+                        </table>
                         <tbody>
                             @if (Model.RecentOrders.Any())
                             {
@@ -154,7 +155,7 @@
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white py-3 border-bottom">
                 <h5 class="m-0 fw-bold text-dark h6">🚚 Recent Product Stock Receipts</h5>
             </div>
@@ -166,6 +167,7 @@
                                 <th>Log ID</th>
                                 <th class="text-start">Product Item Config</th>
                                 <th>Intake Qty</th>
+                                <th>Total Cost</th>
                                 <th>Timestamp Logged</th>
                                 <th>Operator Scope</th>
                             </tr>
@@ -186,6 +188,9 @@
                                                 +@change.QuantityAdded units
                                             </span>
                                         </td>
+                                        <td class="text-primary fw-bold">
+                                            ₱@change.TotalAmount.ToString("N2")
+                                        </td>
                                         <td class="text-muted">@change.DeliveryDate.ToString("yyyy-MM-dd HH:mm")</td>
                                         <td><span class="badge bg-secondary opacity-75">@change.ProcessedBy</span></td>
                                     </tr>
@@ -194,7 +199,7 @@
                             else
                             {
                                 <tr>
-                                    <td colspan="5" class="text-center py-4 text-muted">No recent stock replenishment batches recorded.</td>
+                                    <td colspan="6" class="text-center py-4 text-muted">No recent stock replenishment batches recorded.</td>
                                 </tr>
                             }
                         </tbody>
@@ -202,48 +207,49 @@
                 </div>
             </div>
         </div>
+
+    </div> <div class="col-xl-4">
+        
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="m-0 fw-bold text-dark h6">Inventory Summary</h5>
+        </div>
+        <div class="card-body text-center py-4">
+            <p class="text-muted mb-1 text-uppercase small fw-bold">Total Items in Stock</p>
+            <h1 class="display-6 fw-bold text-secondary">@Model.TotalStockQuantity</h1>
+        </div>
     </div>
 
-    <div class="col-xl-4">
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="m-0 fw-bold text-dark h6">Inventory Summary</h5>
-            </div>
-            <div class="card-body text-center py-4">
-                <p class="text-muted mb-1 text-uppercase small fw-bold">Total Items in Stock</p>
-                <h1 class="display-6 fw-bold text-secondary">@Model.TotalStockQuantity</h1>
-            </div>
+    <div class="card shadow-sm border-0 border-top border-danger border-4">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="m-0 fw-bold text-danger h6">⚠️ Low Stock Warnings</h5>
         </div>
-
-        <div class="card shadow-sm border-0 border-top border-danger border-4">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="m-0 fw-bold text-danger h6">⚠️ Low Stock Warnings</h5>
-            </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    @if (Model.LowStockProducts.Any())
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+                @if (Model.LowStockProducts.Any())
+                {
+                    foreach (var variant in Model.LowStockProducts)
                     {
-                        foreach (var variant in Model.LowStockProducts)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-start py-3">
-                                <div class="ms-2 me-auto">
-                                    <div class="fw-bold text-dark">@(variant.Menu?.Name ?? "Unknown Product")</div>
-                                    <span class="text-muted small">Variant: @variant.VariantName</span>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">@variant.StockQuantity left</span>
-                                </div>
-                            </li>
-                        }
-                    }
-                    else
-                    {
-                        <li class="list-group-item py-4 text-center text-muted border-0">
-                            All products are sufficiently stocked!
+                        <li class="list-group-item d-flex justify-content-between align-items-start py-3">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold text-dark">@(variant.Menu?.Name ?? "Unknown Product")</div>
+                                <span class="text-muted small">Variant: @variant.VariantName</span>
+                            </div>
+                            <div>
+                                <span class="badge bg-danger rounded-pill">@variant.StockQuantity left</span>
+                            </div>
                         </li>
                     }
-                </ul>
-            </div>
+                }
+                else
+                {
+                    <li class="list-group-item py-4 text-center text-muted border-0">
+                        All products are sufficiently stocked!
+                    </li>
+                }
+            </ul>
         </div>
     </div>
+
+</div>
 </div>

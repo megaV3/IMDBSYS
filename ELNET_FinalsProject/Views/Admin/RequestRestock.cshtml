@@ -6,19 +6,16 @@
 
 <style>
     /* ========================================================
-           RequestRestock View - Standalone Isolation Matrix
-           ======================================================== */
-
-    /* 1. FORCE VIEW COMPONENT ISOLATION CONTROLS */
+               RequestRestock View - Standalone Isolation Matrix
+               ======================================================== */
     .restock-isolated-wrapper {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
-        contain: inline-size !important; /* Blocks any internal element mutations from shifting outer panels */
+        contain: inline-size !important;
         box-sizing: border-box !important;
     }
 
-        /* 2. Lock down Bootstrap grid structures to prevent negative margin bleeding */
         .restock-isolated-wrapper .row {
             width: 100% !important;
             margin: 0 !important;
@@ -27,7 +24,6 @@
             flex-wrap: wrap !important;
         }
 
-        /* 3. Freeze absolute boundaries of the centered layout card */
         .restock-isolated-wrapper .card {
             box-sizing: border-box !important;
             transform: none !important;
@@ -57,7 +53,9 @@
                                             data-productname="@item.Menu?.Name"
                                             data-variantname="@item.VariantName"
                                             data-category="@item.Menu?.Category"
-                                            data-currentstock="@item.StockQuantity">
+                                            data-currentstock="@item.StockQuantity"
+                                            data-retailprice="@item.Price.ToString("F2")"
+                                            data-suppliercost="@item.SupplierCost.ToString("F2")">
                                         #@item.MenuVariationId - @item.Menu?.Name (@item.VariantName)
                                     </option>
                                 }
@@ -86,13 +84,42 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Active Retail Price (Selling Price)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted">₱</span>
+                                    <input type="text" id="displayRetailPrice" class="form-control bg-light fw-bold text-dark" readonly />
+                                </div>
+                            </div>
+                            
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Static Supplier Unit Cost (Wholesale Cost)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted">₱</span>
+                                    <input type="text" id="displaySupplierCost" class="form-control bg-light fw-bold text-primary" readonly />
+                                </div>
+                            </div>
+                        </div>
+
                         <hr class="text-muted opacity-25" />
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-primary small">Incoming Delivery Quantity (+)</label>
-                            <div class="input-group">
-                                <input type="number" name="QuantityReceived" class="form-control form-control-lg fw-bold" min="1" placeholder="Enter amount delivered..." required />
-                                <span class="input-group-text bg-primary text-white">units</span>
+                        <div class="row">
+                            <div class="col-6 mb-4">
+                                <label class="form-label fw-bold text-success small">Incoming Delivery Quantity (+)</label>
+                                <div class="input-group input-group-lg">
+                                    <input type="number" id="quantityInput" name="QuantityReceived" class="form-control fw-bold" min="1" placeholder="Enter amount..." required />
+                                    <span class="input-group-text bg-success text-white">units</span>
+                                </div>
+                            </div>
+
+                            <div class="col-6 mb-4">
+                                <label class="form-label fw-bold text-primary small">Estimated Total Delivery Cost (Wholesale Sum)</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text bg-primary text-white">₱</span>
+                                    <input type="text" id="displayTotalSupplierCost" class="form-control bg-light fw-bold text-primary" readonly value="0.00" />
+                                </div>
+                                <input type="hidden" id="rawTotalAmount" name="TotalAmount" value="0.00" />
                             </div>
                         </div>
 
@@ -109,20 +136,55 @@
 </div>
 
 <script>
-    document.getElementById('variantSelect').addEventListener('change', function () {
-        // Get the selected option element
+    let currentUnitSupplierCost = 0;
+
+    const variantSelect = document.getElementById('variantSelect');
+    const quantityInput = document.getElementById('quantityInput');
+    const totalCostDisplay = document.getElementById('displayTotalSupplierCost');
+    const hiddenTotalInput = document.getElementById('rawTotalAmount');
+
+    variantSelect.addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
 
-        // Extract data-attributes mapped out inside the C# loop
         const productName = selectedOption.getAttribute('data-productname') || '';
         const variantName = selectedOption.getAttribute('data-variantname') || '';
         const category = selectedOption.getAttribute('data-category') || '';
         const currentStock = selectedOption.getAttribute('data-currentstock') || '0';
+        const retailPrice = selectedOption.getAttribute('data-retailprice') || '0.00';
+        const supplierCost = selectedOption.getAttribute('data-suppliercost') || '0.00';
 
-        // Direct injection straight into the text input value buffers
+        currentUnitSupplierCost = parseFloat(supplierCost) || 0;
+
         document.getElementById('displayProductName').value = productName;
         document.getElementById('displayVariantName').value = variantName;
         document.getElementById('displayCategory').value = category;
         document.getElementById('displayCurrentStock').value = currentStock + " units currently";
+        
+        document.getElementById('displayRetailPrice').value =
+            parseFloat(retailPrice).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
+        document.getElementById('displaySupplierCost').value =
+            currentUnitSupplierCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        calculateTotalCost();
     });
+
+    quantityInput.addEventListener('input', calculateTotalCost);
+
+    function calculateTotalCost() {
+        const quantity = parseInt(quantityInput.value) || 0;
+        
+        if (quantity > 0 && currentUnitSupplierCost > 0) {
+            const totalSum = quantity * currentUnitSupplierCost;
+            
+            // Format for professional user view interface display
+            totalCostDisplay.value = totalSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
+            // Save clean unformatted data straight down to hidden value field buffer
+            hiddenTotalInput.value = totalSum.toFixed(2);
+        } else {
+            totalCostDisplay.value = "0.00";
+            hiddenTotalInput.value = "0.00";
+        }
+    }
 </script>
