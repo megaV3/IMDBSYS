@@ -1,13 +1,20 @@
-﻿using IMDBSYS.Data;
+﻿using Humanizer;
+using IMDBSYS.Data;
 using IMDBSYS.Models;
 using IMDBSYS.ViewModels;
 using IMDBSYS.ViewModels.Admin;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace IMDBSYS.Controllers
 {
@@ -101,19 +108,20 @@ namespace IMDBSYS.Controllers
             return View("MenuIndex", menus); // Explicitly naming the view if it doesn't match action name
         }
 
-        // ==========================================
-        // 3. GLOBAL ORDER REGISTRY (Audit Logs)
-        // ==========================================
+        // ========================================================
+        // GET: Admin/OrderRegistry
+        // ========================================================
         [HttpGet]
         public async Task<IActionResult> OrderRegistry()
         {
-            // .Include(o => o.OrderItems) pulls children so we can count items inside the order
-            var orders = await _context.Orders
-                .Include(o => o.OrderItems)
-                .OrderByDescending(o => o.OrderDate)
+            // Eagerly load order rows along with their corresponding line items and parent product metadata
+            var entireOrdersLogList = await _context.Orders
+                .Include(o => o.OrderItems)                           // 1. Include the collections of order items
+                    .ThenInclude(i => i.Menu)                         // 2. CORRECTION: Include the Menu property that exists on OrderItem
+                .OrderByDescending(o => o.OrderDate)                  // Serve the newest transactions first
                 .ToListAsync();
 
-            return View("OrderRegistry", orders);
+            return View(entireOrdersLogList);
         }
 
         // ==========================================
@@ -151,6 +159,7 @@ namespace IMDBSYS.Controllers
 
             return View("UserManagement", users);
         }
+
 
         // ========================================================
         // GET: Admin/RequestRestock
@@ -234,6 +243,22 @@ namespace IMDBSYS.Controllers
             // Fallback block if any model state rules trigger issues
             var fallbackList = await _context.MenuVariations.Include(v => v.Menu).ToListAsync();
             return View(fallbackList);
+        }
+
+        // ========================================================
+        // GET: Admin/RestockLedger
+        // ========================================================
+        [HttpGet]
+        public async Task<IActionResult> RestockLedger()
+        {
+            // Gather all historical trace lines from your database context logging table
+            var fullDeliveryLogs = await _context.ProductDeliveryLogs
+                .Include(l => l.MenuVariation)
+                .ThenInclude(v => v.Menu) // Join across to display product title parameters
+                .OrderByDescending(l => l.DeliveryDate) // Serve fresh logs first
+                .ToListAsync();
+
+            return View(fullDeliveryLogs);
         }
 
         // ========================================================
@@ -337,6 +362,118 @@ namespace IMDBSYS.Controllers
             // If something fails, drop back into the main index view safely with validation state messages
             var menus = await _context.Menus.Include(m => m.Variations).ToListAsync();
             return View("MenuIndex", menus);
+        }
+
+
+        // ========================================================
+        // GET: Admin/ProfileDetails
+        // ========================================================
+        [HttpGet]
+        public async Task<IActionResult> ProfileDetails()
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            var adminProfile = new
+            {
+                FullName = $"{userProfile.FirstName} {userProfile.LastName}",
+                Email = userProfile.Email,
+                Role = userProfile.Role ?? "Admin",
+                SecurityScope = "Global Read/Write/Delete Permissions",
+                AccountStatus = "Active",
+                // SYNC: Point directly to your model's ProfileImagePath property
+                ProfilePicturePath = !string.IsNullOrEmpty(userProfile.ProfileImagePath)
+                    ? userProfile.ProfileImagePath.Replace("~", "") // Strip the tilde out for clear standard HTML rendering
+                    : "/images/profiles/default-picture.webp"
+            };
+
+            ViewBag.Profile = adminProfile;
+            return View();
+        }
+
+        // ========================================================
+        // POST: Admin/ProfileDetails
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProfileDetails(string firstName, string lastName, IFormFile? profilePicture)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+            {
+                ModelState.AddModelError("", "First Name and Last Name cannot be blank.");
+                return RedirectToAction(nameof(ProfileDetails));
+            }
+
+            var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            if (profilePicture != null && profilePicture.Length > 0)
+            {
+                // Save files cleanly inside your preset profiles folder footprint
+                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+
+                var cleanFileName = $"admin_{userProfile.Id}_{DateTime.Now.Ticks}{Path.GetExtension(profilePicture.FileName)}";
+                var filePath = Path.Combine(uploadFolder, cleanFileName);
+
+                // SYNC: Check and delete old unique asset files before overriding paths
+                if (!string.IsNullOrEmpty(userProfile.ProfileImagePath) && !userProfile.ProfileImagePath.Contains("default-picture.webp"))
+                {
+                    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", userProfile.ProfileImagePath.Replace("~", "").TrimStart('/'));
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                // SYNC: Save structural string using standard web root mapping syntax
+                userProfile.ProfileImagePath = $"/images/profiles/{cleanFileName}";
+            }
+
+            userProfile.FirstName = firstName.Trim();
+            userProfile.LastName = lastName.Trim();
+
+            _context.Update(userProfile);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(ProfileDetails));
+        }
+
+        // ==========================================
+        // ADMIN LOGOUT
+        // ==========================================
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

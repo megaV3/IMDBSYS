@@ -78,9 +78,12 @@
 <body>
 
     <div class="admin-wrapper">
-        <div class="admin-sidebar d-flex flex-column p-3 text-white">
-            <span class="fs-5 fw-bold mb-3 border-bottom border-secondary pb-2 text-primary">Admin Controls</span>
-
+        <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+            <a asp-controller="Admin" asp-action="Dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <span class="fs-4 fw-bold">Admin Controls</span>
+            </a>
+            <hr>
+    
             <ul class="nav nav-pills flex-column mb-auto gap-1">
                 <li class="nav-item">
                     <a asp-controller="Admin" asp-action="Dashboard"
@@ -100,12 +103,20 @@
                         🛒 Order Registry
                     </a>
                 </li>
+        
                 <li>
                     <a asp-controller="Admin" asp-action="RequestRestock"
                            class="nav-link sidebar-link @(currentAction == "RequestRestock" ? "active" : "")">
-                        🛒 Request Product Restock
+                        🚚 Request Product Restock
                     </a>
                 </li>
+                <li>
+                    <a asp-controller="Admin" asp-action="RestockLedger"
+                           class="nav-link sidebar-link @(currentAction == "RestockLedger" ? "active" : "")">
+                        📑 Product Restocks
+                    </a>
+                </li>
+        
                 <li>
                     <a asp-controller="Admin" asp-action="TopUpLedger"
                            class="nav-link sidebar-link @(currentAction == "TopUpLedger" ? "active" : "")">
@@ -119,8 +130,37 @@
                     </a>
                 </li>
             </ul>
-            <hr class="border-secondary">
-            <div class="small text-muted">Role: System Admin</div>
+    
+            <hr />
+
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-2" style="width: 32px; height: 32px; font-size: 14px;">
+                        AD
+                    </div>
+                    <strong>System Admin</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow border-secondary" aria-labelledby="dropdownUser1">
+                    <li>
+                        <a class="dropdown-item py-2" asp-controller="Admin" asp-action="ProfileDetails">
+                            👤 My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2" asp-controller="Admin" asp-action="SecuritySettings">
+                            ⚙️ Account Settings
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider border-secondary"></li>
+                    <li>
+                        <form asp-controller="Admin" asp-action="Logout" method="post" class="d-inline w-100">
+                            <button type="submit" class="dropdown-item py-2 text-danger fw-bold btn btn-link text-start w-100" style="text-decoration: none; box-shadow: none;">
+                                🚪 Log Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="admin-content">
