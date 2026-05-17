@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IMDBSYS.Migrations
 {
     /// <inheritdoc />
-    public partial class Changes : Migration
+    public partial class Delte : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

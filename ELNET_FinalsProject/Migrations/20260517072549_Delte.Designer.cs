@@ -12,13 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDBSYS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-<<<<<<<< HEAD:ELNET_FinalsProject/Migrations/20260517052651_Changes.Designer.cs
-    [Migration("20260517052651_Changes")]
-    partial class Changes
-========
-    [Migration("20260517050552_Initial1")]
-    partial class Initial1
->>>>>>>> 3d4a5ef405c29dc92b6b556e8dcbbd6ac44c7c51:ELNET_FinalsProject/Migrations/20260517050552_Initial1.Designer.cs
+    [Migration("20260517072549_Delte")]
+    partial class Delte
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
