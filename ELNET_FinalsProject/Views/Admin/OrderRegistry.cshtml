@@ -1,181 +1,118 @@
 ﻿@model IEnumerable<IMDBSYS.Models.Order>
 
 @{
-    ViewData["Title"] = "Global Order Registry";
+    ViewData["Title"] = "Order Registry";
 }
 
-<style>
-    /* ========================================================
-           OrderRegistry View - Standalone Isolation Matrix
-           ======================================================== */
-    
-    /* 1. FORCE MAIN WORKSPACE ELEMENT VIEW PORT ISOLATION CONTROLS */
-    .orders-isolated-wrapper {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        contain: inline-size !important;
-        box-sizing: border-box !important;
-    }
+<div class="page-header">
+    <div>
+        <h1>Order Registry</h1>
+        <p>Audit trail for all sales transactions</p>
+    </div>
+</div>
 
-        /* 2. Lock down Bootstrap grid structures to prevent negative margin bleeding */
-        .orders-isolated-wrapper .row {
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: flex !important;
-            flex-wrap: wrap !important;
-        }
-
-        /* 3. Force card boundary limitations */
-        .orders-isolated-wrapper .card {
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-            transform: none !important;
-            transition: none !important;
-        }
-
-            /* 4. Complete structural lockdown on badge sizing properties on hover */
-            .orders-isolated-wrapper .card .badge {
-                display: inline-block !important;
-                width: 135px !important;
-                max-width: 135px !important;
-                min-width: 135px !important;
-                letter-spacing: normal !important;
-                transform: none !important;
-                transition: none !important;
-            }
-
-        /* 5. Keep ALL registry rows locked into a strict uniform footprint to cancel expansion jumps */
-        .orders-isolated-wrapper .table-hover tbody tr:hover td,
-        .orders-isolated-wrapper .table-hover tbody tr td,
-        .modal-body .table tbody tr:hover td,
-        .modal-body .table tbody tr td {
-            height: 65px !important;
-            max-height: 65px !important;
-            min-height: 65px !important;
-            vertical-align: middle !important;
-            transition: none !important;
-            white-space: nowrap !important;
-        }
-</style>
-
-<div class="orders-isolated-wrapper">
-    <div class="row">
-        <div class="col-12">
-
-            <div class="card shadow-sm border-0 mt-3">
-                <div class="card-header bg-white py-3 border-bottom">
-                    <h5 class="m-0 fw-bold text-dark">🛒 Global Order Registry</h5>
-                    <p class="text-muted small mb-0">Audit security trail logs, structural system sales, and purchase accountability</p>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0 text-center">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>User Security ID</th>
-                                    <th class="text-start">Customer / Client Name</th>
-                                    <th>Timestamp Registered</th>
-                                    <th>Gross Value</th>
-                                    <th>System State</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null && Model.Any())
-                                {
-                                    foreach (var order in Model)
+<div class="pkcard">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table pk-table text-center">
+                <thead>
+                    <tr>
+                        <th class="text-start">Order ID</th>
+                        <th>User ID</th>
+                        <th class="text-start">Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var order in Model)
+                        {
+                            <tr>
+                                <td class="text-start"><span style="font-weight:700; color:#2D3A8C;">#@order.OrderId</span></td>
+                                <td><span style="font-family:monospace; font-size:11.5px; color:#ef4444;">USR-@order.UserId.ToString("D4")</span></td>
+                                <td class="text-start" style="font-weight:700; color:#1e293b;">@order.CustomerName</td>
+                                <td style="color:#64748b; font-size:12.5px;">@order.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</td>
+                                <td style="font-weight:700;">₱@order.TotalAmount.ToString("N2")</td>
+                                <td>
+                                    @if (order.IsCompleted)
                                     {
-                                        <tr>
-                                            <td><strong>#@order.OrderId</strong></td>
-                                            <td class="text-danger small"><code>USR-@order.UserId.ToString("D4")</code></td>
-                                            <td class="text-start fw-bold text-dark">@order.CustomerName</td>
-                                            <td class="text-muted">@order.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</td>
-                                            <td class="fw-bold">₱@order.TotalAmount.ToString("N2")</td>
-                                            
-                                            <td>
-                                                @if (order.IsCompleted)
-                                                {
-                                                    <span class="badge bg-success-subtle text-success border border-success-subtle py-2">✅ Settled & Fulfilled</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle py-2">⏳ Pending Fulfillment</span>
-                                                }
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="d-flex justify-content-center gap-2">
-                                                    <button type="button" class="btn btn-sm btn-light border small text-dark px-3" data-bs-toggle="modal" data-bs-target="#reviewItemsModal-@order.OrderId">
-                                                        Review Items (@(order.OrderItems?.Count ?? 0))
-                                                    </button>
-
-                                                    @if (!order.IsCompleted)
-                                                    {
-                                                        <form asp-action="CompleteOrder" method="post" class="m-0">
-                                                            <input type="hidden" name="orderId" value="@order.OrderId" />
-                                                            <button type="submit" class="btn btn-sm btn-primary fw-bold px-3">
-                                                                ✔️ Complete
-                                                            </button>
-                                                        </form>
-                                                    }
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <span class="pk-badge pk-badge-success">Completed</span>
                                     }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="7" class="text-center py-5 text-muted">No transactions recorded inside global order registry ledger context.</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
+                                    else
+                                    {
+                                        <span class="pk-badge pk-badge-warning">Pending</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button type="button"
+                                                class="pk-btn pk-btn-sm"
+                                                style="background:#f0f2f8; color:#2D3A8C; border:1.5px solid #c7cde8;"
+                                                data-bs-toggle="modal" data-bs-target="#reviewItemsModal-@order.OrderId">
+                                            Items (@(order.OrderItems?.Count ?? 0))
+                                        </button>
+                                        @if (!order.IsCompleted)
+                                        {
+                                            <form asp-action="CompleteOrder" method="post" class="m-0">
+                                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                                <button type="submit" class="pk-btn pk-btn-primary pk-btn-sm">
+                                                    Complete
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="7" class="text-center py-5" style="color:#94a3b8;">No transactions recorded in the order registry.</td></tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
+<!-- Order Item Modals -->
 @if (Model != null && Model.Any())
 {
     foreach (var order in Model)
     {
-        <div class="modal fade" id="reviewItemsModal-@order.OrderId" tabindex="-1" aria-labelledby="modalLabel-@order.OrderId" aria-hidden="true">
+        <div class="modal fade pk-modal" id="reviewItemsModal-@order.OrderId" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header bg-dark text-white py-3">
-                        <h5 class="modal-title fw-bold fs-6" id="modalLabel-@order.OrderId">📋 Order Breakdown Manifest: #@order.OrderId</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Order Breakdown — #@order.OrderId</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-0">
-                        
-                        <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center text-start">
+                        <!-- Order meta -->
+                        <div style="background:#f8f9ff; padding:16px 24px; border-bottom:1px solid #eef0f7; display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <span class="text-muted small d-block">Client Account Identity</span>
-                                <strong class="text-dark">@order.CustomerName</strong>
+                                <div style="font-size:11px; color:#94a3b8; margin-bottom:2px;">Customer</div>
+                                <div style="font-weight:700; color:#1e293b;">@order.CustomerName</div>
                             </div>
                             <div class="text-end">
-                                <span class="text-muted small d-block">Settlement Date</span>
-                                <span class="text-dark fw-bold">@order.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</span>
+                                <div style="font-size:11px; color:#94a3b8; margin-bottom:2px;">Order Date</div>
+                                <div style="font-weight:700; color:#1e293b;">@order.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</div>
                             </div>
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table align-middle mb-0 text-center text-nowrap" style="white-space: normal;">
-                                <thead class="table-light small text-uppercase">
+                            <table class="table pk-table text-center">
+                                <thead>
                                     <tr>
-                                        <th class="text-start ps-4">Product Component Details</th>
-                                        <th>Variant Option</th>
-                                        <th>Unit Cost Price</th>
-                                        <th>Quantity</th>
-                                        <th class="text-end pe-4">Subtotal Value</th>
+                                        <th class="text-start ps-4">Product</th>
+                                        <th>Variant</th>
+                                        <th>Unit Price</th>
+                                        <th>Qty</th>
+                                        <th class="text-end pe-4">Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -187,20 +124,18 @@
                                                 <td class="text-start ps-4">
                                                     <div class="d-flex align-items-center gap-3">
                                                         <img src="@(string.IsNullOrEmpty(item.Menu?.ImagePath) ? "/images/profiles/default-picture.webp" : item.Menu.ImagePath)"
-                                                             class="rounded border shadow-sm object-fit-cover"
-                                                             style="width: 40px; height: 40px;" alt="Product" />
+                                                             style="width:38px; height:38px; border-radius:10px; object-fit:cover; border:1px solid #e2e8f0;"
+                                                             alt="Product" />
                                                         <div>
-                                                            <span class="fw-bold text-dark d-block">@(item.Menu?.Name ?? "Component Line Instance")</span>
-                                                            <span class="text-muted small d-block" style="font-size: 11px;">Category: @(item.Menu?.Category ?? "Hardware")</span>
+                                                            <div style="font-weight:700; color:#1e293b; font-size:13.5px;">@(item.Menu?.Name ?? "Unknown Item")</div>
+                                                            <div style="font-size:11px; color:#94a3b8;">@(item.Menu?.Category ?? "N/A")</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <span class="badge bg-light border text-dark" style="width: fit-content !important; min-width: 0 !important; max-width: none !important;">@(item.Variation ?? "Standard")</span>
-                                                </td>
+                                                <td><span class="pk-badge pk-badge-slate">@(item.Variation ?? "Standard")</span></td>
                                                 <td>₱@item.Price.ToString("N2")</td>
-                                                <td class="fw-bold">× @item.Quantity</td>
-                                                <td class="text-end pe-4 fw-bold text-primary">
+                                                <td style="font-weight:700;">× @item.Quantity</td>
+                                                <td class="text-end pe-4" style="font-weight:700; color:#2D3A8C;">
                                                     ₱@((item.Price * item.Quantity).ToString("N2"))
                                                 </td>
                                             </tr>
@@ -208,22 +143,19 @@
                                     }
                                     else
                                     {
-                                        <tr>
-                                            <td colspan="5" class="text-center py-4 text-muted">No items found tied to this manifest registry index record.</td>
-                                        </tr>
+                                        <tr><td colspan="5" class="text-center py-4" style="color:#94a3b8;">No items found.</td></tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center">
-                            <span class="fw-bold text-muted text-uppercase small">Total Settled Billing Amount:</span>
-                            <h4 class="m-0 fw-extrabold text-success font-monospace">₱@order.TotalAmount.ToString("N2")</h4>
+                        <div style="background:#f8f9ff; padding:16px 24px; border-top:1px solid #eef0f7; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:12px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.6px;">Total Amount</span>
+                            <span style="font-size:22px; font-weight:800; color:#15803d;">₱@order.TotalAmount.ToString("N2")</span>
                         </div>
-
                     </div>
-                    <div class="modal-footer border-top-0 py-2">
-                        <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Close Audit Record</button>
+                    <div class="modal-footer">
+                        <button type="button" class="pk-btn pk-btn-outline pk-btn-sm" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

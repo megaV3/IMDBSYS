@@ -1,0 +1,70 @@
+[33mfd938d6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;32ma[m[33m)[m Redesign the admin
+[33m6ba81a1[m Redesign the Admin side
+[33m73899c4[m Redesign the Admin side
+[33m8bc1049[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Changed the name PICKOUT COFFEE to PICKOUT HARDWARE in the profile navbar and in the Receipt. Changed My Coffee Wallet to My Wallet in the Profile View and Receipt view.
+[33m2185c7b[m Made changes: - Changes of logic in StoreController, specifically Index action to handle menu variations - Changes of logic in Store's Index to include variations of a product
+[33m6043e6c[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33med41b5f[m Remove CanBeHot in the Store Index View
+[33m32a8e91[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m5c43a6f[m Remove CanBeHot in the Store Index
+[33m3d4a5ef[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m1ff9fc2[m Added migrations
+[33m40733de[m Added multiple UI changes
+[33madb7370[m Added changes to multiple actions, such as logic
+[33m0cedeed[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33maead7fd[m Added TotalAmount property in ProductDeliveryLog
+[33mdf37106[m Changed Operator Scope to dynamically obtain admin's username
+[33mb3a45b2[m changed the UI for the Stage Index back
+[33m597485a[m Added modals for Editing and Removing user
+[33m9ca0eac[m Added changes to UI in _AdminLayout.cshtml
+[33mff7cbe4[m Added ProductDeliveryLog for history of productdeliverylogs
+[33mae0d4fe[m Added RequestRestock action in AdminController
+[33mfc0e275[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m1d4883a[m Added migrations for new SeedData
+[33me62736a[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m60dbc4c[m changed the footer color
+[33m1295086[m Added migrations for new SeedData
+[33m119ddc4[m Added logic for Editing product in MenuIndex view
+[33m70987c9[m Added _AdminLayout file for dedicated layout for admins
+[33m3e95eae[m Added logic for each added views
+[33mf4b0675[m Added base prices for each product
+[33m043ecc9[m Added various views for Admin
+[33m2e7fbbe[m Added sidebar navigation
+[33m964d1db[m Added Dashboard view
+[33mb36675f[m Added DashboardViewModel for admins
+[33maeb5b41[m Added ClaimTypes.Role and redirection based on User's role
+[33m67c87ef[m Added AddDbContext and logic for Dashboard Admin
+[33m35109a1[m Added Role column in User table
+[33m791abc2[m Added AdminController for admins of the system
+[33m1ff64b1[m Added migrations
+[33m120041c[m Made UI changes
+[33m619f3fe[m Cleaned the UI for Cart and History Also made changes
+[33m9f9779b[m Added User Balance property
+[33m544299e[m Edited the logic due to the property changes and new model
+[33mfdb35dd[m Added property MenuVariation in Menu to connect Added MenuVariation to handle different sizes, capacity, memory, etc. of menu
+[33m88ec939[m Added MenuVariation table Added Variations for each menu in SeedData
+[33mea9267a[m chnage the home button
+[33mff7c022[m fixed the navbar UI in cart to prevent from moving
+[33m4b2d83c[m change color
+[33m99cf61c[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33me39865d[m changed the hover color and the p tag color in the basket modal
+[33mc111b97[m Added migration
+[33mbe8b782[m Changed names and prices for menu items
+[33ma23ceb4[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m9e52c80[m Added feature to handle pricing if different variations
+[33m894f38c[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m29c3699[m changed the cart hover color in profile, hover color for browse menu in cart, and the background color for the empty cart icon and its borders
+[33m77ecbe3[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m18dddfc[m Added button for Variation
+[33md287461[m Included Variation
+[33m1c30b7c[m Edited SeedData for each Menu to have HasVariation
+[33md34c37e[m Added different variations for different categories of hardware
+[33m093c81f[m Added logic for variation  property
+[33m22d9562[m Added Variation property for handling storage capacity, memory speed, etc.
+[33me140def[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33mb783a84[m change color
+[33mb4dc0bc[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m2fdacab[m changed the border color for the search menu
+[33m69d624b[m Merge branch 'master' of https://github.com/megaV3/IMDBSYS
+[33m98311b4[m change the "Our Story"
+[33m913a253[m changed the object-fit of all images from cover to contain
