@@ -44,7 +44,6 @@
         </a>
     </div>
 </div>
-
 <style>
     .search-container {
         display: flex;
@@ -52,6 +51,7 @@
         height: 100%;
         position: relative;
     }
+
     #menuSearch {
         width: 200px;
         height: 38px; /* Slightly smaller than 40px often feels more balanced */
@@ -61,47 +61,49 @@
         outline: none;
         /* This ensures the input itself doesn't have weird margins */
         margin: 0;
+    }
 
-    }
-    #menuSearch:focus {
+        #menuSearch:focus {
             border-color: #1E1E2F;
-        box-shadow: 0 0 8px rgba(156, 175, 108, 0.3);
-    }
+            box-shadow: 0 0 8px rgba(156, 175, 108, 0.3);
+        }
+
     .search-results-dropdown {
         position: absolute;
         top: calc(100% + 8px);
         left: 0;
-        width: 200px;            /* This will now be 300px automatically */
+        width: 200px; /* This will now be 300px automatically */
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         z-index: 2000;
         display: none;
     }
+
     .search-item {
-        padding: 8px 12px; 
-        cursor: pointer; 
+        padding: 8px 12px;
+        cursor: pointer;
         border-bottom: 1px solid #eee;
-        font-size: 14px; 
+        font-size: 14px;
         color: #333;
     }
-    .search-item:hover { 
-        background-color: #f3f8ea; 
-    }
+
+        .search-item:hover {
+            background-color: #f3f8ea;
+        }
 
     .no-result {
         cursor: default;
         color: #999;
     }
 
-    .no-result:hover {
-        background-color: white;
-    }
+        .no-result:hover {
+            background-color: white;
+        }
 
     body {
         scroll-behavior: smooth;
     }
-
 
     .footer {
         background-color: #f5f5f5 !important;
@@ -150,22 +152,24 @@
         .nav-link.active {
             border: 2px solid #3E4885;
         }
+
     .nav-left {
         display: flex;
-        align-items: center;    /* Vertically centers children */
+        align-items: center; /* Vertically centers children */
         justify-content: flex-start;
         gap: 20px;
-        height: 100%;           /* Fill the navbar height */
+        height: 100%; /* Fill the navbar height */
         flex: 1;
     }
-    .nav-left h2 {
-        margin: 0; /* Remove default browser margins */
-        padding: 0;
-        font-size: 25px;
-        display: flex;
-        align-items: center; /* Extra insurance for text centering */
-        height: 100%;
-    }
+
+        .nav-left h2 {
+            margin: 0; /* Remove default browser margins */
+            padding: 0;
+            font-size: 25px;
+            display: flex;
+            align-items: center; /* Extra insurance for text centering */
+            height: 100%;
+        }
 
     .nav-right {
         flex: 1; /* Takes up 1/3 of space */
@@ -174,26 +178,24 @@
         align-items: center;
         gap: 12px;
     }
-
     /* .nav-icon {
-        text-decoration: none;
-        font-size: 25px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        transition: 0.3s ease;
-    } */
-
+            text-decoration: none;
+            font-size: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            transition: 0.3s ease;
+        } */
     .cart-wrapper, .profile-wrapper {
         position: relative;
         display: flex; /* Changed from inline-block to flex for centering */
         align-items: center;
         justify-content: center;
-        width: 40px; 
+        width: 40px;
         height: 40px;
         border-radius: 50%;
         overflow: hidden;
@@ -221,16 +223,14 @@
         opacity: 1;
         z-index: 1;
     }
-
     /* Hover States */
     .cart-wrapper:hover {
         transform: scale(1.05);
         transition: 0.3s ease;
         background-color: #3E4885;
     }
-
     /* Keep the cart badge outside the 'overflow:hidden' of the wrapper
-               by moving it to the anchor tag instead */
+                   by moving it to the anchor tag instead */
     #cart-count {
         z-index: 10;
         /* Ensure this stays visible even if the wrapper clips images */
@@ -290,7 +290,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        @* aligns the cards, its contents and pushes it evenly *@
+        /* aligns the cards, its contents and pushes it evenly */
     }
 
         .card:hover {
@@ -320,9 +320,7 @@
         flex-direction: column;
         flex-grow: 1;
     }
-
-    @* gi add *@
-
+    /* gi add */
     .card-title {
         font-size: 18px;
         font-weight: bold;
@@ -359,7 +357,6 @@
         .btn-cart:hover {
             background-color: #f5f5f5;
         }
-
     @@keyframes modalIn {
         from {
             opacity: 0;
@@ -371,7 +368,6 @@
             transform: translateY(0) scale(1);
         }
     }
-
     /* ── BASKET MODAL ── */
     #basketOverlay {
         display: none;
@@ -665,11 +661,9 @@
         margin-bottom: 30px;
         transition: box-shadow 0.3s ease;
     }
-
-        /* .quick-menu.scrolled {
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        } */
-
+    /* .quick-menu.scrolled {
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            } */
     .quick-btn {
         text-decoration: none;
         color: #3E4885;
@@ -692,21 +686,17 @@
         background: #3E4885;
         color: white;
     }
-
     /* ── spyscroll ── */
     /* Smooth scrolling for the whole page */
     html {
         scroll-behavior: smooth;
     }
-
     /* Ensure sections have some height so they can be "observed" */
-
     /* section {
-                min-height: 600px;
-                padding-top: 80px; Offset for your sticky header height
-                margin-top: -80px;  Prevents the header from covering section titles
-            } */
-
+                    min-height: 600px;
+                    padding-top: 80px; Offset for your sticky header height
+                    margin-top: -80px;  Prevents the header from covering section titles
+                } */
     #signatures,
     #espresso,
     #pistachio,
@@ -714,15 +704,14 @@
     #frappes {
         scroll-margin-top: 130px;
     }
-
     /* Visual feedback for the active button */
     .active-menu {
         background-color: #3E4885; /* Example: highlight color */
         color: #fff !important;
         font-weight: bold;
     }
-
 </style>
+
 @if (!User.Identity.IsAuthenticated)
 {
     <a asp-controller="Auth" asp-action="Login">Login</a>
@@ -762,7 +751,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price, v.StockQuantity })))">
                             Order Now
                         </button>
                     </div>
@@ -786,7 +775,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price, v.StockQuantity })))">
                             Order Now
                         </button>
                     </div>
@@ -810,7 +799,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price, v.StockQuantity })))">
                             Order Now
                         </button>
                     </div>
@@ -834,7 +823,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price, v.StockQuantity })))">
                             Order Now
                         </button>
                     </div>
@@ -858,7 +847,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price, v.StockQuantity })))">
                             Order Now
                         </button>
                     </div>
@@ -880,7 +869,9 @@
 
             <div id="variationLabel" class="modal-section-label">Available Variant Configuration</div>
             <div id="variationContainer" class="temp-row"></div>
-
+            <div id="bModalStockDisplay" class="text-muted small mb-3" style="font-size: 13px; font-weight: 600; color: #3E4885;">
+                Available Warehouse Stock: --
+            </div>
             <div class="modal-section-label">Quantity</div>
             <div class="qty-wrapper">
                 <div class="qty-row">
@@ -910,16 +901,15 @@
     var _qty = 1;
     var _selectedVariationId = 0;
     var _selectedVariationPrice = 0;
+    var _selectedVariationMaxStock = 0;
 
     function openBasketModal(menuId, name, price, desc, imgPath, variationsList) {
         _menuId = menuId;
         _qty = 1;
 
-        // Reset Modal static parameters
         document.getElementById('bModalName').textContent = name;
         document.getElementById('bModalDesc').textContent = desc;
 
-        // Safely evaluate raw variations array lists parsed from loop markup variables
         let variations = variationsList;
         if (typeof variations === 'string') {
             variations = JSON.parse(variationsList);
@@ -932,26 +922,54 @@
         }
         container.innerHTML = "";
 
-        // Fallback structural initialization check
         if (!variations || variations.length === 0) {
-            variations = [{ MenuVariationId: 0, VariantName: "Standard", Price: price }];
+            variations = [{ MenuVariationId: 0, VariantName: "Standard", Price: price, StockQuantity: 99 }];
         }
 
-        // Set baseline tracking assignments matching your database properties
+        // Initialize assignments using the first variant row element parameters
         _selectedVariationId = variations[0].MenuVariationId;
         _selectedVariationPrice = parseFloat(variations[0].Price);
+        _selectedVariationMaxStock = parseInt(variations[0].StockQuantity || 0);
 
-        // Append item variation nodes layout
+        // UPDATE STOCK DISPLAY AT OPEN: Populates our new layout line instantly
+        const stockLabel = document.getElementById('bModalStockDisplay');
+        if (stockLabel) {
+            stockLabel.innerHTML = _selectedVariationMaxStock > 0
+                ? `🟢 Available Warehouse Stock: <span style="color: #2e7d32;">${_selectedVariationMaxStock} units</span>`
+                : `🔴 Status: <span style="color: #c62828;">Out of Stock</span>`;
+        }
+
         variations.forEach((opt, index) => {
             const btn = document.createElement('button');
+            btn.type = "button";
             btn.className = 'temp-btn' + (index === 0 ? ' active' : '');
+            
+            // CLEANED: Reverted to text parameters without forcing messy stock tags inside the actual buttons
             btn.textContent = opt.VariantName + " (₱" + parseFloat(opt.Price).toLocaleString('en-US', { minimumFractionDigits: 0 }) + ")";
             
+            if (parseInt(opt.StockQuantity) <= 0) {
+                btn.classList.add('disabled');
+            }
+
             btn.onclick = function() {
-                _selectedVariationId = opt.MenuVariationId; // Capture integer ID safely on select
+                if (parseInt(opt.StockQuantity) <= 0) return;
+
+                _selectedVariationId = opt.MenuVariationId;
                 _selectedVariationPrice = parseFloat(opt.Price);
+                _selectedVariationMaxStock = parseInt(opt.StockQuantity || 0);
                 
-                // UI Toggle selection highlights
+                // LIVE UPDATE ON CLICK: Updates the label text area underneath dynamically
+                if (stockLabel) {
+                    stockLabel.innerHTML = _selectedVariationMaxStock > 0
+                        ? `🟢 Available Warehouse Stock: <span style="color: #2e7d32;">${_selectedVariationMaxStock} units</span>`
+                        : `🔴 Status: <span style="color: #c62828;">Out of Stock</span>`;
+                }
+
+                if (_qty > _selectedVariationMaxStock) {
+                    _qty = _selectedVariationMaxStock;
+                    document.getElementById('bQtyVal').textContent = _qty;
+                }
+
                 container.querySelectorAll('.temp-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 
@@ -960,7 +978,6 @@
             container.appendChild(btn);
         });
 
-        // Image container updates
         var wrap = document.getElementById('bModalImgWrap');
         if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
             wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:contain; background:#fff; padding:10px;" />';
@@ -968,36 +985,51 @@
             wrap.innerHTML = '<span style="font-size: 50px;">🖥️</span>';
         }
 
-        // Counter states defaults reset
         document.getElementById('bQtyVal').textContent = _qty;
         document.getElementById('bNotes').value = '';
+
+        const confirmBtn = document.querySelector('.btn-add-confirm');
+        if (confirmBtn) {
+            confirmBtn.disabled = _selectedVariationMaxStock <= 0;
+        }
 
         updateSubtotal();
         document.getElementById('basketOverlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
-
     function updateSubtotal() {
         document.getElementById('bModalPrice').textContent = 'PHP ' + _selectedVariationPrice.toLocaleString('en-US', { minimumFractionDigits: 2 });
         document.getElementById('bSubtotal').textContent = '= PHP ' + (_selectedVariationPrice * _qty).toLocaleString('en-US', { minimumFractionDigits: 2 });
+        
+        const confirmBtn = document.querySelector('.btn-add-confirm');
+        if (confirmBtn) {
+            confirmBtn.disabled = _selectedVariationMaxStock <= 0 || _qty <= 0;
+        }
     }
 
     function changeQty(delta) {
-        _qty = Math.max(1, _qty + delta);
+        // Quantities clamp safely between a minimum of 1 and the exact max stock available for this chosen component variant
+        let targetQty = _qty + delta;
+        _qty = Math.max(1, Math.min(_selectedVariationMaxStock, targetQty));
+        
         document.getElementById('bQtyVal').textContent = _qty;
         updateSubtotal();
     }
 
     function submitBasket() {
+        if (_selectedVariationMaxStock <= 0 || _qty > _selectedVariationMaxStock) {
+            showToast('Fulfillment Error: Requested quantity exceeds warehouse stock parameters.');
+            return;
+        }
+
         var notes = document.getElementById('bNotes').value.trim();
 
-        // SYNC: Passed parameter keys updated to perfectly match C# property bindings
         fetch('/Order/AddToCart', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'menuId='           + encodeURIComponent(_menuId)
                 + '&quantity='        + encodeURIComponent(_qty)
-                + '&menuVariationId=' + encodeURIComponent(_selectedVariationId) // Connects the primary key id parameters
+                + '&menuVariationId=' + encodeURIComponent(_selectedVariationId)
                 + '&notes='           + encodeURIComponent(notes)
         })
         .then(r => r.json())
@@ -1054,7 +1086,6 @@
     });
 </script>
 
-@* Scrollspy Navigation Management Engine *@
 <script>
     const observerOptions = {
         root: null,
@@ -1083,7 +1114,6 @@
     });
 </script>
 
-@* Global Interactive Live Search Script Engine *@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById('menuSearch');
