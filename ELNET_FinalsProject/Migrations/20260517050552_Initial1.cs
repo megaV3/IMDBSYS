@@ -95,6 +95,7 @@ namespace IMDBSYS.Migrations
                     VariantName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    SupplierCost = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     LowStockThreshold = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -147,6 +148,7 @@ namespace IMDBSYS.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MenuVariationId = table.Column<int>(type: "int", nullable: false),
                     QuantityAdded = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProcessedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Remarks = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
