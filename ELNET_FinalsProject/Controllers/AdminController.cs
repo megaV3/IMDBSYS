@@ -342,7 +342,14 @@ namespace IMDBSYS.Controllers
                         {
                             // Update only the editable field we targeted in the modal form collection matrix
                             dbVar.Price = incomingVar.Price;
+
+                            // Updates base price if the standard variation is updated, ensuring the main product price always reflects the default variant's price for storefront display logic
+                            if (dbVar.MenuVariationId == 1)
+                            {
+                                dbMenu.Price = dbVar.Price;
+                            }
                         }
+
                     }
                 }
 
