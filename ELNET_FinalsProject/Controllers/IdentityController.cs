@@ -72,13 +72,20 @@ namespace IMDBSYS.Controllers
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.FirstName),
+                        new Claim(ClaimTypes.Role, user.Role),
                         new Claim("LastLogin", DateTime.Now.ToString())
                     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                    return RedirectToAction("Index", "Store");
+                    if (user.Role == "Admin")
+                    {
+                        return RedirectToAction("Dashboard", "Admin");
+                    } else
+                    {
+                        return RedirectToAction("Index", "Store");
+                    }
                 }
                 else
                 {
