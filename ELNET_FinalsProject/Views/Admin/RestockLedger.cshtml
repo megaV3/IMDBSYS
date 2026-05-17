@@ -4,26 +4,127 @@
     ViewData["Title"] = "Product Restocks Ledger";
 }
 
+<style>
+
+    .restock-filter-input,
+    .restock-filter-date {
+        height: 46px !important;
+        border-radius: 12px !important;
+        border: 1px solid #dbe2ea !important;
+        font-size: 15px;
+        color: #1e293b;
+        box-shadow: none !important;
+        transition: all 0.2s ease;
+    }
+
+        .restock-filter-input:focus,
+        .restock-filter-date:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+        }
+
+    .restock-filter-input {
+        padding-left: 16px !important;
+        padding-right: 38px !important;
+    }
+
+    .restock-clear-btn {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #94a3b8;
+        font-size: 18px;
+        font-weight: 700;
+        transition: 0.2s ease;
+        user-select: none;
+    }
+
+        .restock-clear-btn:hover {
+            color: #475569;
+        }
+
+</style>
+
 <div class="page-header">
     <div>
         <h1>Supply Chain Restock Ledger</h1>
         <p>Historical logs of all inbound product inventory delivery streams</p>
     </div>
-    <a asp-action="RequestRestock" class="pk-btn pk-btn-primary pk-btn-sm">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+
+    <a asp-action="RequestRestock"
+       class="pk-btn pk-btn-primary pk-btn-sm">
+
+        <svg width="13"
+             height="13"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2.5"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+
             <rect x="1" y="3" width="15" height="13" />
             <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
             <circle cx="5.5" cy="18.5" r="2.5" />
             <circle cx="18.5" cy="18.5" r="2.5" />
+
         </svg>
+
         Log New Delivery
     </a>
 </div>
 
 <div class="pkcard">
+
+    <!-- SEARCH + FILTER -->
+    <div class="card-body border-bottom" style="padding:18px;">
+
+        <div class="row g-3">
+
+            <!-- Search -->
+            <div class="col-md-5">
+
+                <div style="position:relative;">
+
+                    <input type="text"
+                           id="restockSearchInput"
+                           class="form-control restock-filter-input"
+                           placeholder="Search product, variant, operator, log ID..."
+                           onkeyup="filterRestocks()" />
+
+                    <!-- Clear -->
+                    <span class="restock-clear-btn"
+                          onclick="clearSearch()">
+                        ×
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Date Filter -->
+            <div class="col-md-3">
+
+                <input type="date"
+                       id="dateFilter"
+                       class="form-control restock-filter-date"
+                       onchange="filterRestocks()" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
     <div class="card-body p-0">
+
         <div class="table-responsive">
+
             <table class="table pk-table text-center">
+
                 <thead>
                     <tr>
                         <th class="text-start">Log ID</th>
@@ -34,36 +135,190 @@
                         <th>Operator</th>
                     </tr>
                 </thead>
-                <tbody>
+
+                <tbody id="restockTableBody">
+
                     @if (Model != null && Model.Any())
                     {
                         foreach (var log in Model)
                         {
-                            <tr>
+                            <tr class="restock-row"
+                                data-id="@log.DeliveryLogId"
+                                data-product="@((log.MenuVariation?.Menu?.Name ?? "").ToLower())"
+                                data-variant="@((log.MenuVariation?.VariantName ?? "").ToLower())"
+                                data-operator="@((log.ProcessedBy ?? "").ToLower())"
+                                data-date="@log.DeliveryDate.ToString("yyyy-MM-dd")">
+
+                                <!-- Log ID -->
                                 <td class="text-start">
-                                    <span style="font-family:monospace; font-size:12px; color:#94a3b8;">#@log.DeliveryLogId</span>
+
+                                    <span style="
+                                                    font-family:monospace;
+                                                    font-size:12px;
+                                                    color:#94a3b8;">
+
+                                        #@log.DeliveryLogId
+
+                                    </span>
+
                                 </td>
+
+                                <!-- Product -->
                                 <td class="text-start">
-                                    <div style="font-weight:700; color:#1e293b;">@(log.MenuVariation?.Menu?.Name ?? "Deleted Product")</div>
-                                    <div style="font-size:11px; color:#94a3b8;">@(log.MenuVariation?.VariantName ?? "N/A")</div>
+
+                                    <div style="font-weight:700;">
+
+                                        @(log.MenuVariation?.Menu?.Name ?? "Deleted Product")
+
+                                    </div>
+
+                                    <div style="
+                                                    font-size:11px;
+                                                    color:#94a3b8;">
+
+                                        @(log.MenuVariation?.VariantName ?? "N/A")
+
+                                    </div>
+
                                 </td>
+
+                                <!-- Quantity -->
                                 <td>
-                                    <span class="pk-badge pk-badge-teal">+@log.QuantityAdded units</span>
+
+                                    <span class="pk-badge pk-badge-teal">
+
+                                        +@log.QuantityAdded units
+
+                                    </span>
+
                                 </td>
-                                <td style="font-weight:700; color:#2D3A8C;">₱@log.TotalAmount.ToString("N2")</td>
-                                <td style="color:#64748b; font-size:12.5px;">@log.DeliveryDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td><span class="pk-badge pk-badge-slate">@log.ProcessedBy</span></td>
+
+                                <!-- Cost -->
+                                <td style="
+                                                font-weight:700;
+                                                color:#2D3A8C;">
+
+                                    ₱@log.TotalAmount.ToString("N2")
+
+                                </td>
+
+                                <!-- Timestamp -->
+                                <td style="
+                                                color:#64748b;
+                                                font-size:12.5px;">
+
+                                    @log.DeliveryDate.ToString("yyyy-MM-dd HH:mm")
+
+                                </td>
+
+                                <!-- Operator -->
+                                <td>
+
+                                    <span class="pk-badge pk-badge-slate">
+
+                                        @log.ProcessedBy
+
+                                    </span>
+
+                                </td>
+
                             </tr>
                         }
                     }
-                    else
-                    {
-                        <tr>
-                            <td colspan="6" class="text-center py-5" style="color:#94a3b8;">No historical delivery logs found.</td>
-                        </tr>
-                    }
+
                 </tbody>
+
             </table>
+
+            <!-- EMPTY -->
+            <div id="noRestockResults"
+                 style="
+                    display:none;
+                    text-align:center;
+                    padding:40px;
+                    color:#94a3b8;">
+
+                No matching restock logs found
+
+            </div>
+
         </div>
+
     </div>
+
 </div>
+
+@section Scripts {
+
+    <script>
+
+        function filterRestocks() {
+
+            let search =
+                document.getElementById("restockSearchInput")
+                .value
+                .toLowerCase();
+
+            let date =
+                document.getElementById("dateFilter")
+                .value;
+
+            let rows =
+                document.querySelectorAll(".restock-row");
+
+            let visible = 0;
+
+            rows.forEach(row => {
+
+                let id =
+                    row.dataset.id || "";
+
+                let product =
+                    row.dataset.product || "";
+
+                let variant =
+                    row.dataset.variant || "";
+
+                let operator =
+                    row.dataset.operator || "";
+
+                let rowDate =
+                    row.dataset.date || "";
+
+                let matchesSearch =
+                    id.includes(search) ||
+                    product.includes(search) ||
+                    variant.includes(search) ||
+                    operator.includes(search);
+
+                let matchesDate =
+                    date === "" ||
+                    rowDate === date;
+
+                if (matchesSearch && matchesDate) {
+
+                    row.style.display = "";
+                    visible++;
+
+                }
+                else {
+
+                    row.style.display = "none";
+                }
+
+            });
+
+            document.getElementById("noRestockResults").style.display =
+                visible === 0 ? "block" : "none";
+        }
+
+        function clearSearch() {
+
+            document.getElementById("restockSearchInput").value = "";
+
+            filterRestocks();
+        }
+
+    </script>
+
+}
