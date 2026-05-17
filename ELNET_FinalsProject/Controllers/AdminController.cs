@@ -222,6 +222,48 @@ namespace IMDBSYS.Controllers
             return View(fallbackList);
         }
 
+        // ========================================================
+        // POST: Admin/EditUserRole
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserRole(int id, string role)
+        {
+            // 1. Target the designated user domain entry from the account context mapping layer
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // 2. Map down the updated security entitlement context string field
+            user.Role = role;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            // 3. Seamlessly kick back to refresh the active page listing state data 
+            return RedirectToAction(nameof(UserManagement));
+        }
+
+        // ========================================================
+        // POST: Admin/DeleteUser
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Perform an immediate destructive row removal drop execution sequence pass
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(UserManagement));
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Menu incomingMenu)
