@@ -16,6 +16,7 @@ namespace IMDBSYS.Data
                 context.Database.Migrate();
             }
 
+            // For test User and Admin
             if (!context.Users.Any())
             {
                 context.Users.AddRange(
@@ -23,9 +24,20 @@ namespace IMDBSYS.Data
                     {
                         FirstName = "John Wayne",
                         LastName = "Yabao",
+                        Role = "User", // Doesn't need to be set since "User" is the default, but it's here for clarity
                         Username = "heatedrivalry",
                         Email = "johnwayneyabao@gmail.com",
                         Password = "ilovedilao",
+
+                    },
+                    new User
+                    {
+                        FirstName = "Jhon Carlo",
+                        LastName = "Condor",
+                        Role = "Admin",
+                        Username = "[ADMIN] Condor", // User is designated as admin, so we prefix the username with [ADMIN] for clarity in the UI (though username may not be used)
+                        Email = "johncarlocondor@gmail.com",
+                        Password = "iloveall",
 
                     });
                 context.SaveChanges();
