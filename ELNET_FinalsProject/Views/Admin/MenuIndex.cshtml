@@ -1,0 +1,138 @@
+﻿@model IEnumerable<IMDBSYS.Models.Menu>
+
+@{
+    ViewData["Title"] = "Menu Management";
+}
+
+<style>
+    /* ========================================================
+           MenuIndex View - Standalone Isolation Matrix
+           ======================================================== */
+
+    /* 1. FORCE COMPONENT ISOLATION CONTROLS */
+    .menu-index-isolated-wrapper {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        contain: inline-size !important; /* Mathematically blocks elements inside from modifying outer container widths */
+        box-sizing: border-box !important;
+    }
+
+        /* 2. Freezing outer rows from structural flex-expansion */
+        .menu-index-isolated-wrapper .row {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+
+        /* 3. Force card boundary limits */
+        .menu-index-isolated-wrapper .card {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+            transition: none !important;
+        }
+
+    /* 4. Stop text components from breaking column width allocations on hover */
+    .table-hover tbody tr:hover td .style-desc,
+    .table-hover tbody tr td .style-desc {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: block !important;
+        max-width: 320px !important;
+        width: 320px !important;
+        transform: none !important;
+    }
+
+    /* 5. Complete structural lockdown on badge mutations on hover */
+    .table-hover tbody tr:hover td .badge,
+    .table-hover tbody tr td .badge {
+        display: inline-block !important;
+        width: 110px !important;
+        max-width: 110px !important;
+        min-width: 110px !important;
+        padding: .35em .65em !important;
+        letter-spacing: normal !important;
+        transform: none !important;
+    }
+
+    /* 6. Fix table rows to an absolute static uniform height execution */
+    .table-hover tbody tr:hover td,
+    .table-hover tbody tr td {
+        height: 65px !important;
+        max-height: 65px !important;
+        min-height: 65px !important;
+        vertical-align: middle !important;
+        transition: none !important;
+    }
+</style>
+
+<div class="menu-index-isolated-wrapper">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 mt-3">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <div>
+                        <h5 class="m-0 fw-bold text-dark">🍔 Menu & Product Catalog</h5>
+                        <p class="text-muted small mb-0">Manage system offerings and pricing foundations</p>
+                    </div>
+                    <a asp-action="Create" class="btn btn-primary btn-sm px-3">+ Add New Item</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Base Price</th>
+                                    <th>Variants Count</th>
+                                    <th class="text-end px-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td><code>#@item.MenuId</code></td>
+                                            <td>
+                                                <div class="fw-bold text-dark">@item.Name</div>
+                                                <span class="text-muted text-truncate style-desc">@item.Description</span>
+                                            </td>
+                                            <td><span class="badge bg-secondary">@item.Category</span></td>
+                                            <td class="fw-bold text-dark">₱@item.Price.ToString("N2")</td>
+                                            <td>
+                                                <span class="badge bg-light text-dark border">
+                                                    @(item.Variations?.Count ?? 0) configs
+                                                </span>
+                                            </td>
+                                            <td class="text-end px-4">
+                                                <div class="btn-group btn-group-sm">
+                                                    <a asp-action="Edit" asp-route-id="@item.MenuId" class="btn btn-outline-secondary">Edit</a>
+                                                    <a asp-action="Details" asp-route-id="@item.MenuId" class="btn btn-outline-info">Variants</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">No menu products found in database registry.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
