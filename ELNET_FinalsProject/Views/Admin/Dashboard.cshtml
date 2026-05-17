@@ -4,73 +4,69 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- Page header -->
+<div class="page-header">
     <div>
-        <h1 class="h3 mb-0 fw-bold text-dark">Overview Statistics</h1>
-        <p class="text-muted small mb-0">System runtime telemetry and logs</p>
+        <h1>Dashboard</h1>
+        <p>System overview and live telemetry</p>
     </div>
-    <span class="badge bg-white text-dark border p-2 shadow-sm">Sync Date: @DateTime.Now.ToString("g")</span>
+    <span style="font-size:12px; color:#64748b; background:#fff; border:1px solid #e2e8f0; border-radius:50px; padding:7px 16px; font-weight:600;">
+        Synced: @DateTime.Now.ToString("MMM dd, yyyy  h:mm tt")
+    </span>
 </div>
 
+<!-- Stat cards row -->
 <div class="row g-3 mb-4">
-    <div class="col-md-4 col-xl-2">
-        <div class="card bg-primary text-white h-100 shadow-sm border-0">
-            <div class="card-body">
-                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Users</h6>
-                <h2 class="fw-bold m-0">@Model.TotalUsers</h2>
-            </div>
+    <div class="col-6 col-xl-auto" style="flex:1;">
+        <div class="stat-card stat-navy">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value">@Model.TotalUsers</div>
         </div>
     </div>
-
-    <div class="col-md-4 col-xl-2">
-        <div class="card bg-info text-white h-100 shadow-sm border-0">
-            <div class="card-body">
-                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Products</h6>
-                <h2 class="fw-bold m-0">@Model.TotalProducts</h2>
-            </div>
+    <div class="col-6 col-xl-auto" style="flex:1;">
+        <div class="stat-card stat-indigo">
+            <div class="stat-label">Total Products</div>
+            <div class="stat-value">@Model.TotalProducts</div>
         </div>
     </div>
-
-    <div class="col-md-4 col-xl-2">
-        <div class="card bg-success text-white h-100 shadow-sm border-0">
-            <div class="card-body">
-                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Orders</h6>
-                <h2 class="fw-bold m-0">@Model.TotalOrders</h2>
-            </div>
+    <div class="col-6 col-xl-auto" style="flex:1;">
+        <div class="stat-card stat-teal">
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-value">@Model.TotalOrders</div>
         </div>
     </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="card bg-dark text-white h-100 shadow-sm border-0">
-            <div class="card-body">
-                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Sales Revenue</h6>
-                <h2 class="fw-bold m-0">₱@Model.TotalSalesRevenue.ToString("N2")</h2>
-            </div>
+    <div class="col-6 col-xl-auto" style="flex:1;">
+        <div class="stat-card stat-slate">
+            <div class="stat-label">Sales Revenue</div>
+            <div class="stat-value" style="font-size:22px;">₱@Model.TotalSalesRevenue.ToString("N2")</div>
         </div>
     </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="card bg-secondary text-white h-100 shadow-sm border-0">
-            <div class="card-body">
-                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Top-Ups</h6>
-                <h2 class="fw-bold m-0">₱@Model.TotalTopUpAmount.ToString("N2")</h2>
-            </div>
+    <div class="col-6 col-xl-auto" style="flex:1;">
+        <div class="stat-card stat-violet">
+            <div class="stat-label">Total Top-Ups</div>
+            <div class="stat-value" style="font-size:22px;">₱@Model.TotalTopUpAmount.ToString("N2")</div>
         </div>
     </div>
 </div>
 
+<!-- Main content grid -->
 <div class="row g-4">
-    
+
+    <!-- Left column: tables -->
     <div class="col-xl-8">
-        
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="m-0 fw-bold text-dark h6">Recent Orders</h5>
+
+        <!-- Recent Orders -->
+        <div class="pkcard mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <div style="font-size:14px; font-weight:700; color:#1a2563;">Recent Orders</div>
+                    <div style="font-size:12px; color:#64748b;">Latest customer transactions</div>
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                    <table class="table pk-table">
+                        <thead>
                             <tr>
                                 <th>Order ID</th>
                                 <th>Customer</th>
@@ -78,19 +74,19 @@
                                 <th>Total</th>
                                 <th>Status</th>
                             </tr>
-                        </table>
+                        </thead>
                         <tbody>
                             @if (Model.RecentOrders.Any())
                             {
                                 foreach (var order in Model.RecentOrders)
                                 {
                                     <tr>
-                                        <td><strong>#@order.OrderId</strong></td>
-                                        <td>@order.CustomerName</td>
-                                        <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                        <td>₱@order.TotalAmount.ToString("N2")</td>
+                                        <td><span style="font-weight:700; color:#2D3A8C;">#@order.OrderId</span></td>
+                                        <td style="font-weight:600;">@order.CustomerName</td>
+                                        <td style="color:#64748b;">@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td style="font-weight:700;">₱@order.TotalAmount.ToString("N2")</td>
                                         <td>
-                                            <span class="badge @(order.IsCompleted ? "bg-success" : "bg-warning text-dark")">
+                                            <span class="pk-badge @(order.IsCompleted ? "pk-badge-success" : "pk-badge-warning")">
                                                 @(order.IsCompleted ? "Completed" : "Pending")
                                             </span>
                                         </td>
@@ -99,9 +95,7 @@
                             }
                             else
                             {
-                                <tr>
-                                    <td colspan="5" class="text-center py-4 text-muted">No recent orders found.</td>
-                                </tr>
+                                <tr><td colspan="5" class="text-center py-4" style="color:#94a3b8;">No recent orders found.</td></tr>
                             }
                         </tbody>
                     </table>
@@ -109,18 +103,20 @@
             </div>
         </div>
 
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="m-0 fw-bold text-dark h6">Recent Top-Up Transactions</h5>
+        <!-- Recent Top-Ups -->
+        <div class="pkcard mb-4">
+            <div class="card-header">
+                <div style="font-size:14px; font-weight:700; color:#1a2563;">Recent Top-Up Transactions</div>
+                <div style="font-size:12px; color:#64748b;">Wallet deposits and payment records</div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                    <table class="table pk-table">
+                        <thead>
                             <tr>
                                 <th>Transaction ID</th>
                                 <th>User Email</th>
-                                <th>Payment Method</th>
+                                <th>Method</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                             </tr>
@@ -131,12 +127,12 @@
                                 foreach (var topUp in Model.RecentTopUps)
                                 {
                                     <tr>
-                                        <td>@topUp.TransactionId</td>
-                                        <td>@topUp.Email</td>
-                                        <td>@topUp.PaymentMethod</td>
-                                        <td>₱@topUp.Amount.ToString("N2")</td>
+                                        <td style="font-family:monospace; font-size:12px; color:#64748b;">@topUp.TransactionId</td>
+                                        <td style="font-weight:600;">@topUp.Email</td>
+                                        <td><span class="pk-badge pk-badge-slate">@topUp.PaymentMethod</span></td>
+                                        <td style="font-weight:700; color:#15803d;">₱@topUp.Amount.ToString("N2")</td>
                                         <td>
-                                            <span class="badge @(topUp.Status == "Completed" || topUp.Status == "Approved" ? "bg-success" : "bg-danger")">
+                                            <span class="pk-badge @(topUp.Status == "Completed" || topUp.Status == "Approved" ? "pk-badge-success" : "pk-badge-danger")">
                                                 @topUp.Status
                                             </span>
                                         </td>
@@ -145,9 +141,7 @@
                             }
                             else
                             {
-                                <tr>
-                                    <td colspan="5" class="text-center py-4 text-muted">No recent top-up requests.</td>
-                                </tr>
+                                <tr><td colspan="5" class="text-center py-4" style="color:#94a3b8;">No recent top-up requests.</td></tr>
                             }
                         </tbody>
                     </table>
@@ -155,52 +149,52 @@
             </div>
         </div>
 
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="m-0 fw-bold text-dark h6">🚚 Recent Product Stock Receipts</h5>
+        <!-- Recent Stock Receipts -->
+        <div class="pkcard mb-4">
+            <div class="card-header">
+                <div style="font-size:14px; font-weight:700; color:#1a2563;">Recent Product Stock Receipts</div>
+                <div style="font-size:12px; color:#64748b;">Inbound inventory delivery logs</div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0 text-center">
-                        <thead class="table-light small">
+                    <table class="table pk-table text-center">
+                        <thead>
                             <tr>
-                                <th>Log ID</th>
-                                <th class="text-start">Product Item Config</th>
+                                <th class="text-start">Log ID</th>
+                                <th class="text-start">Product / Config</th>
                                 <th>Intake Qty</th>
                                 <th>Total Cost</th>
-                                <th>Timestamp Logged</th>
-                                <th>Operator Scope</th>
+                                <th>Timestamp</th>
+                                <th>Operator</th>
                             </tr>
                         </thead>
-                        <tbody class="small">
+                        <tbody>
                             @if (Model.RecentStockChanges != null && Model.RecentStockChanges.Any())
                             {
                                 foreach (var change in Model.RecentStockChanges)
                                 {
                                     <tr>
-                                        <td><code>#@change.DeliveryLogId</code></td>
                                         <td class="text-start">
-                                            <span class="fw-bold text-dark">@(change.MenuVariation?.Menu?.Name ?? "Unknown Item")</span>
-                                            <span class="text-muted d-block" style="font-size: 11px;">Config: @(change.MenuVariation?.VariantName ?? "N/A")</span>
+                                            <span style="font-family:monospace; font-size:12px; color:#64748b;">#@change.DeliveryLogId</span>
+                                        </td>
+                                        <td class="text-start">
+                                            <span style="font-weight:700; color:#1e293b;">@(change.MenuVariation?.Menu?.Name ?? "Unknown Item")</span>
+                                            <span style="color:#94a3b8; font-size:11px; display:block;">@(change.MenuVariation?.VariantName ?? "N/A")</span>
                                         </td>
                                         <td>
-                                            <span class="badge bg-light text-success border border-success fw-bold p-1">
-                                                +@change.QuantityAdded units
-                                            </span>
+                                            <span class="pk-badge pk-badge-teal">+@change.QuantityAdded units</span>
                                         </td>
-                                        <td class="text-primary fw-bold">
-                                            ₱@change.TotalAmount.ToString("N2")
+                                        <td style="font-weight:700; color:#2D3A8C;">₱@change.TotalAmount.ToString("N2")</td>
+                                        <td style="color:#64748b; font-size:12px;">@change.DeliveryDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>
+                                            <span class="pk-badge pk-badge-slate">@change.ProcessedBy</span>
                                         </td>
-                                        <td class="text-muted">@change.DeliveryDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                        <td><span class="badge bg-secondary opacity-75">@change.ProcessedBy</span></td>
                                     </tr>
                                 }
                             }
                             else
                             {
-                                <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">No recent stock replenishment batches recorded.</td>
-                                </tr>
+                                <tr><td colspan="6" class="text-center py-4" style="color:#94a3b8;">No recent stock replenishment batches recorded.</td></tr>
                             }
                         </tbody>
                     </table>
@@ -208,48 +202,59 @@
             </div>
         </div>
 
-    </div> <div class="col-xl-4">
-        
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-white py-3 border-bottom">
-            <h5 class="m-0 fw-bold text-dark h6">Inventory Summary</h5>
-        </div>
-        <div class="card-body text-center py-4">
-            <p class="text-muted mb-1 text-uppercase small fw-bold">Total Items in Stock</p>
-            <h1 class="display-6 fw-bold text-secondary">@Model.TotalStockQuantity</h1>
-        </div>
     </div>
 
-    <div class="card shadow-sm border-0 border-top border-danger border-4">
-        <div class="card-header bg-white py-3 border-bottom">
-            <h5 class="m-0 fw-bold text-danger h6">⚠️ Low Stock Warnings</h5>
+    <!-- Right column: inventory summary -->
+    <div class="col-xl-4">
+
+        <div class="pkcard mb-4">
+            <div class="card-header">
+                <div style="font-size:14px; font-weight:700; color:#1a2563;">Inventory Summary</div>
+            </div>
+            <div class="card-body text-center py-4">
+                <p style="font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#94a3b8; margin-bottom:8px;">
+                    Total Items in Stock
+                </p>
+                <div style="font-size:52px; font-weight:800; color:#2D3A8C; line-height:1;">
+                    @Model.TotalStockQuantity
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:6px;">units across all variants</div>
+            </div>
         </div>
-        <div class="card-body p-0">
-            <ul class="list-group list-group-flush">
-                @if (Model.LowStockProducts.Any())
-                {
-                    foreach (var variant in Model.LowStockProducts)
+
+        <!-- Low Stock Warnings -->
+        <div class="pkcard" style="border-top: 3px solid #ef4444; border-radius: 18px;">
+            <div class="card-header">
+                <div style="font-size:14px; font-weight:700; color:#dc2626;">Low Stock Alerts</div>
+                <div style="font-size:12px; color:#64748b;">Items needing immediate restock</div>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush" style="border-radius:0 0 18px 18px; overflow:hidden;">
+                    @if (Model.LowStockProducts.Any())
                     {
-                        <li class="list-group-item d-flex justify-content-between align-items-start py-3">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold text-dark">@(variant.Menu?.Name ?? "Unknown Product")</div>
-                                <span class="text-muted small">Variant: @variant.VariantName</span>
-                            </div>
-                            <div>
-                                <span class="badge bg-danger rounded-pill">@variant.StockQuantity left</span>
-                            </div>
+                        foreach (var variant in Model.LowStockProducts)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4 border-0 border-bottom"
+                                style="border-color:#f1f3f9 !important;">
+                                <div>
+                                    <div style="font-weight:700; font-size:13.5px; color:#1e293b;">
+                                        @(variant.Menu?.Name ?? "Unknown Product")
+                                    </div>
+                                    <div style="font-size:11.5px; color:#94a3b8;">@variant.VariantName</div>
+                                </div>
+                                <span class="pk-badge pk-badge-danger">@variant.StockQuantity left</span>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-center py-4 border-0" style="color:#94a3b8; font-size:13px;">
+                            All products are sufficiently stocked.
                         </li>
                     }
-                }
-                else
-                {
-                    <li class="list-group-item py-4 text-center text-muted border-0">
-                        All products are sufficiently stocked!
-                    </li>
-                }
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 </div>

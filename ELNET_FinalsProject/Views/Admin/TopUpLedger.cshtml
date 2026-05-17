@@ -4,120 +4,61 @@
     ViewData["Title"] = "Wallet Ledger";
 }
 
-<style>
-    /* ========================================================
-           TopUpLedger View - Standalone Isolation Matrix
-           ======================================================== */
+<div class="page-header">
+    <div>
+        <h1>Wallet Top-Up Ledger</h1>
+        <p>Financial balance change histories and transaction records</p>
+    </div>
+</div>
 
-    /* 1. FORCE VIEW COMPONENT ISOLATION CONTROLS */
-    .ledger-isolated-wrapper {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        contain: inline-size !important; /* Blocks any internal element mutations from shifting outer panels */
-        box-sizing: border-box !important;
-    }
-
-        /* 2. Lock down Bootstrap grid structures to prevent negative margin bleeding */
-        .ledger-isolated-wrapper .row {
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: flex !important;
-            flex-wrap: wrap !important;
-        }
-
-        /* 3. Force card boundary limits */
-        .ledger-isolated-wrapper .card {
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-            transform: none !important;
-            transition: none !important;
-        }
-
-        /* 4. Complete structural lockdown on badge sizes on hover (Gateway Method & Status) */
-        .ledger-isolated-wrapper .table-hover tbody tr:hover td .badge,
-        .ledger-isolated-wrapper .table-hover tbody tr td .badge {
-            display: inline-block !important;
-            width: 110px !important;
-            max-width: 110px !important;
-            min-width: 110px !important;
-            text-align: center !important;
-            letter-spacing: normal !important;
-            transform: none !important;
-        }
-
-        /* 5. Keep all data grid cells locked into a strict uniform footprint */
-        .ledger-isolated-wrapper .table-hover tbody tr:hover td,
-        .ledger-isolated-wrapper .table-hover tbody tr td {
-            height: 65px !important;
-            max-height: 65px !important;
-            min-height: 65px !important;
-            vertical-align: middle !important;
-            transition: none !important;
-            white-space: nowrap !important;
-        }
-</style>
-
-<div class="ledger-isolated-wrapper">
-    <div class="row">
-        <div class="col-12">
-
-            <div class="card shadow-sm border-0 mt-3">
-                <div class="card-header bg-white py-3 border-bottom">
-                    <h5 class="m-0 fw-bold text-dark">💳 Balance Top-Up Ledger</h5>
-                    <p class="text-muted small mb-0">Financial balance change histories and transaction logs</p>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Txn Ref ID</th>
-                                    <th>Account Target</th>
-                                    <th>Account Owner</th>
-                                    <th>Gateway Method</th>
-                                    <th>Deposited Amount</th>
-                                    <th>Execution Date</th>
-                                    <th class="text-end px-4">Status Flag</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null && Model.Any())
-                                {
-                                    foreach (var txn in Model)
-                                    {
-                                        <tr>
-                                            <td><code>@txn.TransactionId</code></td>
-                                            <td>
-                                                <span class="text-dark fw-bold">@txn.Email</span>
-                                                <small class="text-muted d-block">ID: USR-@txn.UserId.ToString("D4")</small>
-                                            </td>
-                                            <td>@txn.FirstName @txn.LastName</td>
-                                            <td><span class="badge bg-light text-dark border">@txn.PaymentMethod</span></td>
-                                            <td class="text-success fw-bold">+₱@txn.Amount.ToString("N2")</td>
-                                            <td class="text-muted">@txn.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                            <td class="text-end px-4">
-                                                <span class="badge @(txn.Status == "Success" || txn.Status == "Approved" ? "bg-success" : "bg-danger")">
-                                                    @txn.Status
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="7" class="text-center py-5 text-muted">No pending or completed financial history logs located.</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
+<div class="pkcard">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table pk-table">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Account</th>
+                        <th>Account Owner</th>
+                        <th>Method</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th class="text-end" style="padding-right:22px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var txn in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span style="font-family:monospace; font-size:12px; color:#64748b;">@txn.TransactionId</span>
+                                </td>
+                                <td>
+                                    <div style="font-weight:700; color:#1e293b; font-size:13px;">@txn.Email</div>
+                                    <div style="font-size:11px; color:#94a3b8;">USR-@txn.UserId.ToString("D4")</div>
+                                </td>
+                                <td style="font-weight:600; color:#1e293b;">@txn.FirstName @txn.LastName</td>
+                                <td><span class="pk-badge pk-badge-slate">@txn.PaymentMethod</span></td>
+                                <td style="font-weight:700; color:#15803d;">+₱@txn.Amount.ToString("N2")</td>
+                                <td style="color:#64748b; font-size:12.5px;">@txn.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td class="text-end" style="padding-right:18px;">
+                                    <span class="pk-badge @(txn.Status == "Success" || txn.Status == "Approved" ? "pk-badge-success" : "pk-badge-danger")">
+                                        @txn.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-5" style="color:#94a3b8;">No financial history logs found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

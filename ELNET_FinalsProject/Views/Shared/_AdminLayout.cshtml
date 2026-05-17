@@ -1,7 +1,5 @@
 ﻿@{
-    Layout = null; // Forces this layout to be independent from the global user storefront layout
-    
-    // Retrieve the active action name from the current route context
+    Layout = null;
     var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
 }
 
@@ -11,161 +9,686 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - IMDBSYS Admin</title>
-    
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-            /* Prevent the entire viewport window from bouncing or shifting horizontally */
-            html, body {
+        /* =============================================
+                   DESIGN SYSTEM — matched to user-side palette
+                   Primary:   #2D3A8C (deep navy/indigo)
+                   Accent:    #1a2563 (darker navy)
+                   Surface:   #ffffff
+                   BG:        #f0f2f8 (cool light gray)
+                   Text:      #1e293b
+                   Muted:     #64748b
+                   Radius:    16px cards, 50px pills, 10px inputs
+                   ============================================= */
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f8;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* ── LAYOUT GRID ── */
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        .admin-sidebar {
+            background: linear-gradient(180deg, #1a2563 0%, #2D3A8C 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            width: 245px;
+            padding: 28px 16px 24px;
+            overflow-y: auto;
+            box-shadow: 4px 0 24px rgba(45, 58, 140, 0.18);
+        }
+
+        /* Brand logo area */
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            text-decoration: none;
+        }
+
+        .sidebar-brand-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand-text {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,0.55);
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* Nav section label */
+        .sidebar-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.38);
+            padding: 20px 10px 8px;
+        }
+
+        /* Nav links */
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+            .sidebar-nav li {
+                margin-bottom: 2px;
+            }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.72) !important;
+            text-decoration: none !important;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: background 0.18s ease, color 0.18s ease;
+            white-space: nowrap;
+        }
+
+            .sidebar-link:hover {
+                background: rgba(255,255,255,0.12);
+                color: #fff !important;
+            }
+
+            .sidebar-link.active {
+                background: rgba(255,255,255,0.18) !important;
+                color: #fff !important;
+                font-weight: 700;
+                box-shadow: inset 3px 0 0 #fff;
+            }
+
+            .sidebar-link .nav-icon {
+                width: 18px;
+                height: 18px;
+                opacity: 0.85;
+                flex-shrink: 0;
+            }
+
+        /* Sidebar footer user card */
+        .sidebar-user-card {
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sidebar-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .sidebar-user-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .sidebar-user-role {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+        }
+
+        /* ── CONTENT AREA ── */
+        .admin-content {
+            padding: 36px 30px 28px 30px;
+            height: 100vh;
+            overflow-y: auto;
+            background: #f0f2f8;
+        }
+
+            /* Neutralize Bootstrap negative margins */
+            .admin-content .row {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+        /* ── SHARED COMPONENT TOKENS ── */
+
+        /* Cards */
+        .pkcard {
+            background: #fff;
+            border-radius: 18px;
+            border: none;
+            box-shadow: 0 2px 16px rgba(45,58,140,0.07);
+        }
+
+            .pkcard .card-header {
+                background: transparent;
+                border-bottom: 1px solid #eef0f7;
+                padding: 18px 22px;
+                border-radius: 18px 18px 0 0 !important;
+            }
+
+            .pkcard .card-body {
+                padding: 20px 22px;
+            }
+
+                .pkcard .card-body.p-0 {
+                    padding: 0 !important;
+                }
+
+        /* Stat cards */
+        .stat-card {
+            border-radius: 18px;
+            border: none;
+            padding: 20px 22px;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+            .stat-card .stat-label {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.8px;
+                text-transform: uppercase;
+                opacity: 0.78;
+                margin-bottom: 6px;
+            }
+
+            .stat-card .stat-value {
+                font-size: 28px;
+                font-weight: 800;
+                line-height: 1;
+            }
+
+        .stat-navy {
+            background: linear-gradient(135deg, #2D3A8C, #1a2563);
+        }
+
+        .stat-indigo {
+            background: linear-gradient(135deg, #4f5fc9, #2D3A8C);
+        }
+
+        .stat-teal {
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+        }
+
+        .stat-slate {
+            background: linear-gradient(135deg, #475569, #334155);
+        }
+
+        .stat-violet {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+        }
+
+        /* Tables */
+        .pk-table {
+            font-size: 13.5px;
+            margin: 0;
+        }
+
+            .pk-table thead th {
+                background: #f8f9ff;
+                color: #64748b;
+                font-weight: 700;
+                font-size: 11px;
+                letter-spacing: 0.7px;
+                text-transform: uppercase;
+                padding: 12px 16px;
+                border-bottom: 1px solid #eef0f7;
+            }
+
+            .pk-table tbody td {
+                padding: 14px 16px;
+                vertical-align: middle;
+                border-bottom: 1px solid #f1f3f9;
+                color: #1e293b;
+            }
+
+            .pk-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .pk-table tbody tr:hover td {
+                background: #f8f9ff;
+            }
+
+        /* Badges */
+        .pk-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .pk-badge-success {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .pk-badge-warning {
+            background: #fef9c3;
+            color: #a16207;
+        }
+
+        .pk-badge-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .pk-badge-navy {
+            background: #e0e4f8;
+            color: #2D3A8C;
+        }
+
+        .pk-badge-slate {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .pk-badge-teal {
+            background: #ccfbf1;
+            color: #0f766e;
+            border: 1px solid #99f6e4;
+        }
+
+        /* Buttons */
+        .pk-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.12s;
+            text-decoration: none;
+        }
+
+            .pk-btn:hover {
+                opacity: 0.88;
+                transform: translateY(-1px);
+            }
+
+            .pk-btn:active {
+                transform: translateY(0);
+            }
+
+        .pk-btn-primary {
+            background: linear-gradient(135deg, #2D3A8C, #1a2563);
+            color: #fff;
+        }
+
+        .pk-btn-outline {
+            background: transparent;
+            color: #2D3A8C;
+            border: 1.5px solid #2D3A8C;
+        }
+
+        .pk-btn-sm {
+            padding: 6px 16px;
+            font-size: 12px;
+        }
+
+        .pk-btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .pk-btn-teal {
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+            color: #fff;
+        }
+
+        /* Page header */
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            margin-top: 8px; /* pushes header down from the top edge */
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+            .page-header h1 {
+                font-size: 22px;
+                font-weight: 800;
+                color: #1a2563;
+                margin: 0 0 3px;
+            }
+
+            .page-header p {
+                font-size: 13px;
+                color: #64748b;
                 margin: 0;
-                padding: 0;
-                width: 100% !important;
-                height: 100%;
-                background-color: #f8f9fa;
-                overflow-x: hidden !important;
             }
 
-            /* THE SYSTEM-WIDE STRUCTURAL LOCKDOWN */
-            .admin-wrapper {
-                display: grid; /* Enforce rigid CSS Grid instead of fluid flexbox layout */
-                grid-template-columns: 250px 1fr; /* Sidebar is exactly 250px, Content gets exactly the remaining space */
-                width: 100vw;
-                height: 100vh;
-                overflow: hidden;
+        /* Form controls */
+        .pk-input {
+            border-radius: 12px !important;
+            border: 1.5px solid #e2e8f0 !important;
+            font-size: 13.5px !important;
+            padding: 10px 14px !important;
+            transition: border-color 0.15s !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+            .pk-input:focus {
+                border-color: #2D3A8C !important;
+                box-shadow: 0 0 0 3px rgba(45,58,140,0.1) !important;
             }
 
-            .admin-sidebar {
-                background-color: #212529;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                width: 250px !important;
+            .pk-input[readonly], .pk-input.bg-light {
+                background: #f8f9ff !important;
+                color: #64748b !important;
             }
 
-            .admin-content {
-                padding: 24px;
-                height: 100vh;
-                overflow-y: auto;
-                box-sizing: border-box !important;
-                width: 100% !important; /* Forces the content viewport container to never stretch */
+        /* Modal reskin */
+        .pk-modal .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(45,58,140,0.18);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .pk-modal .modal-header {
+            background: linear-gradient(135deg, #2D3A8C, #1a2563);
+            color: #fff;
+            padding: 18px 24px;
+            border: none;
+        }
+
+        .pk-modal .modal-title {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .pk-modal .btn-close-white {
+            filter: brightness(0) invert(1);
+        }
+
+        .pk-modal .modal-body {
+            padding: 24px;
+        }
+
+        .pk-modal .modal-footer {
+            background: #f8f9ff;
+            border-top: 1px solid #eef0f7;
+            padding: 14px 24px;
+        }
+
+        /* Scrollbar styling */
+        .admin-content::-webkit-scrollbar,
+        .admin-sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .admin-content::-webkit-scrollbar-thumb {
+            background: #c7cde8;
+            border-radius: 10px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        .admin-content::-webkit-scrollbar-track,
+        .admin-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Dropdown reskin */
+        .pk-dropdown .dropdown-menu {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(45,58,140,0.14);
+            padding: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .pk-dropdown .dropdown-item {
+            border-radius: 8px;
+            padding: 9px 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+            .pk-dropdown .dropdown-item:hover {
+                background: #f0f2f8;
             }
 
-                /* NEUTRALIZE BOOTSTRAP NEGATIVE MARGIN BLEED SYSTEM-WIDE */
-                .admin-content .row {
-                    margin-left: 0 !important;
-                    margin-right: 0 !important;
-                    width: 100% !important;
-                }
-
-            .sidebar-link {
-                transition: background-color 0.2s ease-in-out;
-                color: rgba(255,255,255,0.85) !important;
-                text-decoration: none;
-            }
-
-                .sidebar-link:hover {
-                    background-color: rgba(255,255,255,0.1);
-                    color: #fff !important;
-                }
-
-                .sidebar-link.active {
-                    background-color: #0d6efd !important;
-                    color: #fff !important;
-                }
+        .pk-dropdown .dropdown-divider {
+            border-color: #eef0f7;
+        }
     </style>
 </head>
 <body>
 
     <div class="admin-wrapper">
-        <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
-            <a asp-controller="Admin" asp-action="Dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <span class="fs-4 fw-bold">Admin Controls</span>
+
+        <!-- ═══════════════ SIDEBAR ═══════════════ -->
+        <aside class="admin-sidebar">
+
+            <!-- Brand -->
+            <a asp-controller="Admin" asp-action="Dashboard" class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="sidebar-brand-text">PICKOUT HARDWARE</div>
+                    <div class="sidebar-brand-sub">Admin Control Center</div>
+                </div>
             </a>
-            <hr>
-    
-            <ul class="nav nav-pills flex-column mb-auto gap-1">
-                <li class="nav-item">
+
+            <!-- Nav -->
+            <div class="sidebar-section-label">Main Menu</div>
+            <ul class="sidebar-nav">
+                <li>
                     <a asp-controller="Admin" asp-action="Dashboard"
-                           class="nav-link sidebar-link @(currentAction == "Dashboard" ? "active" : "")">
-                        📊 Dashboard
+                       class="sidebar-link @(currentAction == "Dashboard" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        Dashboard
                     </a>
                 </li>
                 <li>
                     <a asp-controller="Admin" asp-action="MenuIndex"
-                           class="nav-link sidebar-link @(currentAction == "MenuIndex" ? "active" : "")">
-                        🍔 Products / Menu
+                       class="sidebar-link @(currentAction == "MenuIndex" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                            <line x1="9" y1="12" x2="15" y2="12" />
+                            <line x1="9" y1="16" x2="13" y2="16" />
+                        </svg>
+                        Products / Menu
                     </a>
                 </li>
                 <li>
                     <a asp-controller="Admin" asp-action="OrderRegistry"
-                           class="nav-link sidebar-link @(currentAction == "OrderRegistry" ? "active" : "")">
-                        🛒 Order Registry
+                       class="sidebar-link @(currentAction == "OrderRegistry" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
+                        Order Registry
                     </a>
                 </li>
-        
+            </ul>
+
+            <div class="sidebar-section-label">Inventory</div>
+            <ul class="sidebar-nav">
                 <li>
                     <a asp-controller="Admin" asp-action="RequestRestock"
-                           class="nav-link sidebar-link @(currentAction == "RequestRestock" ? "active" : "")">
-                        🚚 Request Product Restock
+                       class="sidebar-link @(currentAction == "RequestRestock" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="1" y="3" width="15" height="13" />
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                            <circle cx="5.5" cy="18.5" r="2.5" />
+                            <circle cx="18.5" cy="18.5" r="2.5" />
+                        </svg>
+                        Request Restock
                     </a>
                 </li>
                 <li>
                     <a asp-controller="Admin" asp-action="RestockLedger"
-                           class="nav-link sidebar-link @(currentAction == "RestockLedger" ? "active" : "")">
-                        📑 Product Restocks
+                       class="sidebar-link @(currentAction == "RestockLedger" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                        Product Restocks
                     </a>
                 </li>
-        
+            </ul>
+
+            <div class="sidebar-section-label">Finance & Users</div>
+            <ul class="sidebar-nav">
                 <li>
                     <a asp-controller="Admin" asp-action="TopUpLedger"
-                           class="nav-link sidebar-link @(currentAction == "TopUpLedger" ? "active" : "")">
-                        💳 Wallet Top-Ups
+                       class="sidebar-link @(currentAction == "TopUpLedger" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                            <line x1="1" y1="10" x2="23" y2="10" />
+                        </svg>
+                        Wallet Top-Ups
                     </a>
                 </li>
                 <li>
                     <a asp-controller="Admin" asp-action="UserManagement"
-                           class="nav-link sidebar-link @(currentAction == "UserManagement" ? "active" : "")">
-                        👥 User Management
+                       class="sidebar-link @(currentAction == "UserManagement" ? "active" : "")">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        User Management
                     </a>
                 </li>
             </ul>
-    
-            <hr />
 
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-2" style="width: 32px; height: 32px; font-size: 14px;">
-                        AD
+            <!-- Spacer -->
+            <div style="flex:1;"></div>
+            <hr style="border-color: rgba(255,255,255,0.12); margin: 12px 0;">
+
+            <!-- User card with dropdown -->
+            <div class="pk-dropdown dropdown">
+                <div class="sidebar-user-card dropdown-toggle" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="sidebar-avatar">AD</div>
+                    <div>
+                        <div class="sidebar-user-name">System Admin</div>
+                        <div class="sidebar-user-role">Administrator</div>
                     </div>
-                    <strong>System Admin</strong>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark text-small shadow border-secondary" aria-labelledby="dropdownUser1">
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown" style="margin-bottom: 8px;">
                     <li>
-                        <a class="dropdown-item py-2" asp-controller="Admin" asp-action="ProfileDetails">
-                            👤 My Profile
+                        <a class="dropdown-item" asp-controller="Admin" asp-action="ProfileDetails">
+                            My Profile
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item py-2" asp-controller="Admin" asp-action="SecuritySettings">
-                            ⚙️ Account Settings
+                        <a class="dropdown-item" asp-controller="Admin" asp-action="SecuritySettings">
+                            Account Settings
                         </a>
                     </li>
-                    <li><hr class="dropdown-divider border-secondary"></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li>
-                        <form asp-controller="Admin" asp-action="Logout" method="post" class="d-inline w-100">
-                            <button type="submit" class="dropdown-item py-2 text-danger fw-bold btn btn-link text-start w-100" style="text-decoration: none; box-shadow: none;">
-                                🚪 Log Out
+                        <form asp-controller="Admin" asp-action="Logout" method="post">
+                            <button type="submit" class="dropdown-item text-danger fw-bold" style="background:none; border:none; width:100%; text-align:left;">
+                                Log Out
                             </button>
                         </form>
                     </li>
                 </ul>
             </div>
-        </div>
+        </aside>
 
-        <div class="admin-content">
+        <!-- ═══════════════ CONTENT ═══════════════ -->
+        <main class="admin-content">
             @RenderBody()
-        </div>
+        </main>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
