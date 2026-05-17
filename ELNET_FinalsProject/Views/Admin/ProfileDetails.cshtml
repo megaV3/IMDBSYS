@@ -1,0 +1,268 @@
+﻿@{
+    ViewData["Title"] = "Administrative Profile";
+    var profile = ViewBag.Profile;
+
+    // Direct safely cast value assignment properties
+    string fullName = profile?.FullName ?? "System Admin";
+    string email = profile?.Email ?? "admin@imdbsys.com";
+    string role = profile?.Role ?? "Admin";
+    string status = profile?.AccountStatus ?? "Active";
+    string scope = profile?.SecurityScope ?? "Global Read/Write/Delete Permissions";
+    string picPath = profile?.ProfilePicturePath ?? "/images/profiles/default-picture.webp";
+
+    // Split text fields cleanly to auto-fill the initialization modal text inputs
+    var nameParts = fullName.Split(' ');
+    string fName = nameParts.Length > 0 ? nameParts[0] : "";
+    string lName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : "";
+}
+
+<style>
+    /* ========================================================
+           ProfileDetails View - Content-Pane Centered Layout
+           ======================================================== */
+    
+    /* 1. FORCE THE WRAPPER PANEL TO TRACK THE FULL MAXIMUM VERTICAL HEIGHT ENVELOPE SCALE */
+    .profile-isolated-wrapper {
+        display: grid !important; /* Forces the wrapper to behave like a block grid structure */
+        align-items: stretch !important; /* Forces internal child cards to map identically to the max layout height line */
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative !important;
+        contain: paint !important;
+        box-sizing: border-box !important;
+        height: 100% !important;
+        min-height: calc(100vh - 40px) !important; /* Dynamically calculates the absolute footer baseline to block early clipping holes */
+    }
+
+        /* 2. Lock down Bootstrap grid structures to prevent negative margin bleeding */
+        .profile-isolated-wrapper .row {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+
+        /* 3. Target the main profile card card layout boundaries exclusively */
+        .profile-isolated-wrapper .profile-main-card {
+            width: 100% !important;
+            max-width: 600px !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+            transition: none !important;
+            height: fit-content !important; /* Keeps the card container form sitting tightly at its contents */
+        }
+
+            /* 4. Lockdown on badge element sizing configurations inside the main card */
+            .profile-isolated-wrapper .profile-main-card .badge {
+                display: inline-block !important;
+                width: 120px !important;
+                max-width: 120px !important;
+                min-width: 120px !important;
+                letter-spacing: normal !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+        /* 5. Force the Modal to scale to the absolute updated parent grid dimensions seamlessly */
+        .profile-isolated-wrapper .modal {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important; /* Guarantees the absolute height tracks perfectly to the base grid lines */
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            z-index: 1050 !important;
+        }
+
+    /* MULTIPART PREVIEW AVATAR LAYOUT COMPONENT STYLES */
+    .avatar-upload-frame {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        cursor: pointer;
+    }
+
+    .avatar-preview-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        font-size: 36px;
+        border: 3px solid #0d6efd;
+        background-color: #0d6efd;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avatar-edit-badge {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        background-color: #212529;
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+</style>
+
+<div class="profile-isolated-wrapper">
+    <div class="row pt-3">
+        <div class="col-12">
+
+            <div class="card profile-main-card shadow-sm border-0 mx-auto">
+                <div class="card-header bg-white py-4 border-bottom text-center">
+                    
+                    <div class="mb-2">
+                        @if (!string.IsNullOrEmpty(picPath) && !picPath.Contains("default-picture.webp") && System.IO.File.Exists(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picPath.TrimStart('/'))))
+                        {
+                            <img src="@picPath?v=@DateTime.Now.Ticks" class="avatar-preview-circle mx-auto shadow-sm" alt="Admin Profile Photo" />
+                        }
+                        else
+                        {
+                            <div class="avatar-preview-circle mx-auto shadow-sm fw-bold">AD</div>
+                        }
+                    </div>
+
+                    <h5 class="m-0 fw-bold text-dark">Administrative Security Profile</h5>
+                    <p class="text-muted small mb-3">Verified identity claims and system access scopes</p>
+                    
+                    <button type="button" class="btn btn-sm btn-outline-primary px-3 rounded-pill fw-bold" data-bs-toggle="modal" data-bs-target="#editAdminProfileModal">
+                        ✏️ Edit Profile
+                    </button>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-bold small text-muted">Operator Full Name</label>
+                            <input type="text" class="form-control bg-light fw-bold text-dark" value="@fullName" readonly />
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-bold small text-muted">Electronic Mail Endpoint</label>
+                            <input type="text" class="form-control bg-light text-muted" value="@email" readonly />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-bold small text-muted">Assigned Access Level</label>
+                            <div class="pt-1">
+                                <span class="badge bg-danger p-2 fs-6 text-center">
+                                    🛠️ @role
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-bold small text-muted">Account Security State</label>
+                            <div class="pt-1">
+                                <span class="badge bg-success p-2 fs-6 text-center">
+                                    🟢 @status
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted opacity-25" />
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Administrative Clearance Scope</label>
+                        <input type="text" class="form-control bg-light font-monospace small text-dark" value="@scope" readonly />
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Dashboard" class="btn btn-secondary btn-sm px-4">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="editAdminProfileModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog modal-dialog-centered" style="z-index: 1060 !important;">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white py-3">
+                    <h5 class="modal-title fw-bold fs-6" id="modalTitle">Edit Profile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form asp-action="ProfileDetails" method="post" enctype="multipart/form-data">
+                    <div class="modal-body text-center p-4">
+                        
+                        <div class="avatar-upload-frame mb-3" onclick="document.getElementById('fileUploadInput').click();">
+                            @if (!string.IsNullOrEmpty(picPath) && !picPath.Contains("default-picture.webp") && System.IO.File.Exists(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picPath.TrimStart('/'))))
+                            {
+                                <img id="modalAvatarPreview" src="@picPath?v=@DateTime.Now.Ticks" class="avatar-preview-circle" alt="Preview Profile" />
+                            }
+                            else
+                            {
+                                <div id="modalAvatarText" class="avatar-preview-circle fw-bold">AD</div>
+                            }
+                            <div class="avatar-edit-badge">🖋️</div>
+                        </div>
+                        <p class="text-muted small mb-4">tap pencil to change photo</p>
+                        
+                        <input type="file" id="fileUploadInput" name="profilePicture" class="d-none" accept="image/*" />
+
+                        <div class="text-start mb-3">
+                            <label class="form-label fw-bold small text-muted mb-1">First Name</label>
+                            <input type="text" name="firstName" class="form-control" value="@fName" required />
+                        </div>
+
+                        <div class="text-start mb-3">
+                            <label class="form-label fw-bold small text-muted mb-1">Last Name</label>
+                            <input type="text" name="lastName" class="form-control" value="@lName" required />
+                        </div>
+
+                        <div class="text-start mb-2">
+                            <label class="form-label fw-bold small text-muted mb-1">Email Address</label>
+                            <input type="email" class="form-control bg-light text-muted" value="@email" readonly />
+                            <small class="text-muted d-block mt-1" style="font-size: 11px;">email cannot be changed</small>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer bg-light border-top border-light-subtle py-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm px-4">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fileUploadInput').addEventListener('change', function (e) {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function (event) {
+                const imgElement = document.getElementById('modalAvatarPreview');
+                const textElement = document.getElementById('modalAvatarText');
+
+                if (imgElement) {
+                    imgElement.src = event.target.result;
+                } else if (textElement) {
+                    const newImg = document.createElement('img');
+                    newImg.id = 'modalAvatarPreview';
+                    newImg.src = event.target.result;
+                    newImg.className = 'avatar-preview-circle';
+                    textElement.parentNode.replaceChild(newImg, textElement);
+                }
+            };
+            
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+</script>

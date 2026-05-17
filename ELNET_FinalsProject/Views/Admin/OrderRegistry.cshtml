@@ -1,25 +1,25 @@
 ﻿@model IEnumerable<IMDBSYS.Models.Order>
 
 @{
-    ViewData["Title"] = "Order Registry";
+    ViewData["Title"] = "Global Order Registry";
 }
 
 <style>
     /* ========================================================
            OrderRegistry View - Standalone Isolation Matrix
            ======================================================== */
-
-    /* 1. FORCE COMPONENT ISOLATION CONTROLS */
-    .order-registry-isolated-wrapper {
+    
+    /* 1. FORCE MAIN WORKSPACE ELEMENT VIEW PORT ISOLATION CONTROLS */
+    .orders-isolated-wrapper {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
-        contain: inline-size !important; /* Mathematically blocks internal elements from stretching container widths */
+        contain: inline-size !important;
         box-sizing: border-box !important;
     }
 
-        /* 2. Freeze outer rows from structural expansion */
-        .order-registry-isolated-wrapper .row {
+        /* 2. Lock down Bootstrap grid structures to prevent negative margin bleeding */
+        .orders-isolated-wrapper .row {
             width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -27,8 +27,8 @@
             flex-wrap: wrap !important;
         }
 
-        /* 3. Force card boundary limits */
-        .order-registry-isolated-wrapper .card {
+        /* 3. Force card boundary limitations */
+        .orders-isolated-wrapper .card {
             width: 100% !important;
             max-width: 100% !important;
             box-sizing: border-box !important;
@@ -36,32 +36,22 @@
             transition: none !important;
         }
 
-        /* 4. Complete structural lockdown on badge sizes on hover */
-        .order-registry-isolated-wrapper .table-hover tbody tr:hover td .badge,
-        .order-registry-isolated-wrapper .table-hover tbody tr td .badge {
-            display: inline-block !important;
-            width: 140px !important;
-            max-width: 140px !important;
-            min-width: 140px !important;
-            text-align: center !important;
-            letter-spacing: normal !important;
-            transform: none !important;
-        }
+            /* 4. Complete structural lockdown on badge sizing properties on hover */
+            .orders-isolated-wrapper .card .badge {
+                display: inline-block !important;
+                width: 135px !important;
+                max-width: 135px !important;
+                min-width: 135px !important;
+                letter-spacing: normal !important;
+                transform: none !important;
+                transition: none !important;
+            }
 
-        /* 5. Freeze review buttons to stop micro padding updates on hover */
-        .order-registry-isolated-wrapper .table-hover tbody tr:hover td .btn,
-        .order-registry-isolated-wrapper .table-hover tbody tr td .btn {
-            width: 150px !important;
-            max-width: 150px !important;
-            min-width: 150px !important;
-            display: inline-block !important;
-            letter-spacing: normal !important;
-            transition: none !important;
-        }
-
-        /* 6. Keep all data grid cells locked into a strict uniform layout footprint */
-        .order-registry-isolated-wrapper .table-hover tbody tr:hover td,
-        .order-registry-isolated-wrapper .table-hover tbody tr td {
+        /* 5. Keep ALL registry rows locked into a strict uniform footprint to cancel expansion jumps */
+        .orders-isolated-wrapper .table-hover tbody tr:hover td,
+        .orders-isolated-wrapper .table-hover tbody tr td,
+        .modal-body .table tbody tr:hover td,
+        .modal-body .table tbody tr td {
             height: 65px !important;
             max-height: 65px !important;
             min-height: 65px !important;
@@ -71,9 +61,10 @@
         }
 </style>
 
-<div class="order-registry-isolated-wrapper">
+<div class="orders-isolated-wrapper">
     <div class="row">
         <div class="col-12">
+
             <div class="card shadow-sm border-0 mt-3">
                 <div class="card-header bg-white py-3 border-bottom">
                     <h5 class="m-0 fw-bold text-dark">🛒 Global Order Registry</h5>
@@ -81,16 +72,16 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
+                        <table class="table table-hover align-middle mb-0 text-center">
                             <thead class="table-light">
                                 <tr>
                                     <th>Order ID</th>
                                     <th>User Security ID</th>
-                                    <th>Customer / Client Name</th>
+                                    <th class="text-start">Customer / Client Name</th>
                                     <th>Timestamp Registered</th>
                                     <th>Gross Value</th>
                                     <th>System State</th>
-                                    <th class="text-end px-4">Audit Trace</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,19 +91,38 @@
                                     {
                                         <tr>
                                             <td><strong>#@order.OrderId</strong></td>
-                                            <td><code>USR-@order.UserId.ToString("D4")</code></td>
-                                            <td class="fw-bold">@order.CustomerName</td>
+                                            <td class="text-danger small"><code>USR-@order.UserId.ToString("D4")</code></td>
+                                            <td class="text-start fw-bold text-dark">@order.CustomerName</td>
                                             <td class="text-muted">@order.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</td>
-                                            <td class="text-dark fw-bold">₱@order.TotalAmount.ToString("N2")</td>
+                                            <td class="fw-bold">₱@order.TotalAmount.ToString("N2")</td>
+                                            
                                             <td>
-                                                <span class="badge @(order.IsCompleted ? "bg-success" : "bg-warning text-dark")">
-                                                    @(order.IsCompleted ? "Settled & Fulfilled" : "Open / Pending")
-                                                </span>
+                                                @if (order.IsCompleted)
+                                                {
+                                                    <span class="badge bg-success-subtle text-success border border-success-subtle py-2">✅ Settled & Fulfilled</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle py-2">⏳ Pending Fulfillment</span>
+                                                }
                                             </td>
-                                            <td class="text-end px-4">
-                                                <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-sm btn-light border text-dark">
-                                                    Review Items (@(order.OrderItems?.Count ?? 0))
-                                                </a>
+                                            
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-2">
+                                                    <button type="button" class="btn btn-sm btn-light border small text-dark px-3" data-bs-toggle="modal" data-bs-target="#reviewItemsModal-@order.OrderId">
+                                                        Review Items (@(order.OrderItems?.Count ?? 0))
+                                                    </button>
+
+                                                    @if (!order.IsCompleted)
+                                                    {
+                                                        <form asp-action="CompleteOrder" method="post" class="m-0">
+                                                            <input type="hidden" name="orderId" value="@order.OrderId" />
+                                                            <button type="submit" class="btn btn-sm btn-primary fw-bold px-3">
+                                                                ✔️ Complete
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                </div>
                                             </td>
                                         </tr>
                                     }
@@ -120,7 +130,7 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="7" class="text-center py-5 text-muted">No historical transactions populated yet.</td>
+                                        <td colspan="7" class="text-center py-5 text-muted">No transactions recorded inside global order registry ledger context.</td>
                                     </tr>
                                 }
                             </tbody>
@@ -128,6 +138,95 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var order in Model)
+    {
+        <div class="modal fade" id="reviewItemsModal-@order.OrderId" tabindex="-1" aria-labelledby="modalLabel-@order.OrderId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-dark text-white py-3">
+                        <h5 class="modal-title fw-bold fs-6" id="modalLabel-@order.OrderId">📋 Order Breakdown Manifest: #@order.OrderId</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        
+                        <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center text-start">
+                            <div>
+                                <span class="text-muted small d-block">Client Account Identity</span>
+                                <strong class="text-dark">@order.CustomerName</strong>
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted small d-block">Settlement Date</span>
+                                <span class="text-dark fw-bold">@order.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</span>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0 text-center text-nowrap" style="white-space: normal;">
+                                <thead class="table-light small text-uppercase">
+                                    <tr>
+                                        <th class="text-start ps-4">Product Component Details</th>
+                                        <th>Variant Option</th>
+                                        <th>Unit Cost Price</th>
+                                        <th>Quantity</th>
+                                        <th class="text-end pe-4">Subtotal Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (order.OrderItems != null && order.OrderItems.Any())
+                                    {
+                                        foreach (var item in order.OrderItems)
+                                        {
+                                            <tr>
+                                                <td class="text-start ps-4">
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <img src="@(string.IsNullOrEmpty(item.Menu?.ImagePath) ? "/images/profiles/default-picture.webp" : item.Menu.ImagePath)"
+                                                             class="rounded border shadow-sm object-fit-cover"
+                                                             style="width: 40px; height: 40px;" alt="Product" />
+                                                        <div>
+                                                            <span class="fw-bold text-dark d-block">@(item.Menu?.Name ?? "Component Line Instance")</span>
+                                                            <span class="text-muted small d-block" style="font-size: 11px;">Category: @(item.Menu?.Category ?? "Hardware")</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-light border text-dark" style="width: fit-content !important; min-width: 0 !important; max-width: none !important;">@(item.Variation ?? "Standard")</span>
+                                                </td>
+                                                <td>₱@item.Price.ToString("N2")</td>
+                                                <td class="fw-bold">× @item.Quantity</td>
+                                                <td class="text-end pe-4 fw-bold text-primary">
+                                                    ₱@((item.Price * item.Quantity).ToString("N2"))
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No items found tied to this manifest registry index record.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-muted text-uppercase small">Total Settled Billing Amount:</span>
+                            <h4 class="m-0 fw-extrabold text-success font-monospace">₱@order.TotalAmount.ToString("N2")</h4>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer border-top-0 py-2">
+                        <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Close Audit Record</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
