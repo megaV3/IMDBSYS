@@ -1,0 +1,334 @@
+﻿@model IEnumerable<IMDBSYS.Models.Menu>
+
+@{
+    ViewData["Title"] = "Menu Management";
+}
+
+<style>
+    /* ========================================================
+       MenuIndex View - Standalone Isolation Matrix
+       ======================================================== */
+
+    /* 1. FORCE COMPONENT ISOLATION CONTROLS */
+    .menu-index-isolated-wrapper {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        contain: inline-size !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2. Freezing outer rows from structural flex-expansion */
+    .menu-index-isolated-wrapper .row {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* 3. Force card boundary limits */
+    .menu-index-isolated-wrapper .card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    /* 4. Stop text components from breaking column width allocations on hover */
+    .table-hover tbody tr:hover td .style-desc,
+    .table-hover tbody tr td .style-desc {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: block !important;
+        max-width: 320px !important;
+        width: 320px !important;
+        transform: none !important;
+    }
+
+    /* 5. Complete structural lockdown on badge mutations on hover */
+    .table-hover tbody tr:hover td .badge,
+    .table-hover tbody tr td .badge {
+        display: inline-block !important;
+        width: 110px !important;
+        max-width: 110px !important;
+        min-width: 110px !important;
+        padding: .35em .65em !important;
+        letter-spacing: normal !important;
+        transform: none !important;
+    }
+
+    /* 6. Fix table rows to an absolute static uniform height execution */
+    .table-hover tbody tr:hover td,
+    .table-hover tbody tr td {
+        height: 65px !important;
+        max-height: 65px !important;
+        min-height: 65px !important;
+        vertical-align: middle !important;
+        transition: none !important;
+    }
+
+    /* 7. Modal Image Frame Container Layout */
+    .modal-img-container {
+        width: 100%;
+        height: 160px;
+        background-color: #f1f3f5;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px dashed #dee2e6;
+    }
+
+    .modal-img-preview {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
+
+<div class="menu-index-isolated-wrapper">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 mt-3">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <div>
+                        <h5 class="m-0 fw-bold text-dark">🍔 Menu & Product Catalog</h5>
+                        <p class="text-muted small mb-0">Manage system offerings and pricing foundations</p>
+                    </div>
+                    <a asp-action="Create" class="btn btn-primary btn-sm px-3">+ Add New Item</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Base Price</th>
+                                    <th>Variants Count</th>
+                                    <th class="text-end px-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    /* LOOP 1: Renders ONLY clean HTML structural rows */
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td><code>#@item.MenuId</code></td>
+                                            <td>
+                                                <div class="fw-bold text-dark">@item.Name</div>
+                                                <span class="text-muted text-truncate style-desc">@item.Description</span>
+                                            </td>
+                                            <td><span class="badge bg-secondary">@item.Category</span></td>
+                                            <td class="fw-bold text-dark">₱@item.Price.ToString("N2")</td>
+                                            <td>
+                                                <span class="badge bg-light text-dark border">
+                                                    @(item.Variations?.Count ?? 0) configs
+                                                </span>
+                                            </td>
+                                            <td class="text-end px-4">
+                                                <div class="btn-group btn-group-sm">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal-@item.MenuId">
+                                                        Edit
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#variantsModal-@item.MenuId">
+                                                        Variants
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">No menu products found in database registry.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="modal fade" id="editModal-@item.MenuId" tabindex="-1" aria-labelledby="editModalLabel-@item.MenuId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold text-dark" id="editModalLabel-@item.MenuId">✏️ Edit Product & Configs #@item.MenuId</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <div class="modal-body text-start" style="white-space: normal;">
+                            <input type="hidden" name="MenuId" value="@item.MenuId" />
+
+                            <div class="row">
+                                <div class="col-md-5 border-end">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold small text-muted">Product Image Registry</label>
+                                        <div class="modal-img-container mb-2">
+                                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                                            {
+                                                <img src="@item.ImagePath" class="modal-img-preview" alt="Product Frame" />
+                                            }
+                                            else
+                                            {
+                                                <div class="text-muted small text-center p-3">
+                                                    <span class="fs-4 d-block mb-1">📦</span>
+                                                    No image media linked to item
+                                                </div>
+                                            }
+                                        </div>
+                                        <input type="file" name="ImageFile" class="form-control form-control-sm" accept="image/*" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold small text-muted">Product Name</label>
+                                        <input type="text" name="Name" class="form-control form-control-sm" value="@item.Name" required />
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label fw-bold small text-muted">Category</label>
+                                            <input type="text" name="Category" class="form-control form-control-sm" value="@item.Category" required />
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label fw-bold small text-muted">Base Price (₱)</label>
+                                            <input type="number" step="0.01" name="Price" class="form-control form-control-sm" value="@item.Price" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label fw-bold small text-muted">Catalog Description</label>
+                                        <textarea name="Description" class="form-control form-control-sm" rows="3" required>@item.Description</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <h6 class="fw-bold text-secondary border-bottom pb-2 mb-3 small text-uppercase">⚙️ Configuration Pricing Layers</h6>
+                            
+                                    @if (item.Variations != null && item.Variations.Any())
+                                    {
+                                        var variationsList = item.Variations.ToList();
+                                        <div style="max-height: 420px; overflow-y: auto; padding-right: 4px;">
+                                            @for (int i = 0; i < variationsList.Count; i++)
+                                            {
+                                                <input type="hidden" name="Variations[@i].MenuVariationId" value="@variationsList[i].MenuVariationId" />
+                                                <input type="hidden" name="Variations[@i].MenuId" value="@variationsList[i].MenuId" />
+                                                <input type="hidden" name="Variations[@i].VariantName" value="@variationsList[i].VariantName" />
+                                                <input type="hidden" name="Variations[@i].StockQuantity" value="@variationsList[i].StockQuantity" />
+                                                <input type="hidden" name="Variations[@i].LowStockThreshold" value="@variationsList[i].LowStockThreshold" />
+
+                                                <div class="card p-2 bg-light border mb-2 shadow-none">
+                                                    <div class="row align-items-center g-2">
+                                                        <div class="col-6">
+                                                            <span class="small text-muted d-block">Specification Profile</span>
+                                                            <strong class="text-dark">@variationsList[i].VariantName</strong>
+                                                            <span class="text-muted d-block" style="font-size: 11px;">Stock: @variationsList[i].StockQuantity units</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label class="form-label fw-bold small text-muted mb-1">Retail Price (₱)</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-text">₱</span>
+                                                                <input type="number" step="0.01" name="Variations[@i].Price" class="form-control fw-bold text-primary" value="@variationsList[i].Price" required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center py-5 text-muted small">
+                                            <span class="d-block fs-3 mb-2">🧊</span>
+                                            No independent component config variations exist for this item tracking sequence.
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer bg-light border-top-0">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-sm px-3">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="variantsModal-@item.MenuId" tabindex="-1" aria-labelledby="variantsModalLabel-@item.MenuId" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold text-dark" id="variantsModalLabel-@item.MenuId">⚙️ Available Configs: @item.Name</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start" style="white-space: normal;">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm align-middle mb-0 text-center">
+                                <thead class="table-dark small">
+                                    <tr>
+                                        <th>Var ID</th>
+                                        <th class="text-start">Specification Name</th>
+                                        <th>Retail Price</th>
+                                        <th>Stock Qty</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="small">
+                                    @if (item.Variations != null && item.Variations.Any())
+                                    {
+                                        foreach (var variant in item.Variations)
+                                        {
+                                            <tr>
+                                                <td><code>#@variant.MenuVariationId</code></td>
+                                                <td class="text-start fw-bold text-secondary">@variant.VariantName</td>
+                                                <td class="fw-bold text-dark">₱@variant.Price.ToString("N2")</td>
+                                                <td>@variant.StockQuantity units</td>
+                                                <td>
+                                                    @if (variant.StockQuantity <= variant.LowStockThreshold)
+                                                    {
+                                                        <span class="badge bg-danger p-1 text-white">Critical Stock</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-success p-1 text-white">Healthy</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No configuration options linked to this base matrix product model.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light border-top-0">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close Overlay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

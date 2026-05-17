@@ -1,0 +1,200 @@
+﻿@model IMDBSYS.ViewModels.Admin.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-0 fw-bold text-dark">Overview Statistics</h1>
+        <p class="text-muted small mb-0">System runtime telemetry and logs</p>
+    </div>
+    <span class="badge bg-white text-dark border p-2 shadow-sm">Sync Date: @DateTime.Now.ToString("g")</span>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-xl-2">
+        <div class="card bg-primary text-white h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Users</h6>
+                <h2 class="fw-bold m-0">@Model.TotalUsers</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="card bg-info text-white h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Products</h6>
+                <h2 class="fw-bold m-0">@Model.TotalProducts</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="card bg-success text-white h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Orders</h6>
+                <h2 class="fw-bold m-0">@Model.TotalOrders</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card bg-dark text-white h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Sales Revenue</h6>
+                <h2 class="fw-bold m-0">₱@Model.TotalSalesRevenue.ToString("N2")</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card bg-secondary text-white h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1 opacity-75 small fw-bold">Total Top-Ups</h6>
+                <h2 class="fw-bold m-0">₱@Model.TotalTopUpAmount.ToString("N2")</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="m-0 fw-bold text-dark h6">Recent Orders</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentOrders.Any())
+                            {
+                                foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td><strong>#@order.OrderId</strong></td>
+                                        <td>@order.CustomerName</td>
+                                        <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>₱@order.TotalAmount.ToString("N2")</td>
+                                        <td>
+                                            <span class="badge @(order.IsCompleted ? "bg-success" : "bg-warning text-dark")">
+                                                @(order.IsCompleted ? "Completed" : "Pending")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No recent orders found.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="m-0 fw-bold text-dark h6">Recent Top-Up Transactions</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>User Email</th>
+                                <th>Payment Method</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentTopUps.Any())
+                            {
+                                foreach (var topUp in Model.RecentTopUps)
+                                {
+                                    <tr>
+                                        <td>@topUp.TransactionId</td>
+                                        <td>@topUp.Email</td>
+                                        <td>@topUp.PaymentMethod</td>
+                                        <td>₱@topUp.Amount.ToString("N2")</td>
+                                        <td>
+                                            <span class="badge @(topUp.Status == "Completed" || topUp.Status == "Approved" ? "bg-success" : "bg-danger")">
+                                                @topUp.Status
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No recent top-up requests.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="m-0 fw-bold text-dark h6">Inventory Summary</h5>
+            </div>
+            <div class="card-body text-center py-4">
+                <p class="text-muted mb-1 text-uppercase small fw-bold">Total Items in Stock</p>
+                <h1 class="display-6 fw-bold text-secondary">@Model.TotalStockQuantity</h1>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 border-top border-danger border-4">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="m-0 fw-bold text-danger h6">⚠️ Low Stock Warnings</h5>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    @if (Model.LowStockProducts.Any())
+                    {
+                        foreach (var variant in Model.LowStockProducts)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start py-3">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold text-dark">@(variant.Menu?.Name ?? "Unknown Product")</div>
+                                    <span class="text-muted small">Variant: @variant.VariantName</span>
+                                </div>
+                                <div>
+                                    <span class="badge bg-danger rounded-pill">@variant.StockQuantity left</span>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item py-4 text-center text-muted border-0">
+                            All products are sufficiently stocked!
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

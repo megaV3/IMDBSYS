@@ -19,84 +19,83 @@ namespace IMDBSYS.Controllers
         {
             _context = context;
         }
-
-        // VIEW CART
+        // ── VIEW CART ACTION ──
         public async Task<IActionResult> Cart()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
+            // 1. Fetch full user metadata safely
+            var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (userProfile == null) return NotFound();
+
+            ViewBag.ProfileImagePath = userProfile.ProfileImagePath ?? "/images/default-profile.png";
+            ViewBag.UserBalance = userProfile.Balance;
+
+            // 2. Fetch the active order along with its connected elements
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Menu)
+                    .ThenInclude(oi => oi.Menu) // Vital eager-loading step to fix the ₱0.00 issue
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
 
-            var userProfile = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == userId);
-
-            ViewBag.ProfileImagePath = userProfile.ProfileImagePath;
-            ViewBag.UserBalance = userProfile.Balance;
-
-
-            // Checks if the order is null
-            if (order == null)
+            // 3. FIXED: Clean, unified check to see if cart is completely empty
+            if (order == null || order.OrderItems == null || !order.OrderItems.Any())
             {
                 ViewBag.IsCartEmpty = true;
-                return View();
+                return View(new List<OrderItem>()); // Pass a clean empty list to avoid null models in View loops
             }
 
-            //If the order is no longer null, it then checks if the count of cartItems is 0, then initializes a ViewBag that cart is empty and returns View
-            var cartItems = await _context.Orders
-                .Where(o => o.UserId == userId && !o.IsCompleted)
-                .SelectMany(o => o.OrderItems)
-                .Include(oi => oi.Menu)
-                .ToListAsync();
+            // 4. Compute totals including tax metrics (Using the [NotMapped] OrderItem.Total expression)
+            decimal subtotal = order.OrderItems.Sum(oi => oi.Total);
+            decimal totalWithTax = subtotal * 1.12m;
 
-            if (cartItems.Count == 0)
-            {
-                ViewBag.IsCartEmpty = true;
-                return View();
-            }
-
-
-            decimal totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
-            totalAmount *= 1.12m;
-
-            ViewBag.UserBalance = userProfile.Balance;
-
-            if (userProfile.Balance >= totalAmount)
-            {
-                ViewBag.IsAmountEnough = true;
-            }
-            else
-            {
-                ViewBag.IsAmountEnough = false;
-            }
-
+            // 5. Build payment validation metrics flags
+            ViewBag.IsAmountEnough = userProfile.Balance >= totalWithTax;
             ViewBag.IsCartEmpty = false;
-            return View(order.OrderItems);
+
+            return View(order.OrderItems.ToList());
         }
 
-        // ADD TO CART
+        // ── ADD TO CART ACTION ──
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int menuId, int quantity, string? variation, string? notes)
+        public async Task<IActionResult> AddToCart(int menuId, int quantity, int menuVariationId, string? notes)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            // 1. Safely check user ID parsing context
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return Json(new { success = false, message = "User is not authenticated." });
+            }
 
+            // 2. Lookup the chosen structural variation to get the real Price and Name specs
+            var variation = await _context.MenuVariations
+                .FirstOrDefaultAsync(v => v.MenuVariationId == menuVariationId && v.MenuId == menuId);
+
+            if (variation == null)
+            {
+                return Json(new { success = false, message = "Selected hardware model variation not found." });
+            }
+
+            // 3. Find or create the incomplete active order instance
             var order = await _context.Orders
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
 
             if (order == null)
             {
-                order = new Order { UserId = userId, IsCompleted = false};
+                order = new Order { UserId = userId, IsCompleted = false, CustomerName = User.Identity?.Name ?? "Customer" };
                 _context.Orders.Add(order);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // Saves to generate order.OrderId
             }
 
+            // 4. Check if this exact variation package is already in the cart
             var existingItem = await _context.OrderItems
                 .FirstOrDefaultAsync(oi =>
                     oi.OrderId == order.OrderId &&
                     oi.MenuId == menuId &&
-                    oi.Variation == variation &&
+                    oi.Variation == variation.VariantName && // e.g., "512GB" or "Standard"
                     oi.Notes == notes);
 
             if (existingItem != null)
@@ -105,22 +104,20 @@ namespace IMDBSYS.Controllers
             }
             else
             {
-                var menu = await _context.Menus.FindAsync(menuId);
                 _context.OrderItems.Add(new OrderItem
                 {
                     OrderId = order.OrderId,
                     MenuId = menuId,
                     Quantity = quantity,
-                    Price = menu.Price,
-                    Variation = variation,
+                    Price = variation.Price,           // FIXED: Pulls the correct variation price!
+                    Variation = variation.VariantName, // FIXED: Pulls text spec like "2TB"
                     Notes = notes
                 });
             }
 
             await _context.SaveChangesAsync();
-            return Ok(new { success = true, quantityAdded = quantity });
+            return Json(new { success = true, quantityAdded = quantity });
         }
-
         // UPDATE QUANTITY
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int orderItemId, int quantity)
@@ -284,6 +281,7 @@ namespace IMDBSYS.Controllers
                 CartCount = activeCartItemCount,
                 ProfileImagePath = userProfile.ProfileImagePath,
                 OrderHistory = orders,
+                UserBalance = userProfile.Balance
             };
 
             return View(userOrders);

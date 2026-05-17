@@ -15,6 +15,7 @@ namespace IMDBSYS.Models
 
         [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; } = string.Empty;
+        public string? Role { get; set; } = "User";
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email")]

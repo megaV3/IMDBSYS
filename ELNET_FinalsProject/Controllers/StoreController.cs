@@ -17,30 +17,47 @@ namespace IMDBSYS.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // 1. Get the User ID from the Claims (stored in the cookie)
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // 1. Get the User ID safely from the Claims
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // 2. Fetch the full user data from the database
-            var userProfile = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
+            // Initialize default safe states for guests
+            User? userProfile = null;
+            int cartCount = 0;
 
-            // 2. Calculate Cart Count from the database
-            var order = await _context.Orders
-                .Include(o => o.OrderItems)
-                .FirstOrDefaultAsync(o => o.UserId == int.Parse(userId) && !o.IsCompleted);
+            // Check if the user is actually authenticated before querying user-specific data
+            if (!string.IsNullOrEmpty(userIdString) && int.TryParse(userIdString, out int userId))
+            {
+                // 2. Fetch the full user data from the database
+                userProfile = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == userId);
 
-            // Sum up the quantities of all items in the cart
-            int count = order?.OrderItems.Sum(oi => oi.Quantity) ?? 0;
-            
+                // 3. Calculate Cart Count from the database for an incomplete order
+                var order = await _context.Orders
+                    .Include(o => o.OrderItems) // FIXED: Changed from OrderItem to OrderItems
+                    .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
+
+                if (order != null && order.OrderItems != null) // FIXED: Changed from OrderItem to OrderItems
+                {
+                    cartCount = order.OrderItems.Sum(oi => oi.Quantity); // FIXED: Changed from OrderItem to OrderItems
+                }
+            }
+
+            // 4. CRITICAL FIX: Include dynamic variations so the HTML page can read prices and specs!
+            var menuItems = await _context.Menus
+                .Include(m => m.Variations)
+                .ToListAsync();
+
+            // 5. Map data safely to your StoreViewModel
             StoreViewModel viewModel = new StoreViewModel
             {
-                UserProfile = userProfile,
-                Menus = await _context.Menus.ToListAsync(), // Fetch all menu items from the database
-                CartCount = count, // Pass the count here,
-                ProfileImagePath = userProfile.ProfileImagePath // Pass the profile
+                // Fallback to a blank User initialization if visitor is a guest, preventing View null-crashes
+                UserProfile = userProfile ?? new User { FirstName = "Guest", Balance = 0.00m },
+                Menus = menuItems,
+                CartCount = cartCount,
+                ProfileImagePath = userProfile?.ProfileImagePath ?? "/images/default-profile.png"
             };
 
-            // 3. Pass the data to the View
+            // 6. Pass the data to the View
             return View(viewModel);
         }
 

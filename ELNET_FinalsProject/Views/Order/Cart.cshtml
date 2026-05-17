@@ -571,9 +571,10 @@
             border-color: #3E4885;
             text-decoration: none;
         }
+
 </style>
 
-<div class="cart-container">
+<div class="cart-container" style="margin-bottom: 5rem;">
 
     <div class="cart-title">
         <h1>Your Cart</h1>
@@ -685,7 +686,9 @@
 
                     <div class="summary-total-row">
                         <span class="summary-total-label">Balance</span>
-                        <span class="total-price bal">₱@ViewBag.UserBalance</span>
+                        <span class="total-price bal">
+                            ₱@(((decimal)(ViewBag.UserBalance ?? 0m)).ToString("N2"))
+                        </span>
                     </div>
 
                     <form asp-controller="Order" asp-action="Checkout" method="post">
@@ -712,4 +715,5 @@
         }
 
     </div>
+    <div style="height: 65px; clear: both;"></div>
 </div>

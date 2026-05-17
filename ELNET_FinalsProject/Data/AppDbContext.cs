@@ -11,6 +11,7 @@ namespace IMDBSYS.Data
         }
 
         public DbSet<Menu> Menus { get; set; } // should change name to MenuItems?
+        public DbSet<MenuVariation> MenuVariations { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
