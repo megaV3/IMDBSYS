@@ -143,5 +143,66 @@ namespace IMDBSYS.Controllers
 
             return View("UserManagement", users);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Menu incomingMenu)
+        {
+            if (incomingMenu == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                // 1. Pull the existing product from the database including its variants
+                var dbMenu = await _context.Menus
+                    .Include(m => m.Variations)
+                    .FirstOrDefaultAsync(m => m.MenuId == incomingMenu.MenuId);
+
+                if (dbMenu == null)
+                {
+                    return NotFound();
+                }
+
+                // 2. Update the parent product parameters
+                dbMenu.Name = incomingMenu.Name;
+                dbMenu.Category = incomingMenu.Category;
+                dbMenu.Price = incomingMenu.Price;
+                dbMenu.Description = incomingMenu.Description;
+
+                // 3. Loop and safely update the inner retail variant rows
+                if (incomingMenu.Variations != null && dbMenu.Variations != null)
+                {
+                    foreach (var incomingVar in incomingMenu.Variations)
+                    {
+                        var dbVar = dbMenu.Variations
+                            .FirstOrDefault(v => v.MenuVariationId == incomingVar.MenuVariationId);
+
+                        if (dbVar != null)
+                        {
+                            // Update only the editable field we targeted in the modal form collection matrix
+                            dbVar.Price = incomingVar.Price;
+                        }
+                    }
+                }
+
+                // 4. Commit everything to the database registry in a single batch transaction pass
+                _context.Update(dbMenu);
+                await _context.SaveChangesAsync();
+
+                // 5. Redirection slot: Kick the admin straight back to the same page without full-view reloads!
+                return RedirectToAction(nameof(MenuIndex));
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // Log error logic here if checking missing connection traces
+                ModelState.AddModelError("", "Unable to save changes. The database record was updated by another user process.");
+            }
+
+            // If something fails, drop back into the main index view safely with validation state messages
+            var menus = await _context.Menus.Include(m => m.Variations).ToListAsync();
+            return View("MenuIndex", menus);
+        }
     }
 }
