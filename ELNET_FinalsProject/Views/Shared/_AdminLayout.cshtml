@@ -1,0 +1,121 @@
+﻿@{
+    Layout = null; // Forces this layout to be independent from the global user storefront layout
+    
+    // Retrieve the active action name from the current route context
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - IMDBSYS Admin</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    
+    <style>
+            /* Lock down structural layout blocks so they cannot stack vertically */
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                background-color: #f8f9fa;
+            }
+
+            .admin-wrapper {
+                display: flex;
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .admin-sidebar {
+                flex: 0 0 250px;
+                width: 250px;
+                max-width: 250px;
+                min-width: 250px;
+                background-color: #212529;
+                height: 100vh;
+                display: flex;
+                flex-direction: column; /* Fixed: Corrected property name from flex-column to flex-direction */
+            }
+
+            .admin-content {
+                flex-grow: 1;
+                padding: 24px;
+                height: 100vh;
+                overflow-y: auto; /* Revert this line back to standard auto */
+            }
+
+            .sidebar-link {
+                transition: background-color 0.2s ease-in-out;
+                color: rgba(255,255,255,0.85) !important;
+                text-decoration: none;
+            }
+
+                .sidebar-link:hover {
+                    background-color: rgba(255,255,255,0.1);
+                    color: #fff !important;
+                }
+
+                .sidebar-link.active {
+                    background-color: #0d6efd !important;
+                    color: #fff !important;
+                }
+
+    </style>
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        <div class="admin-sidebar d-flex flex-column p-3 text-white">
+            <span class="fs-5 fw-bold mb-3 border-bottom border-secondary pb-2 text-primary">Admin Controls</span>
+
+            <ul class="nav nav-pills flex-column mb-auto gap-1">
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Dashboard"
+                           class="nav-link sidebar-link @(currentAction == "Dashboard" ? "active" : "")">
+                        📊 Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Admin" asp-action="MenuIndex"
+                           class="nav-link sidebar-link @(currentAction == "MenuIndex" ? "active" : "")">
+                        🍔 Products / Menu
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Admin" asp-action="OrderRegistry"
+                           class="nav-link sidebar-link @(currentAction == "OrderRegistry" ? "active" : "")">
+                        🛒 Order Registry
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Admin" asp-action="TopUpLedger"
+                           class="nav-link sidebar-link @(currentAction == "TopUpLedger" ? "active" : "")">
+                        💳 Wallet Top-Ups
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Admin" asp-action="UserManagement"
+                           class="nav-link sidebar-link @(currentAction == "UserManagement" ? "active" : "")">
+                        👥 User Management
+                    </a>
+                </li>
+            </ul>
+            <hr class="border-secondary">
+            <div class="small text-muted">Role: System Admin</div>
+        </div>
+
+        <div class="admin-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
