@@ -7,10 +7,9 @@
     var total = subtotal + tax;
 }
 
-<!--  For Cart.cshtml design -->
 <link href="~/css/cart.css" rel="stylesheet" />
 
-<div class ="navbar">
+<div class="navbar">
 
     <div class="nav-left">
         <h2>PICKOUT HARDWARE</h2>
@@ -21,18 +20,18 @@
     </div>
 
     <div class="nav-right">
-        @if (ViewBag.IsCartEmpty)
+        @if (ViewBag.IsCartEmpty != true) // Handled fallback condition safely
         {
             <div class="nav-balance">
                 <span class="balance-label">₱</span>
-                <span class="balance-amount">@ViewBag.UserBalance.ToString("0.00")</span>
+                <span class="balance-amount">@(((decimal)(ViewBag.UserBalance ?? 0m)).ToString("0.00"))</span>
             </div>
         }
         <a asp-controller="Order" asp-action="Cart">
             <div class="cart-wrapper">
                 <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
             </div>
-        </a> 
+        </a>
 
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             <img class="nav-icon active-profile" src="@Url.Content(ViewBag.ProfileImagePath)" />
@@ -57,7 +56,6 @@
         z-index: 1000;
         background-color: #f5f5f5;
         height: 70px;
-        /*(100vw - 100%) calculates the exact width of the scrollbar dynamically. */
         padding-left: 30px;
         padding-right: calc(30px + (100vw - 100%));
         color: #3E4885;
@@ -83,11 +81,7 @@
             background: #3E4885;
             text-decoration: none;
             color: white;
-        } 
-
-        /* .nav-link.active {
-            border: 2px solid #9caf6c;
-        } */
+        }
 
     .active-cart {
         background: #3E4885;
@@ -99,40 +93,35 @@
         margin: 0;
         font-weight: bold;
         font-size: 25px;
-    }F
+    }
 
     .nav-right {
-        flex: 1; /* Takes up 1/3 of space */
+        flex: 1;
         display: flex;
         justify-content: flex-end;
         align-items: center;
         margin-right: 1px;
-        /* margin-left: 150px; */
         gap: 12px;
     }
 
     .cart-wrapper, .profile-wrapper {
         position: relative;
         display: inline-block;
-        width: 40px; /* Set a fixed size for a perfect circle */
+        width: 40px;
         height: 40px;
         vertical-align: middle;
-        /* This creates the rounded shape */
         border-radius: 50%;
-        overflow: hidden; /* Ensures nothing spills out of the circle */
-        background-color: #3E4885; /* Or a light background if your PNGs have transparency */
+        overflow: hidden;
+        background-color: #3E4885;
     }
 
     .cart-img, .profile-img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 'cover' is better for rounded icons to ensure they fill the circle */
-        border-radius: 50%; /* Double-ensure the images are rounded */
+        object-fit: cover;
+        border-radius: 50%;
         transition: opacity 0.3s ease;
-                
     }
-
-   
 
     .default-img {
         position: relative;
@@ -142,23 +131,18 @@
         box-sizing: border-box;
     }
 
- 
-
     .nav-icon {
         text-decoration: none;
         font-size: 25px;
-        /* These 3 lines center the 🛒 perfectly */
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        /* This is the secret: it keeps the bubble relative to the icon */
         position: relative;
         width: 45px;
         height: 45px;
         border-radius: 50%;
         transition: 0.3s ease;
     }
-
 
         .nav-icon:hover {
             text-decoration: none;
@@ -424,7 +408,7 @@
 
         .browse-btn:hover {
             background: #fff;
-            color:#3E4885; 
+            color: #3E4885;
             border: 1px solid #3E4885;
             text-decoration: none;
             transform: translateY(-1px);
@@ -545,9 +529,14 @@
         transition: .2s;
     }
 
-        .checkout-btn:hover {
+        .checkout-btn:hover:not([disabled]) {
             background: #1E1E2F;
             transform: translateY(-1px);
+        }
+
+        .checkout-btn[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
     .keep-shopping-btn {
@@ -571,15 +560,21 @@
             border-color: #3E4885;
             text-decoration: none;
         }
-
 </style>
 
 <div class="cart-container" style="margin-bottom: 5rem;">
 
     <div class="cart-title">
         <h1>Your Cart</h1>
-        <p>Every sip is a step towards serenity.</p>
+        <p>Premium compute hardware carefully matched to your workflow requirements.</p>
     </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-warning border border-warning-subtle rounded-3 p-3 mb-4 text-dark" style="background-color: #fff3cd; font-size: 14px;">
+            ⚠️ <strong>Fulfillment Alert:</strong> @TempData["Error"]
+        </div>
+    }
 
     <div class="cart-layout">
 
@@ -606,22 +601,16 @@
                                 <div class="item-info">
                                     <div class="item-name">@item.Menu.Name</div>
                                     <div class="item-tags">
-                                        @if (!string.IsNullOrEmpty(item.Temperature))
-                                        {
-                                            <span class="item-tag">
-                                                @item.Temperature
-                                            </span>
-                                        }
                                         @if (!string.IsNullOrEmpty(item.Notes))
                                         {
                                             <span class="item-tag">📝 @item.Notes</span>
                                         }
                                     </div>
                                     <div class="item-price-tag">
-                                        Variation: <strong>₱@item.Variation</strong>
+                                        Variation: <strong>@item.Variation</strong>
                                     </div>
                                     <div class="item-price-tag">
-                                        ₱@item.Price × @item.Quantity = <strong>₱@item.Total</strong>
+                                        ₱@item.Price.ToString("N2") × @item.Quantity = <strong>₱@item.Total.ToString("N2")</strong>
                                     </div>
                                 </div>
                             </div>
@@ -685,28 +674,28 @@
                     </div>
 
                     <div class="summary-total-row">
-                        <span class="summary-total-label">Balance</span>
-                        <span class="total-price bal">
+                        <span class="summary-total-label">Your Wallet Balance</span>
+                        <span class="total-price bal text-primary">
                             ₱@(((decimal)(ViewBag.UserBalance ?? 0m)).ToString("N2"))
                         </span>
                     </div>
 
                     <form asp-controller="Order" asp-action="Checkout" method="post">
                         @Html.AntiForgeryToken()
-                        @if (!ViewBag.IsAmountEnough)
+                        @if (ViewBag.IsAmountEnough == false || (ViewBag.UserBalance != null && (decimal)ViewBag.UserBalance < total))
                         {
                             <button type="submit" class="checkout-btn" disabled>
                                 Checkout →
                             </button>
                             <p class="text-danger" style="text-align: center; margin-top: 10px; font-size: 13px"><i>Insufficient Balance</i></p>
-                        } else
+                        }
+                        else
                         {
                             <button type="submit" class="checkout-btn">
                                 Checkout →
                             </button>
-                                
                         }
-                        </form>
+                    </form>
                     <a asp-controller="Store" asp-action="Index" class="keep-shopping-btn">
                         Continue Shopping
                     </a>

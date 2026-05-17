@@ -206,40 +206,101 @@ namespace IMDBSYS.Controllers
             return RedirectToAction("Cart");
         }
 
-        // ✅ UPDATED — CHECKOUT with balance check
+        // ========================================================
+        // POST / GET: Order/Checkout
+        // ========================================================
+        [HttpPost] // Recommending [HttpPost] for data mutations like checkout to ensure safety against CSRF
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
+            // 1. Fetch active incomplete order container along with deep relational item properties
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Menu) // Ensure the parent Menu structure is available if needed
                 .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsCompleted);
 
-            if (order == null)
+            if (order == null || !order.OrderItems.Any())
+            {
+                TempData["Error"] = "Your shopping cart is currently empty.";
                 return RedirectToAction("Cart");
+            }
 
-            var customerName = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            // 2. Fetch customer identity profile data record
+            var customerProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (customerProfile == null)
+            {
+                return NotFound();
+            }
+
             var totalAmount = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
-            if (customerName.Balance >= totalAmount)
-            {
-                order.IsCompleted = true;
-                order.OrderDate = DateTime.Now;
-                order.CustomerName = $"{customerName.FirstName} {customerName.LastName}";
-                order.TotalAmount = totalAmount;
-
-                customerName.Balance = customerName.Balance - order.TotalAmount;
-
-                ViewData["AmountCheck"] = true;
-            }
-            else
+            // 3. BALANCE CHECK VALIDATION GATE
+            if (customerProfile.Balance < totalAmount)
             {
                 ViewData["AmountCheck"] = false;
+                TempData["Error"] = "Insufficient funds in your account balance to process this checkout transaction.";
                 return RedirectToAction("Cart");
             }
 
+            // 4. INVENTORY AVAILABILITY CONTROL GATE
+            // We run a dry-run validation pass first so we don't accidentally update half the items if one fails
+            foreach (var item in order.OrderItems)
+            {
+                // Query the corresponding item row mapping match directly from MenuVariations
+                var dbVariation = await _context.MenuVariations
+                    .FirstOrDefaultAsync(v => v.MenuId == item.MenuId && v.VariantName == item.Variation);
+
+                if (dbVariation == null)
+                {
+                    TempData["Error"] = $"The specific configuration variant for '{item.Menu?.Name ?? "Item"}' could not be validated.";
+                    return RedirectToAction("Cart");
+                }
+
+                // Compare cart selection request quantity records against absolute disk stock values
+                if (dbVariation.StockQuantity < item.Quantity)
+                {
+                    TempData["Error"] = $"Fulfillment blocked: '{item.Menu?.Name} ({item.Variation})' has insufficient stock. Remaining units: {dbVariation.StockQuantity}.";
+                    return RedirectToAction("Cart");
+                }
+            }
+
+            // 5. INVENTORY REDUCTION PASS
+            // Once everything passes validation, safely reduce the quantities
+            foreach (var item in order.OrderItems)
+            {
+                var dbVariation = await _context.MenuVariations
+                    .FirstOrDefaultAsync(v => v.MenuId == item.MenuId && v.VariantName == item.Variation);
+
+                if (dbVariation != null)
+                {
+                    // Subtract the exact units purchased
+                    dbVariation.StockQuantity -= item.Quantity;
+                    _context.Update(dbVariation);
+                }
+            }
+
+            // 6. COMMIT ORDER COMPLETION PARAMETERS
+            order.IsCompleted = true;
+            order.OrderDate = DateTime.Now;
+            order.CustomerName = $"{customerProfile.FirstName} {customerProfile.LastName}".Trim();
+            order.TotalAmount = totalAmount;
+
+            // Deduct total billing cost from client structural balance
+            customerProfile.Balance -= totalAmount;
+
+            _context.Update(order);
+            _context.Update(customerProfile);
+
+            // Commit changes safely to database storage records
             await _context.SaveChangesAsync();
 
+            ViewData["AmountCheck"] = true;
             return RedirectToAction("Receipt");
         }
 
