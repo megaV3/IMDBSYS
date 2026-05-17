@@ -95,7 +95,7 @@ namespace IMDBSYS.Controllers
             // .Include(m => m.Variations) ensures the View can count how many variations exist
             var menus = await _context.Menus
                 .Include(m => m.Variations)
-                .OrderBy(m => m.Name)
+                .OrderBy(m => m.MenuId)
                 .ToListAsync();
 
             return View("MenuIndex", menus); // Explicitly naming the view if it doesn't match action name
@@ -169,22 +169,34 @@ namespace IMDBSYS.Controllers
             return View(availableVariants);
         }
 
-        // ========================================================
-        // POST: Admin/RequestRestock
-        // ========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RequestRestock(int menuVariationId, int quantityReceived)
+        public async Task<IActionResult> RequestRestock(int menuVariationId, int quantityReceived, decimal totalAmount)
         {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // 1. Fetch full user metadata safely
+            var userProfile = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (userProfile == null) return NotFound();
+
             if (quantityReceived <= 0)
             {
                 ModelState.AddModelError("", "Quantity must be at least 1 unit.");
+            }
+            if (totalAmount <= 0)
+            {
+                ModelState.AddModelError("", "Calculated total delivery cost must be a positive value.");
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Pull the targeted configuration variant record from the data tables
                     var variant = await _context.MenuVariations
                         .FirstOrDefaultAsync(v => v.MenuVariationId == menuVariationId);
 
@@ -193,21 +205,23 @@ namespace IMDBSYS.Controllers
                         return NotFound();
                     }
 
-                    // Calculate the mechanical warehouse stock increment addition
+                    // 1. Math modification step: Update warehouse physical inventory count
                     variant.StockQuantity += quantityReceived;
                     _context.Update(variant);
 
-                    // Generate a traceable historical trace ledger record log
+                    // 2. Map metrics down safely into the updated strongly-typed database log entity columns
                     var historyLog = new ProductDeliveryLog
                     {
                         MenuVariationId = menuVariationId,
                         QuantityAdded = quantityReceived,
+                        TotalAmount = totalAmount, // SAVED AS STRONGLY-TYPED NUMERIC TIERS
                         DeliveryDate = DateTime.Now,
-                        ProcessedBy = "System Admin",
-                        Remarks = "Supplier Fulfillment Stream Intake"
+                        ProcessedBy = userProfile.Username,
+                        Remarks = "Verified Supplier Fulfillment Intake Batch Processing Run Pass"
                     };
                     _context.ProductDeliveryLogs.Add(historyLog);
 
+                    // 3. Save as single database transaction block
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Dashboard));
                 }
@@ -217,7 +231,7 @@ namespace IMDBSYS.Controllers
                 }
             }
 
-            // FALLBACK OVERRIDE: If compilation data checks fail, pass the raw list back down
+            // Fallback block if any model state rules trigger issues
             var fallbackList = await _context.MenuVariations.Include(v => v.Menu).ToListAsync();
             return View(fallbackList);
         }
