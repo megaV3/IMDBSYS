@@ -4,6 +4,49 @@
     ViewData["Title"] = "Wallet Ledger";
 }
 
+<style>
+
+    .ledger-filter-input,
+    .ledger-filter-select {
+        height: 46px !important;
+        border-radius: 12px !important;
+        border: 1px solid #dbe2ea !important;
+        font-size: 15px;
+        color: #1e293b;
+        box-shadow: none !important;
+        transition: all 0.2s ease;
+    }
+
+        .ledger-filter-input:focus,
+        .ledger-filter-select:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+        }
+
+    .ledger-filter-input {
+        padding-left: 16px !important;
+        padding-right: 38px !important;
+    }
+
+    .ledger-clear-btn {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #94a3b8;
+        font-size: 18px;
+        font-weight: 700;
+        transition: 0.2s ease;
+        user-select: none;
+    }
+
+        .ledger-clear-btn:hover {
+            color: #475569;
+        }
+
+</style>
+
 <div class="page-header">
     <div>
         <h1>Wallet Top-Up Ledger</h1>
@@ -12,9 +55,61 @@
 </div>
 
 <div class="pkcard">
+
+    <!-- SEARCH + FILTER -->
+    <div class="card-body border-bottom" style="padding:18px;">
+
+        <div class="row g-3">
+
+            <!-- Search -->
+            <div class="col-md-5">
+
+                <div style="position:relative;">
+
+                    <input type="text"
+                           id="searchInput"
+                           class="form-control ledger-filter-input"
+                           placeholder="Search transaction, email, owner..."
+                           onkeyup="filterTable()" />
+
+                    <!-- Clear -->
+                    <span class="ledger-clear-btn"
+                          onclick="clearSearch()">
+                        ×
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Method Filter -->
+            <div class="col-md-3">
+
+                <select id="methodFilter"
+                        class="form-select ledger-filter-select"
+                        onchange="filterTable()">
+
+                    <option value="">All Methods</option>
+                    <option value="GCash">GCash</option>
+                    <option value="PayMaya">PayMaya</option>
+                    <option value="GoTyme">GoTyme</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
     <div class="card-body p-0">
+
         <div class="table-responsive">
-            <table class="table pk-table">
+
+            <table class="table pk-table" id="ledgerTable">
+
                 <thead>
                     <tr>
                         <th>Transaction ID</th>
@@ -23,42 +118,188 @@
                         <th>Method</th>
                         <th>Amount</th>
                         <th>Date</th>
-                        <th class="text-end" style="padding-right:22px;">Status</th>
+                        <th class="text-end" style="padding-right:22px;">
+                            Status
+                        </th>
                     </tr>
                 </thead>
+
                 <tbody>
+
                     @if (Model != null && Model.Any())
                     {
                         foreach (var txn in Model)
                         {
                             <tr>
+
+                                <!-- Transaction ID -->
                                 <td>
-                                    <span style="font-family:monospace; font-size:12px; color:#64748b;">@txn.TransactionId</span>
-                                </td>
-                                <td>
-                                    <div style="font-weight:700; color:#1e293b; font-size:13px;">@txn.Email</div>
-                                    <div style="font-size:11px; color:#94a3b8;">USR-@txn.UserId.ToString("D4")</div>
-                                </td>
-                                <td style="font-weight:600; color:#1e293b;">@txn.FirstName @txn.LastName</td>
-                                <td><span class="pk-badge pk-badge-slate">@txn.PaymentMethod</span></td>
-                                <td style="font-weight:700; color:#15803d;">+₱@txn.Amount.ToString("N2")</td>
-                                <td style="color:#64748b; font-size:12.5px;">@txn.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td class="text-end" style="padding-right:18px;">
-                                    <span class="pk-badge @(txn.Status == "Success" || txn.Status == "Approved" ? "pk-badge-success" : "pk-badge-danger")">
-                                        @txn.Status
+
+                                    <span style="
+                                                    font-family:monospace;
+                                                    font-size:12px;
+                                                    color:#64748b;">
+
+                                        @txn.TransactionId
+
                                     </span>
+
                                 </td>
+
+                                <!-- Account -->
+                                <td>
+
+                                    <div style="
+                                                    font-weight:700;
+                                                    color:#1e293b;
+                                                    font-size:13px;">
+
+                                        @txn.Email
+
+                                    </div>
+
+                                    <div style="
+                                                    font-size:11px;
+                                                    color:#94a3b8;">
+
+                                        USR-@txn.UserId.ToString("D4")
+
+                                    </div>
+
+                                </td>
+
+                                <!-- Owner -->
+                                <td style="
+                                                font-weight:600;
+                                                color:#1e293b;">
+
+                                    @txn.FirstName @txn.LastName
+
+                                </td>
+
+                                <!-- Method -->
+                                <td>
+
+                                    <span class="pk-badge pk-badge-slate">
+
+                                        @txn.PaymentMethod
+
+                                    </span>
+
+                                </td>
+
+                                <!-- Amount -->
+                                <td style="
+                                                font-weight:700;
+                                                color:#15803d;">
+
+                                    +₱@txn.Amount.ToString("N2")
+
+                                </td>
+
+                                <!-- Date -->
+                                <td style="
+                                                color:#64748b;
+                                                font-size:12.5px;">
+
+                                    @txn.TransactionDate.ToString("yyyy-MM-dd HH:mm")
+
+                                </td>
+
+                                <!-- Status -->
+                                <td class="text-end"
+                                    style="padding-right:18px;">
+
+                                    <span class="pk-badge @(txn.Status == "Success" || txn.Status == "Approved"
+                                                                                  ? "pk-badge-success"
+                                                                                  : "pk-badge-danger")">
+
+                                        @txn.Status
+
+                                    </span>
+
+                                </td>
+
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="7" class="text-center py-5" style="color:#94a3b8;">No financial history logs found.</td>
+
+                            <td colspan="7"
+                                class="text-center py-5"
+                                style="color:#94a3b8;">
+
+                                No financial history logs found.
+
+                            </td>
+
                         </tr>
                     }
+
                 </tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </div>
+
+<!-- FILTER SCRIPT -->
+<script>
+
+    function filterTable() {
+
+        let search =
+            document.getElementById("searchInput")
+            .value
+            .toLowerCase();
+
+        let method =
+            document.getElementById("methodFilter")
+            .value
+            .toLowerCase();
+
+        let table =
+            document.getElementById("ledgerTable");
+
+        let rows =
+            table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+
+            let rowText =
+                rows[i].innerText.toLowerCase();
+
+            let rowMethod =
+                rows[i].cells[3]?.innerText.toLowerCase();
+
+            let matchesSearch =
+                rowText.includes(search);
+
+            let matchesMethod =
+                method === "" || rowMethod.includes(method);
+
+            if (matchesSearch && matchesMethod) {
+
+                rows[i].style.display = "";
+
+            }
+            else {
+
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+    function clearSearch() {
+
+        document.getElementById("searchInput").value = "";
+
+        filterTable();
+    }
+
+</script>
