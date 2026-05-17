@@ -55,15 +55,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#reviewItemsModal-@order.OrderId">
                                             Items (@(order.OrderItems?.Count ?? 0))
                                         </button>
-                                        @if (!order.IsCompleted)
-                                        {
-                                            <form asp-action="CompleteOrder" method="post" class="m-0">
-                                                <input type="hidden" name="orderId" value="@order.OrderId" />
-                                                <button type="submit" class="pk-btn pk-btn-primary pk-btn-sm">
-                                                    Complete
-                                                </button>
-                                            </form>
-                                        }
+                                       
                                     </div>
                                 </td>
                             </tr>

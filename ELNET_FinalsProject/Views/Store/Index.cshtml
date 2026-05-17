@@ -1,6 +1,5 @@
-﻿@{
-}
-<!-- For Store's Index.cshtml design -->
+﻿@model IMDBSYS.ViewModels.StoreViewModel
+
 <link href="~/css/storeIndex.css" rel="stylesheet" />
 <div class="navbar">
     <div class="nav-left">
@@ -20,12 +19,10 @@
         </div>
         
         <a asp-controller="Order" asp-action="Cart" style="position:relative; display:inline-block;">
-            <!-- Wrap only the images in the circular div -->
             <div class="cart-wrapper">
                 <img class="cart-img default-img" src="~/images/cart-grey.png" alt="Cart" />
             </div>
 
-            <!-- Badge stays outside the circular clip -->
             <span id="cart-count" style="
                 position: absolute;
                 top: 0;
@@ -42,14 +39,10 @@
             </span>
         </a>
 
-        @* <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile"> *@
         <a asp-controller="Identity" asp-action="Profile" class="nav-icon active-profile">
             <img class="nav-icon active-profile" src="@Url.Content(Model.ProfileImagePath)" />
         </a>
-
-
     </div>
-
 </div>
 
 <style>
@@ -730,7 +723,6 @@
     }
 
 </style>
-
 @if (!User.Identity.IsAuthenticated)
 {
     <a asp-controller="Auth" asp-action="Login">Login</a>
@@ -738,7 +730,6 @@
 
 <div class="header">
     <h2>Welcome to the Pickout Hardware Store!</h2>
-    @* <h5>Enjoy your shopping experience, <b>@User.Identity.Name!</b></h5> *@
     <h5>Explore premium computer hardware and accessories, <b>@Model.UserProfile.FirstName!</b></h5>
 </div>
 
@@ -749,30 +740,14 @@
     </div>
 
     <div class="quick-menu">
-
-        <a href="#signatures" class="quick-btn active-menu">
-            Storage Drives
-        </a>
-
-        <a href="#espresso" class="quick-btn">
-            RAM
-        </a>
-
-        <a href="#pistachio" class="quick-btn">
-            PSU
-        </a>
-
-        <a href="#milk-based" class="quick-btn">
-            Input Devices
-        </a>
-
-        <a href="#frappes" class="quick-btn">
-            Output Devices
-        </a>
-
+        <a href="#signatures" class="quick-btn active-menu">Storage Drives</a>
+        <a href="#espresso" class="quick-btn">RAM</a>
+        <a href="#pistachio" class="quick-btn">PSU</a>
+        <a href="#milk-based" class="quick-btn">Input Devices</a>
+        <a href="#frappes" class="quick-btn">Output Devices</a>
     </div>
 
-    @* ⋆.𐙚 ̊  SIGNATURES ̊  𐙚.⋆ *@
+    @* STORAGE DEVICES *@
     <div class="signatures-header" id="signatures">
         <h2 class="mt-4">STORAGE DEVICES</h2>
     </div>
@@ -787,7 +762,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', '@item.Category')">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
                             Order Now
                         </button>
                     </div>
@@ -796,6 +771,7 @@
         }
     </div>
 
+    @* RAM *@
     <div class="espresso-header" id="espresso">
         <h2 class="mt-5">RAM</h2>
     </div>
@@ -810,7 +786,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', '@item.Category')">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
                             Order Now
                         </button>
                     </div>
@@ -819,6 +795,7 @@
         }
     </div>
 
+    @* PSU *@
     <div class="espresso-header" id="pistachio">
         <h2 class="mt-5">PSU</h2>
     </div>
@@ -833,7 +810,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', '@item.Category')">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
                             Order Now
                         </button>
                     </div>
@@ -842,6 +819,7 @@
         }
     </div>
 
+    @* INPUT DEVICES *@
     <div class="espresso-header" id="milk-based">
         <h2 class="mt-5">INPUT DEVICES</h2>
     </div>
@@ -856,8 +834,8 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', '@item.Category')">
-                                Order Now
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
+                            Order Now
                         </button>
                     </div>
                 </div>
@@ -865,6 +843,7 @@
         }
     </div>
 
+    @* OUTPUT DEVICES *@
     <div class="espresso-header" id="frappes">
         <h2 class="mt-5">OUTPUT DEVICES</h2>
     </div>
@@ -879,7 +858,7 @@
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle">PHP @item.Price.ToString("0")</p>
                         <button type="button" class="btn-cart"
-                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', '@item.Category')">
+                                onclick="openBasketModal(@item.MenuId, '@Html.Raw(item.Name.Replace("'", "\\'"))', @item.Price, '@Html.Raw(item.Description.Replace("'", "\\'"))', '@item.ImagePath', @System.Text.Json.JsonSerializer.Serialize(item.Variations.Select(v => new { v.MenuVariationId, v.VariantName, v.Price })))">
                             Order Now
                         </button>
                     </div>
@@ -887,31 +866,21 @@
             }
         }
     </div>
-
 </div>
 
-<!-- BASKET MODAL — once, outside all loops -->
 <div id="basketOverlay" onclick="handleOverlayClick(event)">
     <div id="basketModal">
-
-        <div id="bModalImgWrap">☕</div>
-
+        <div id="bModalImgWrap">🖥️</div>
         <div class="modal-body">
-
             <div class="modal-row-header">
                 <div id="bModalName"></div>
                 <div id="bModalPrice"></div>
             </div>
             <p id="bModalDesc"></p>
 
-            <div id="variationLabel" class="modal-section-label">Variation</div>
-            <div id="variationContainer" class="temp-row">
-            </div>
+            <div id="variationLabel" class="modal-section-label">Available Variant Configuration</div>
+            <div id="variationContainer" class="temp-row"></div>
 
-            <div style="display:none;">
-                <button id="btnHot"></button>
-                <button id="btnIced"></button>
-            </div>
             <div class="modal-section-label">Quantity</div>
             <div class="qty-wrapper">
                 <div class="qty-row">
@@ -922,175 +891,129 @@
                 <span id="bSubtotal"></span>
             </div>
 
-
             <div class="modal-section-label">Special Instructions</div>
             <textarea id="bNotes" rows="2" placeholder="e.g. Partitioning requests, gift wrapping, etc..."></textarea>
+            
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeBasketModal()">Cancel</button>
                 <button class="btn-add-confirm" onclick="submitBasket()">Add to Basket</button>
             </div>
-
         </div>
     </div>
 </div>
 
 <div id="bToast"></div>
-
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
 <script>
-    const variationsMap = {
-        "StorageDevices": [
-            { spec: "256GB", add: 0 },
-            { spec: "512GB", add: 500 },
-            { spec: "1TB", add: 1500 },
-            { spec: "2TB", add: 3500 }
-        ],
-        "RAM": [
-            { spec: "8GB", add: 0 },
-            { spec: "16GB", add: 1200 },
-            { spec: "32GB", add: 2500 }
-        ]
-    };
-    var _selectedVariation = ""; // Replace _temp
-    var _basePrice = 0;
-    var _currentAddon = 0;
+    var _menuId;
+    var _qty = 1;
+    var _selectedVariationId = 0;
+    var _selectedVariationPrice = 0;
 
-    var _menuId, _qty = 1;
-    function openBasketModal(menuId, name, price, desc, imgPath, category) {
+    function openBasketModal(menuId, name, price, desc, imgPath, variationsList) {
         _menuId = menuId;
-        _basePrice = price;
         _qty = 1;
-        _currentAddon = 0;
 
-        // Reset Modal content
+        // Reset Modal static parameters
         document.getElementById('bModalName').textContent = name;
-        document.getElementById('bModalPrice').textContent = 'PHP ' + price;
         document.getElementById('bModalDesc').textContent = desc;
 
-        // Handle Variations dynamically
+        // Safely evaluate raw variations array lists parsed from loop markup variables
+        let variations = variationsList;
+        if (typeof variations === 'string') {
+            variations = JSON.parse(variationsList);
+        }
+
         const container = document.getElementById('variationContainer');
         if (!container) {
-            console.error("variationContainer not found!");
+            console.error("variationContainer wrapper context element missing.");
             return;
         }
         container.innerHTML = "";
 
-        // Determine which options to show
-        let options = variationsMap[category] || [{ spec: "Standard", add: 0 }];
+        // Fallback structural initialization check
+        if (!variations || variations.length === 0) {
+            variations = [{ MenuVariationId: 0, VariantName: "Standard", Price: price }];
+        }
 
-        // Set initial selection
-        _selectedVariation = options[0].spec;
-        _currentAddon = options[0].add;
+        // Set baseline tracking assignments matching your database properties
+        _selectedVariationId = variations[0].MenuVariationId;
+        _selectedVariationPrice = parseFloat(variations[0].Price);
 
-        // Create buttons
-        options.forEach(opt => {
+        // Append item variation nodes layout
+        variations.forEach((opt, index) => {
             const btn = document.createElement('button');
-            btn.className = 'temp-btn' + (opt.spec === _selectedVariation ? ' active' : '');
-            btn.textContent = opt.spec + (opt.add > 0 ? " (+₱" + opt.add + ")" : "");
-    
+            btn.className = 'temp-btn' + (index === 0 ? ' active' : '');
+            btn.textContent = opt.VariantName + " (₱" + parseFloat(opt.Price).toLocaleString('en-US', { minimumFractionDigits: 0 }) + ")";
+            
             btn.onclick = function() {
-                _selectedVariation = opt.spec;
-                _currentAddon = opt.add;
-        
-                // UI Toggle
+                _selectedVariationId = opt.MenuVariationId; // Capture integer ID safely on select
+                _selectedVariationPrice = parseFloat(opt.Price);
+                
+                // UI Toggle selection highlights
                 container.querySelectorAll('.temp-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-        
+                
                 updateSubtotal();
             };
             container.appendChild(btn);
         });
 
-        // --- Image Handling ---
+        // Image container updates
         var wrap = document.getElementById('bModalImgWrap');
         if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
-            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:cover; border-radius:12px;" />';
+            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" style="width:100%; height:100%; object-fit:contain; background:#fff; padding:10px;" />';
         } else {
             wrap.innerHTML = '<span style="font-size: 50px;">🖥️</span>';
         }
 
-        // --- Quantity & UI Reset ---
+        // Counter states defaults reset
         document.getElementById('bQtyVal').textContent = _qty;
         document.getElementById('bNotes').value = '';
-        document.querySelectorAll('.allergy-chip').forEach(function(c) {
-            c.classList.remove('active');
-        });
 
-        // --- Final Display ---
         updateSubtotal();
         document.getElementById('basketOverlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
-    function updateSubtotal() {
-        let totalUnit = _basePrice + _currentAddon;
-        document.getElementById('bSubtotal').textContent = '= PHP ' + (totalUnit * _qty).toLocaleString();
-    }
-    function submitBasket() {
-        var chips = [];
-        document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
-            chips.push(c.textContent);
-        });
-        var freeText = document.getElementById('bNotes').value.trim();
-        var parts = chips.join(', ');
-        var notes = (parts && freeText) ? (parts + ' | ' + freeText) : (parts || freeText);
 
+    function updateSubtotal() {
+        document.getElementById('bModalPrice').textContent = 'PHP ' + _selectedVariationPrice.toLocaleString('en-US', { minimumFractionDigits: 2 });
+        document.getElementById('bSubtotal').textContent = '= PHP ' + (_selectedVariationPrice * _qty).toLocaleString('en-US', { minimumFractionDigits: 2 });
+    }
+
+    function changeQty(delta) {
+        _qty = Math.max(1, _qty + delta);
+        document.getElementById('bQtyVal').textContent = _qty;
+        updateSubtotal();
+    }
+
+    function submitBasket() {
+        var notes = document.getElementById('bNotes').value.trim();
+
+        // SYNC: Passed parameter keys updated to perfectly match C# property bindings
         fetch('/Order/AddToCart', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'menuId='       + encodeURIComponent(_menuId)
-                + '&quantity='    + encodeURIComponent(_qty)
-                + '&variation='   + encodeURIComponent(_selectedVariation) // CHANGED FROM TEMPERATURE
-                + '&notes='       + encodeURIComponent(notes)
-                + '&price=' + (_basePrice + _currentAddon)
+            body: 'menuId='           + encodeURIComponent(_menuId)
+                + '&quantity='        + encodeURIComponent(_qty)
+                + '&menuVariationId=' + encodeURIComponent(_selectedVariationId) // Connects the primary key id parameters
+                + '&notes='           + encodeURIComponent(notes)
         })
         .then(r => r.json())
         .then(data => {
             if (data.success) {
                 closeBasketModal();
                 updateCartCount(_qty);
-                showToast('Added ' + _qty + ' to basket!');
+                showToast('Added ' + _qty + ' item(s) to basket!');
+            } else {
+                showToast(data.message || 'Error pushing parameters.');
             }
+        })
+        .catch(err => {
+            showToast('Failed to contact server fulfillment engine.');
         });
     }
-
-    @*
-    function openBasketModal(menuId, name, price, desc, imgPath, canBeHot, canBeCold) {
-        _menuId = menuId;
-        _price  = price;
-        _qty    = 1;
-        _temp   = canBeCold ? 'Iced' : 'Hot';
-
-        document.getElementById('bModalName').textContent  = name;
-        document.getElementById('bModalPrice').textContent = 'PHP ' + price;
-        document.getElementById('bModalDesc').textContent  = desc;
-        document.getElementById('bQtyVal').textContent     = 1;
-        document.getElementById('bSubtotal').textContent   = '= PHP ' + price;
-        document.getElementById('bNotes').value            = '';
-
-        document.querySelectorAll('.allergy-chip').forEach(function(c) {
-            c.classList.remove('active');
-        });
-
-        var wrap = document.getElementById('bModalImgWrap');
-        if (imgPath && imgPath.trim() !== '' && imgPath.trim() !== 'null') {
-            wrap.innerHTML = '<img src="' + imgPath + '" alt="' + name + '" />';
-        } else {
-            wrap.innerHTML = '☕';
-        }
-
-        var btnHot  = document.getElementById('btnHot');
-        var btnIced = document.getElementById('btnIced');
-        btnHot.classList.remove('active', 'disabled');
-        btnIced.classList.remove('active', 'disabled');
-        if (!canBeHot)  btnHot.classList.add('disabled');
-        if (!canBeCold) btnIced.classList.add('disabled');
-        document.getElementById(_temp === 'Hot' ? 'btnHot' : 'btnIced').classList.add('active');
-
-        document.getElementById('basketOverlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-    *@
 
     function closeBasketModal() {
         document.getElementById('basketOverlay').style.display = 'none';
@@ -1102,54 +1025,6 @@
             closeBasketModal();
         }
     }
-
-    function selectTemp(t) {
-        _temp = t;
-        document.getElementById('btnHot').classList.toggle('active',  t === 'Hot');
-        document.getElementById('btnIced').classList.toggle('active', t === 'Iced');
-    }
-
-    function changeQty(delta) {
-        _qty = Math.max(1, _qty + delta);
-        document.getElementById('bQtyVal').textContent = _qty;
-        updateSubtotal(); // This ensures (Base + Addon) * Qty is calculated
-    }
-
-    function toggleChip(el) {
-        el.classList.toggle('active');
-    }
-
-    @*
-    function submitBasket() {
-        var chips = [];
-        document.querySelectorAll('.allergy-chip.active').forEach(function(c) {
-            chips.push(c.textContent);
-        });
-        var freeText = document.getElementById('bNotes').value.trim();
-        var parts    = chips.join(', ');
-        var notes    = (parts && freeText) ? (parts + ' | ' + freeText) : (parts || freeText);
-
-        fetch('/Order/AddToCart', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'menuId='       + encodeURIComponent(_menuId)
-                + '&quantity='    + encodeURIComponent(_qty)
-                + '&temperature=' + encodeURIComponent(_temp)
-                + '&notes='       + encodeURIComponent(notes)
-        })
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            if (data.success) {
-                closeBasketModal();
-                updateCartCount(_qty);
-                showToast('Added ' + _qty + ' item(s) to your basket! 🛒');
-            }
-        })
-        .catch(function() {
-            showToast('Something went wrong. Please try again.');
-        });
-    }
-    *@
 
     function updateCartCount(added) {
         var el = document.getElementById('cart-count');
@@ -1173,19 +1048,17 @@
 <script>
     document.querySelectorAll('.quick-btn').forEach(button => {
         button.addEventListener('click', function() {
-            document.querySelectorAll('.quick-btn'). forEach(btn => btn.classList.remove('active-menu'));
-
+            document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.remove('active-menu'));
             this.classList.add('active-menu');
         });
     });
 </script>
 
-@* scrollspy *@
+@* Scrollspy Navigation Management Engine *@
 <script>
-
-        const observerOptions = {
+    const observerOptions = {
         root: null,
-        rootMargin: '-15% 0px -75% 0px', // Adjusts the "trigger" area in the viewport
+        rootMargin: '-15% 0px -75% 0px',
         threshold: 0
     };
 
@@ -1193,13 +1066,10 @@
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.getAttribute('id');
-
-                // Remove active class from all buttons
                 document.querySelectorAll('.quick-btn').forEach(btn => {
                     btn.classList.remove('active-menu');
                 });
 
-                // Add active class to the matching link
                 const activeLink = document.querySelector(`.quick-btn[href="#${id}"]`);
                 if (activeLink) {
                     activeLink.classList.add('active-menu');
@@ -1208,24 +1078,21 @@
         });
     }, observerOptions);
 
-    // Track all sections that have an ID corresponding to a menu link
     document.querySelectorAll('section[id], div[id]').forEach((section) => {
         observer.observe(section);
     });
 </script>
 
+@* Global Interactive Live Search Script Engine *@
 <script>
-    // for search bar
-        document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById('menuSearch');
         const resultsDiv = document.getElementById('searchResults');
-    
-        // Get all product titles from your cards
         const cards = document.querySelectorAll('.card');
 
         searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase();
-            resultsDiv.innerHTML = ''; // Clear previous results
+            resultsDiv.innerHTML = '';
 
             if (query.length < 1) {
                 resultsDiv.style.display = 'none';
@@ -1243,11 +1110,9 @@
                     item.className = 'search-item';
                     item.innerText = title;
 
-                    // When clicked, scroll to that specific card
                     item.onclick = function () {
                         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     
-                        // Optional: Brief highlight effect so the user sees which one it is
                         card.style.transition = "0.5s";
                         card.style.boxShadow = "0 0 20px #3E4885";
                         setTimeout(() => { card.style.boxShadow = ""; }, 2000);
@@ -1263,9 +1128,6 @@
                 const noResult = document.createElement('div');
                 noResult.className = 'search-item no-result';
                 noResult.innerText = 'No match found';
-                noResult.style.color = '#999';
-                noResult.style.cursor = 'default';
-
                 resultsDiv.appendChild(noResult);
             }
 
@@ -1273,42 +1135,23 @@
         });
 
         searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const query = this.value.toLowerCase();
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').innerText;
+                    if (title.toLowerCase() === query) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.style.transition = "0.5s";
+                        card.style.boxShadow = "0 0 20px #3E4885";
+                        setTimeout(() => { card.style.boxShadow = ""; }, 2000);
+                        resultsDiv.style.display = 'none';
+                    }
+                });
+            }
+        });
 
-        if (e.key === 'Enter') {
-
-            const query = this.value.toLowerCase();
-
-            cards.forEach(card => {
-
-                const title = card.querySelector('.card-title').innerText;
-
-                if (title.toLowerCase() === query) {
-
-                    card.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-
-                    card.style.transition = "0.5s";
-                    card.style.boxShadow = "0 0 20px #3E4885";
-
-                    setTimeout(() => {
-                        card.style.boxShadow = "";
-                    }, 2000);
-
-                    resultsDiv.style.display = 'none';
-                }
-            });
-        }
-    });
-
-
-        // Close dropdown if user clicks away
         document.addEventListener('click', (e) => {
-            if (
-                !searchInput.contains(e.target) &&
-                !resultsDiv.contains(e.target)
-            ) {
+            if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
                 resultsDiv.style.display = 'none';
             }
         });
@@ -1317,14 +1160,10 @@
 
 <script>
     const quickMenu = document.querySelector('.quick-menu');
-
     window.addEventListener('scroll', () => {
-
         if (window.scrollY > 10) {
             quickMenu.classList.add('scrolled');
-        }
-
-        else {
+        } else {
             quickMenu.classList.remove('scrolled');
         }
     });
