@@ -274,85 +274,278 @@
                     </div>
 
                     <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                        <div class="modal-body" style="white-space:normal;">
-                            <input type="hidden" name="MenuId" value="@item.MenuId" />
+                        <div class="modal-body"
+                             style="
+                background:#f8fafc;
+                padding:20px 22px;
+                white-space:normal;">
 
-                            <div class="row g-4">
-                                <div class="col-md-6 border-end pe-4" style="border-color: #E2E8F0 !important;">
-                                    
-                                    <div class="form-section-title">Product Image</div>
-                                    <div class="img-upload-frame">
-                                        <img src="@(string.IsNullOrEmpty(item.ImagePath) ? "/images/profiles/default-picture.webp" : item.ImagePath)" style="max-height:140px; object-fit:contain;" alt="Hardware Image" />
-                                    </div>
-                                    <div class="mb-4">
-                                        <input type="file" name="ImageFile" class="form-control" accept="image/*" />
-                                    </div>
+                            <input type="hidden"
+                                   name="MenuId"
+                                   value="@item.MenuId" />
 
-                                    <div class="mb-3">
-                                        <label class="form-label">Product Name</label>
-                                        <input type="text" name="Name" class="form-control" value="@item.Name" required />
-                                    </div>
+                            <div class="row g-3">
 
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-6">
-                                            <label class="form-label">Category</label>
-                                            <input type="text" name="Category" class="form-control" value="@item.Category" required />
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label">Base Price (₱)</label>
-                                            <input type="number" step="0.01" name="Price" class="form-control fw-bold" value="@item.Price" required />
-                                        </div>
-                                    </div>
+                                <!-- LEFT -->
+                                <div class="col-lg-4">
 
-                                    <div class="mb-0">
-                                        <label class="form-label">Description</label>
-                                        <textarea name="Description" class="form-control" rows="4" placeholder="Technical catalog specifics..." required>@item.Description</textarea>
-                                    </div>
-                                </div>
+                                    <div style="
+                            background:#fff;
+                            border:1px solid #e2e8f0;
+                            border-radius:18px;
+                            padding:18px;">
 
-                                <div class="col-md-6 ps-4">
-                                    <div class="form-section-title">Configuration Pricing Layers</div>
-                                    
-                                    <div class="variant-pricing-scroll-box">
-                                        @if (item.Variations != null && item.Variations.Any())
-                                        {
-                                            // Counter tracking index variables to ensure array elements map onto HTTP POST contexts flawlessly
-                                            int varIdx = 0;
-                                            foreach (var variant in item.Variations.OrderBy(v => v.Price))
-                                            {
-                                                <div class="variant-pricing-card">
-                                                    <input type="hidden" name="Variations[@varIdx].MenuVariationId" value="@variant.MenuVariationId" />
-                                                    <input type="hidden" name="Variations[@varIdx].MenuId" value="@variant.MenuId" />
-                                                    <input type="hidden" name="Variations[@varIdx].VariantName" value="@variant.VariantName" />
+                                        <!-- IMAGE -->
+                                        <div class="mb-3">
 
-                                                    <div class="row align-items-center g-3">
-                                                        <div class="col-6 text-start">
-                                                            <div style="font-size: 14px; font-weight: 700; color: #1E293B;">@variant.VariantName</div>
-                                                            <div style="font-size: 11px; font-weight: 600; color: #94A3B8; margin-top: 1px;">Stock: @variant.StockQuantity units</div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="input-group">
-                                                                <span class="input-group-text variant-currency-addon">₱</span>
-                                                                <input type="number" step="0.01" name="Variations[@varIdx].Price" class="form-control variant-price-input text-end fw-bold text-dark" value="@variant.Price" required />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                varIdx++;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <div class="text-center py-5 text-muted small border rounded-3 bg-light">
-                                                No secondary pricing tier loops attached onto this primary hardware log item reference.
+                                            <label class="form-label">
+                                                Product Image
+                                            </label>
+
+                                            <div style="
+                                    height:180px;
+                                    border-radius:16px;
+                                    border:1.5px dashed #CBD5E1;
+                                    background:
+                                        linear-gradient(
+                                            180deg,
+                                            #F8FAFC 0%,
+                                            #F1F5F9 100%
+                                        );
+
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+
+                                    overflow:hidden;">
+
+                                                <img src="@(string.IsNullOrEmpty(item.ImagePath)
+                                                                                     ? "/images/profiles/default-picture.webp"
+                                                                                     : item.ImagePath)"
+                                                     style="
+                                        max-width:75%;
+                                        max-height:135px;
+                                        object-fit:contain;" />
+
                                             </div>
-                                        }
+
+                                        </div>
+
+                                        <!-- FILE -->
+                                        <div class="mb-3">
+
+                                            <input type="file"
+                                                   name="ImageFile"
+                                                   class="form-control form-control-sm"
+                                                   accept="image/*" />
+
+                                        </div>
+
+                                        <!-- NAME -->
+                                        <div class="mb-3">
+
+                                            <label class="form-label">
+                                                Product Name
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Name"
+                                                   class="form-control"
+                                                   value="@item.Name"
+                                                   required />
+
+                                        </div>
+
+                                        <!-- CATEGORY -->
+                                        <div class="mb-3">
+
+                                            <label class="form-label">
+                                                Category
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Category"
+                                                   class="form-control"
+                                                   value="@item.Category"
+                                                   required />
+
+                                        </div>
+
+                                        <!-- PRICE -->
+                                        <div>
+
+                                            <label class="form-label">
+                                                Base Price
+                                            </label>
+
+                                            <div class="input-group">
+
+                                                <span class="input-group-text"
+                                                      style="
+                                        background:#EEF2FF;
+                                        color:#2D3A8C;
+                                        font-weight:700;">
+
+                                                    ₱
+
+                                                </span>
+
+                                                <input type="number"
+                                                       step="0.01"
+                                                       name="Price"
+                                                       class="form-control fw-bold"
+                                                       value="@item.Price"
+                                                       required />
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
+
                                 </div>
+
+                                <!-- RIGHT -->
+                                <div class="col-lg-8">
+
+                                    <div style="
+                            background:#fff;
+                            border:1px solid #e2e8f0;
+                            border-radius:18px;
+                            padding:18px;">
+
+                                        <!-- DESCRIPTION -->
+                                        <div class="mb-4">
+
+                                            <div class="form-section-title mb-2">
+                                                Product Details
+                                            </div>
+
+                                            <textarea name="Description"
+                                              class="form-control"
+                                              rows="4"
+                                              required>@item.Description</textarea>
+
+                                        </div>
+
+                                        <!-- VARIANTS -->
+                                        <div>
+
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                                <div class="form-section-title mb-0">
+                                                    Variant Pricing
+                                                </div>
+
+                                                <span class="pk-badge pk-badge-navy">
+
+                                                    @(item.Variations?.Count ?? 0)
+                                                    Variants
+
+                                                </span>
+
+                                            </div>
+
+                                            <div style="
+                                    max-height:300px;
+                                    overflow-y:auto;
+                                    padding-right:4px;">
+
+                                                @if (item.Variations != null && item.Variations.Any())
+                                                {
+                                                    int varIdx = 0;
+
+                                                    foreach (var variant in item.Variations)
+                                                    {
+                                                        <div style="
+                                                        border:1px solid #E2E8F0;
+                                                        border-radius:14px;
+                                                        padding:14px 16px;
+                                                        margin-bottom:10px;
+                                                        background:#fff;">
+
+                                                            <input type="hidden"
+                                                                   name="Variations[@varIdx].MenuVariationId"
+                                                                   value="@variant.MenuVariationId" />
+
+                                                            <input type="hidden"
+                                                                   name="Variations[@varIdx].MenuId"
+                                                                   value="@variant.MenuId" />
+
+                                                            <input type="hidden"
+                                                                   name="Variations[@varIdx].VariantName"
+                                                                   value="@variant.VariantName" />
+
+                                                            <div class="d-flex justify-content-between align-items-center">
+
+                                                                <!-- LEFT -->
+                                                                <div>
+
+                                                                    <div style="
+                                                                    font-size:14px;
+                                                                    font-weight:700;
+                                                                    color:#1e293b;">
+
+                                                                        @variant.VariantName
+
+                                                                    </div>
+
+                                                                    <div style="
+                                                                    font-size:12px;
+                                                                    color:#94a3b8;">
+
+                                                                        Stock:
+                                                                        @variant.StockQuantity units
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <!-- RIGHT -->
+                                                                <div style="width:160px;">
+
+                                                                    <div class="input-group input-group-sm">
+
+                                                                        <span class="input-group-text"
+                                                                              style="
+                                                                        background:#EEF2FF;
+                                                                        color:#2D3A8C;
+                                                                        font-weight:700;">
+
+                                                                            ₱
+
+                                                                        </span>
+
+                                                                        <input type="number"
+                                                                               step="0.01"
+                                                                               name="Variations[@varIdx].Price"
+                                                                               class="form-control text-end fw-bold"
+                                                                               value="@variant.Price"
+                                                                               required />
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        varIdx++;
+                                                    }
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
-
                         <div class="modal-footer">
                             <button type="button" class="pk-btn pk-btn-outline pk-btn-sm" data-bs-dismiss="modal" style="border-radius: 12px; padding: 10px 24px;">Cancel</button>
                             <button type="submit" class="pk-btn pk-btn-primary pk-btn-sm" style="border-radius: 12px; padding: 10px 24px; background-color: #1E2963;">Save Changes</button>
@@ -426,98 +619,354 @@
         </div>
     }
 }
-<div class="modal fade pk-modal" id="addNewItemModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade pk-modal"
+     id="addNewItemModal"
+     tabindex="-1"
+     aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered modal-xl">
+
         <div class="modal-content">
+
+            <!-- HEADER -->
             <div class="modal-header">
-                <h5 class="modal-title">➕ Register New Product Component</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+
+                <h5 class="modal-title">
+                    Register New Product Component
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
             </div>
 
-            <form asp-action="Create" method="post" enctype="multipart/form-data">
-                <div class="modal-body" style="white-space:normal;">
-                    
-                    <div class="row g-4">
-                        <div class="col-md-6 border-end pe-4" style="border-color: #E2E8F0 !important;">
-                            
-                            <div class="form-section-title">Upload Product Thumbnail</div>
-                            <div class="img-upload-frame" id="createImgPreviewFrame">
-                                <span style="font-size: 50px; color: #CBD5E1;">🖥️</span>
-                            </div>
-                            <div class="mb-4">
-                                <input type="file" name="ImageFile" id="createImgFileInput" class="form-control" accept="image/*" required />
+            <!-- FORM -->
+            <form asp-action="Create"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="modal-body"
+                     style="
+                        background:#f8fafc;
+                        padding:20px 22px;
+                        white-space:normal;">
+
+                    <div class="row g-3">
+
+                        <!-- LEFT -->
+                        <div class="col-md-5 border-end pe-4"
+                             style="border-color:#E2E8F0 !important;">
+
+                            <!-- TITLE -->
+                            <div class="form-section-title mb-3">
+                                Product Details
                             </div>
 
+                            <!-- IMAGE -->
                             <div class="mb-3">
-                                <label class="form-label">Product Name</label>
-                                <input type="text" name="Name" class="form-control" placeholder="e.g., Kingston KC600 SSD Sata 3" required />
-                            </div>
 
-                            <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <label class="form-label">Category</label>
-                                    <select name="Category" class="form-select" required>
-                                        <option value="" disabled selected>Select category...</option>
-                                        <option value="StorageDevices">Storage Devices</option>
-                                        <option value="RAM">RAM</option>
-                                        <option value="PSU">PSU</option>
-                                        <option value="inputDevices">Input Devices</option>
-                                        <option value="outputDevices">Output Devices</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label">Base Price (₱)</label>
-                                    <input type="number" step="0.01" name="Price" class="form-control fw-bold" placeholder="0.00" required />
-                                </div>
-                            </div>
+                                <div class="img-upload-frame"
+                                     id="createImgPreviewFrame"
+                                     style="
+                                        min-height:180px;
+                                        border-radius:18px;
+                                        border:1.5px dashed #CBD5E1;
+                                        background:
+                                            linear-gradient(
+                                                180deg,
+                                                #F8FAFC 0%,
+                                                #F1F5F9 100%
+                                            );
 
-                            <div class="mb-0">
-                                <label class="form-label">Description</label>
-                                <textarea name="Description" class="form-control" rows="4" placeholder="Enter full technical detailed engineering specifications..." required></textarea>
-                            </div>
-                        </div>
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:center;">
 
-                        <div class="col-md-6 ps-4">
-                            <div class="form-section-title">Initial Configuration Layers</div>
-                            <p class="text-muted small mb-3" style="margin-top:-6px;">Provide basic inventory parameters to initialize product variants.</p>
-                            
-                            <div class="variant-pricing-scroll-box" id="newItemVariantsBox">
-                                <div class="variant-pricing-card">
-                                    <div class="row align-items-center g-3">
-                                        <div class="col-4 text-start">
-                                            <label class="form-label mb-1">Spec Label</label>
-                                            <input type="text" name="Variations[0].VariantName" class="form-control form-control-sm font-monospace fw-bold" value="Standard" required />
+                                    <div style="text-align:center;">
+
+                                        <div style="
+                                                font-size:14px;
+                                                font-weight:600;
+                                                color:#64748B;
+                                                margin-bottom:3px;">
+
+                                            Upload Product Thumbnail
+
                                         </div>
-                                        <div class="col-4">
-                                            <label class="form-label mb-1">Stock Qty</label>
-                                            <input type="number" name="Variations[0].StockQuantity" class="form-control form-control-sm text-center" value="10" min="0" required />
+
+                                        <div style="
+                                                font-size:12px;
+                                                color:#4F46E5;
+                                                font-weight:700;">
+
+                                            JPG, PNG or WEBP
+
                                         </div>
-                                        <div class="col-4">
-                                            <label class="form-label mb-1">Unit Price</label>
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text bg-light fw-bold text-muted" style="font-size: 11px;">₱</span>
-                                                <input type="number" step="0.01" name="Variations[0].Price" class="form-control form-control-sm text-end fw-bold" placeholder="0.00" required />
-                                            </div>
-                                        </div>
+
                                     </div>
+
                                 </div>
+
                             </div>
-                            
-                            <button type="button" class="btn btn-sm btn-outline-secondary w-100 rounded-3 border-dashed mt-1 py-2 fw-bold" onclick="addNewCreationVariantRow()" style="border-style: dashed !important; font-size:12px;">
-                                ➕ Append Additional Specification Variant Row
-                            </button>
+
+                            <!-- FILE -->
+                            <div class="mb-4">
+
+                                <input type="file"
+                                       name="ImageFile"
+                                       id="createImgFileInput"
+                                       class="form-control"
+                                       accept="image/*"
+                                       required />
+
+                            </div>
+
+                            <!-- NAME -->
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Product Name
+                                </label>
+
+                                <input type="text"
+                                       name="Name"
+                                       class="form-control"
+                                       placeholder="e.g., Kingston KC600 SSD Sata 3"
+                                       required />
+
+                            </div>
+
+                            <!-- CATEGORY + PRICE -->
+                            <div class="row g-3 mb-3">
+
+                                <!-- CATEGORY -->
+                                <div class="col-6">
+
+                                    <label class="form-label">
+                                        Category
+                                    </label>
+
+                                    <select name="Category"
+                                            class="form-select"
+                                            required>
+
+                                        <option value=""
+                                                disabled
+                                                selected>
+
+                                            Select category...
+
+                                        </option>
+
+                                        <option value="StorageDevices">
+                                            Storage Devices
+                                        </option>
+
+                                        <option value="RAM">
+                                            RAM
+                                        </option>
+
+                                        <option value="PSU">
+                                            PSU
+                                        </option>
+
+                                        <option value="inputDevices">
+                                            Input Devices
+                                        </option>
+
+                                        <option value="outputDevices">
+                                            Output Devices
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- PRICE -->
+                                <div class="col-6">
+
+                                    <label class="form-label">
+                                        Base Price (₱)
+                                    </label>
+
+                                    <input type="number"
+                                           step="0.01"
+                                           name="Price"
+                                           class="form-control fw-bold"
+                                           placeholder="0.00"
+                                           required />
+
+                                </div>
+
+                            </div>
+
+                            <!-- DESCRIPTION -->
+                            <div>
+
+                                <label class="form-label">
+                                    Description
+                                </label>
+
+                                <textarea name="Description"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Enter detailed technical specifications..."
+                                          required></textarea>
+
+                            </div>
+
                         </div>
+
+                        <!-- RIGHT -->
+                        <div class="col-md-7 ps-4">
+
+                            <!-- TITLE -->
+                            <div class="form-section-title">
+                                Initial Configuration Layers
+                            </div>
+
+                            <p class="text-muted small mb-3"
+                               style="margin-top:-6px;">
+
+                                Configure stock quantities and pricing layers
+                                for each product variation.
+
+                            </p>
+
+                            <!-- VARIANT BOX -->
+                            <div class="variant-pricing-scroll-box"
+                                 id="newItemVariantsBox">
+
+                                <!-- DEFAULT -->
+                                <div class="variant-pricing-card">
+
+                                    <div class="row align-items-center g-3">
+
+                                        <!-- SPEC -->
+                                        <div class="col-4 text-start">
+
+                                            <label class="form-label mb-1">
+                                                Spec Label
+                                            </label>
+
+                                            <input type="text"
+                                                   name="Variations[0].VariantName"
+                                                   class="form-control form-control-sm fw-bold"
+                                                   value="Standard"
+                                                   required />
+
+                                        </div>
+
+                                        <!-- STOCK -->
+                                        <div class="col-4">
+
+                                            <label class="form-label mb-1">
+                                                Stock Qty
+                                            </label>
+
+                                            <input type="number"
+                                                   name="Variations[0].StockQuantity"
+                                                   class="form-control form-control-sm text-center"
+                                                   value="10"
+                                                   min="0"
+                                                   required />
+
+                                        </div>
+
+                                        <!-- PRICE -->
+                                        <div class="col-4">
+
+                                            <label class="form-label mb-1">
+                                                Unit Price
+                                            </label>
+
+                                            <div class="input-group input-group-sm">
+
+                                                <span class="input-group-text"
+                                                      style="
+                                                        background:#EEF2FF;
+                                                        color:#2D3A8C;
+                                                        font-weight:700;">
+
+                                                    ₱
+
+                                                </span>
+
+                                                <input type="number"
+                                                       step="0.01"
+                                                       name="Variations[0].Price"
+                                                       class="form-control text-end fw-bold"
+                                                       placeholder="0.00"
+                                                       required />
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- BUTTON -->
+                            <button type="button"
+                                    class="btn btn-sm w-100 mt-2"
+                                    onclick="addNewCreationVariantRow()"
+                                    style="
+                                        border:1.5px dashed #C7CDE8;
+                                        border-radius:14px;
+                                        background:#fff;
+                                        color:#4F46E5;
+                                        padding:11px;
+                                        font-size:13px;
+                                        font-weight:700;">
+
+                                Append Additional Specification Variant Row
+
+                            </button>
+
+                        </div>
+
                     </div>
 
                 </div>
 
+                <!-- FOOTER -->
                 <div class="modal-footer">
-                    <button type="button" class="pk-btn pk-btn-outline pk-btn-sm" data-bs-dismiss="modal" style="border-radius: 12px; padding: 10px 24px;">Cancel</button>
-                    <button type="submit" class="pk-btn pk-btn-primary pk-btn-sm" style="border-radius: 12px; padding: 10px 24px; background-color: #1E2963;">Create Product Component</button>
+
+                    <button type="button"
+                            class="pk-btn pk-btn-outline pk-btn-sm"
+                            data-bs-dismiss="modal"
+                            style="
+                                border-radius:12px;
+                                padding:10px 24px;">
+
+                        Cancel
+
+                    </button>
+
+                    <button type="submit"
+                            class="pk-btn pk-btn-primary pk-btn-sm"
+                            style="
+                                border-radius:12px;
+                                padding:10px 24px;
+                                background-color:#1E2963;">
+
+                        Create Product Component
+
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
+
 </div>
 @section Scripts {
     <script>
